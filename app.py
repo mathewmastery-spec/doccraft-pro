@@ -7,22 +7,8 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-source = Path("app_original_backup.py").read_text()
-tree = ast.parse(source)
-wanted = {"SYSTEM_PROMPTS", "REPLY_MESSAGES"}
-found = {}
-
-for node in tree.body:
-    if isinstance(node, ast.Assign):
-        for target in node.targets:
-            if isinstance(target, ast.Name) and target.id in wanted:
-                found[target.id] = ast.literal_eval(node.value)
-    elif isinstance(node, ast.AnnAssign):
-        if isinstance(node.target, ast.Name) and node.target.id in wanted:
-            found[node.target.id] = ast.literal_eval(node.value)
-
-SYSTEM_PROMPTS = found["SYSTEM_PROMPTS"]
-REPLY_MESSAGES = found["REPLY_MESSAGES"]
+SYSTEM_PROMPTS = {'resume': 'You are an expert resume writer. Parse the user\'s input and return a JSON object with these fields:\n{\n  "name": "", "email": "", "phone": "", "location": "", "linkedin": "", "website": "",\n  "summary": "",\n  "skills": ["skill1", "skill2"],\n  "languages": ["English (Fluent)"],\n  "certifications": ["cert1"],\n  "experience": [{"title":"","company":"","period":"","location":"","bullets":["achievement1"]}],\n  "education": [{"degree":"","institution":"","year":"","grade":""}],\n  "projects": [{"name":"","description":"","tech":["tech1"]}]\n}\nMerge with any existing data. Make the summary compelling and professional. Expand bullet points into strong action-verb statements. Return ONLY the JSON object, no extra text.', 'cv': 'You are an expert CV writer for academic and professional positions. Parse the user\'s input and return a JSON object with these fields:\n{\n  "name": "", "email": "", "phone": "", "location": "", "linkedin": "", "website": "",\n  "summary": "",\n  "skills": ["skill1"],\n  "languages": ["English (Fluent)"],\n  "certifications": [],\n  "experience": [{"title":"","company":"","period":"","location":"","bullets":[]}],\n  "education": [{"degree":"","institution":"","year":"","grade":""}],\n  "projects": [{"name":"","description":"","tech":[]}]\n}\nCVs are more detailed than resumes. Include all relevant academic and professional experience. Return ONLY the JSON object.', 'academic_cv': 'You are an expert academic CV writer. Parse the user\'s input and return a JSON object with these fields:\n{\n  "name": "", "email": "", "phone": "", "location": "", "linkedin": "", "website": "",\n  "summary": "",\n  "skills": [],\n  "languages": [],\n  "certifications": [],\n  "experience": [{"title":"","company":"","period":"","location":"","bullets":[]}],\n  "education": [{"degree":"","institution":"","year":"","grade":""}],\n  "projects": [{"name":"","description":"","tech":[]}]\n}\nEmphasise research, publications, academic achievements and scholarly work. Return ONLY the JSON object.', 'cover_letter': 'You are an expert cover letter writer. Based on the user\'s details, write a compelling, professional cover letter.\nReturn a JSON object:\n{\n  "full_letter": "Dear [Hiring Manager],\\n\\n[Opening paragraph]\\n\\n[Body paragraph 1]\\n\\n[Body paragraph 2]\\n\\nYours sincerely,\\n[Name]",\n  "subject": "Application for [Position] – [Name]"\n}\nThe letter should be warm, confident, and tailored. 3-4 paragraphs. Return ONLY the JSON object.', 'portfolio': 'You are an expert portfolio document writer. Parse the user\'s input and return a JSON object:\n{\n  "name": "", "title": "", "bio": "",\n  "contact": {"email": "", "github": "", "linkedin": ""},\n  "skills": [{"name": "React", "level": 90}],\n  "projects": [{"name":"","description":"","tech":[]}],\n  "education": [{"degree":"","institution":"","year":""}],\n  "achievements": ["achievement1"]\n}\nMake the bio compelling and the descriptions impactful. Return ONLY the JSON object.', 'org_letter': 'You are an expert formal letter writer. Based on the details provided, write a professional formal letter.\nReturn a JSON object:\n{\n  "letter_text": "Full formal letter text here with proper salutation, body paragraphs, and sign-off"\n}\nUse proper formal letter formatting with today\'s date, addresses, salutation, 3-4 body paragraphs, and sign-off. Return ONLY the JSON object.'}
+REPLY_MESSAGES = {'resume': 'Your resume has been generated! You can see it in the preview. Switch templates or edit the form to refine it.', 'cv': 'Your CV is ready in the preview panel. Feel free to ask me to add more sections or details.', 'academic_cv': "Your Academic CV has been created. I've emphasised your academic achievements and research.", 'cover_letter': "Your cover letter is ready in the preview. It's tailored and professional.", 'portfolio': 'Your portfolio document is ready! It showcases your work beautifully.', 'org_letter': 'Your formal letter has been generated and is ready in the preview.'}
 
 @app.route("/")
 def home():
