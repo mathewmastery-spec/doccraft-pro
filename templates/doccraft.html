@@ -298,6 +298,125 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .lt-grid{grid-template-columns:1fr 1fr}
   #homeScreen{padding:24px 16px 60px}
 }
+
+  
+/* DocCraft: clean document-only printing and PDF export */
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #documentPreview,
+  #documentPreview * {
+    visibility: visible !important;
+  }
+
+  #documentPreview {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    overflow: visible !important;
+    background: white !important;
+    color: black !important;
+  }
+
+  #documentPreview button,
+  #documentPreview .no-print {
+    display: none !important;
+  }
+
+  #documentPreview * {
+    color: black !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+}
+
+  
+/* DocCraft — clean document-only PDF and printing */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #111 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  #docSheet,
+  #docSheet * {
+    visibility: visible !important;
+  }
+
+  #docSheet {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+    color: #111 !important;
+    box-shadow: none !important;
+  }
+
+  #docSheet .tpl-modern {
+    min-height: 0 !important;
+    break-inside: auto;
+  }
+
+  #docSheet .modern-left {
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  #docSheet .classic-section,
+  #docSheet .exp-item,
+  #docSheet .edu-item,
+  #docSheet .m-section,
+  #docSheet .m-exp-item,
+  #docSheet .min-section,
+  #docSheet .min-exp-item,
+  #docSheet .pf-section {
+    break-inside: avoid;
+  }
+
+  #docSheet h1,
+  #docSheet h2 {
+    break-after: avoid;
+  }
+
+  #docSheet * {
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+}
+
 </style>
 </head>
 <body>
