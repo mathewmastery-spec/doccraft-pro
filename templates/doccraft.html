@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -297,50 +298,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .form-row{grid-template-columns:1fr}
   .lt-grid{grid-template-columns:1fr 1fr}
   #homeScreen{padding:24px 16px 60px}
-}
-
-  
-/* DocCraft: clean document-only printing and PDF export */
-@media print {
-  @page {
-    size: A4;
-    margin: 16mm;
-  }
-
-  body * {
-    visibility: hidden !important;
-  }
-
-  #documentPreview,
-  #documentPreview * {
-    visibility: visible !important;
-  }
-
-  #documentPreview {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    box-shadow: none !important;
-    overflow: visible !important;
-    background: white !important;
-    color: black !important;
-  }
-
-  #documentPreview button,
-  #documentPreview .no-print {
-    display: none !important;
-  }
-
-  #documentPreview * {
-    color: black !important;
-    text-shadow: none !important;
-    box-shadow: none !important;
-  }
 }
 
   
