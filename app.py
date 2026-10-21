@@ -2,7 +2,7 @@ import os
 import json
 import ast
 from pathlib import Path
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Response
 from openai import OpenAI
 
 app = Flask(__name__)
@@ -13,7 +13,28 @@ REPLY_MESSAGES = {'resume': 'Your resume has been generated! You can see it in t
 @app.route("/")
 def home():
     return render_template("doccraft.html")
+@app.route("/robots.txt")
+def robots_txt():
+    content = """User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /health
 
+Sitemap: https://doccraft-pro.onrender.com/sitemap.xml
+"""
+    return Response(content, mimetype="text/plain")
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    content = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://doccraft-pro.onrender.com/</loc>
+  </url>
+</urlset>
+"""
+    return Response(content, mimetype="application/xml")
 @app.route("/health")
 def health():
     return jsonify({"status": "ok", "app": "DocCraft"})
