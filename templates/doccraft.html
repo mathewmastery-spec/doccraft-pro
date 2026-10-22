@@ -597,6 +597,23 @@ function billingEmailValue() {
   return (document.getElementById('billingEmail')?.value || '').trim().toLowerCase();
 }
 
+function rememberBillingEmail() {
+  try {
+    const email = billingEmailValue();
+    if (email) sessionStorage.setItem('doccraftBillingEmail', email);
+  } catch (_) {}
+}
+
+function restoreBillingEmail() {
+  try {
+    const input = document.getElementById('billingEmail');
+    const saved = sessionStorage.getItem('doccraftBillingEmail');
+    if (input && !input.value && saved) input.value = saved;
+  } catch (_) {}
+}
+
+restoreBillingEmail();
+
 async function loadCreditPackages() {
   const email = billingEmailValue();
   const status = document.getElementById('billingStatus');
@@ -606,6 +623,7 @@ async function loadCreditPackages() {
     document.getElementById('billingEmail')?.focus();
     return;
   }
+  rememberBillingEmail();
   status.textContent = 'Loading credit packages…';
   try {
     const response = await fetch('/api/payments/packages');
@@ -629,6 +647,7 @@ async function loadCreditPackages() {
 async function startCreditCheckout(packageCode, button) {
   const email = billingEmailValue();
   const status = document.getElementById('billingStatus');
+  rememberBillingEmail();
   button.disabled = true;
   status.textContent = 'Preparing secure checkout…';
   try {
@@ -647,7 +666,15 @@ async function startCreditCheckout(packageCode, button) {
 }
 
 async function verifyReturnedPayment() {
+  restoreBillingEmail();
   const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'cancelled') {
+    document.getElementById('billingStatus').textContent = 'Checkout was cancelled. No payment has been assumed successful; you can try again whenever you are ready.';
+    params.delete('payment');
+    const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+    window.history.replaceState({}, '', clean);
+    return;
+  }
   const reference = params.get('reference') || params.get('session_id');
   if (!reference) return;
   const status = document.getElementById('billingStatus');
