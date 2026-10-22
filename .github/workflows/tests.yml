@@ -4,9 +4,11 @@ name: DocCraft Billing Tests
 on:
   push:
     branches:
+      - main
       - feature/billing-credit-system
   pull_request:
     branches:
+      - main
       - feature/billing-credit-system
   workflow_dispatch:
 
