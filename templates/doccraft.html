@@ -601,7 +601,7 @@ async function loadCreditPackages() {
   const email = billingEmailValue();
   const status = document.getElementById('billingStatus');
   const container = document.getElementById('creditPackages');
-  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     status.textContent = 'Enter a valid email address first.';
     document.getElementById('billingEmail')?.focus();
     return;
