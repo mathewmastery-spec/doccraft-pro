@@ -4,9 +4,9 @@ from app import create_app
 from extensions import db
 
 
-@pytest.fixture()
+@pytest.fixture
 def app():
-    app = create_app(test_config={"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"})
+    app = create_app(test_config={"TESTING": True, "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:", "BILLING_ENABLED": True})
     with app.app_context():
         db.create_all()
         yield app
@@ -14,6 +14,6 @@ def app():
         db.drop_all()
 
 
-@pytest.fixture()
+@pytest.fixture
 def client(app):
     return app.test_client()

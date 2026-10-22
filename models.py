@@ -22,6 +22,7 @@ class User(db.Model):
     wallet = db.relationship("Wallet", back_populates="user", uselist=False, cascade="save-update")
     transactions = db.relationship("PaymentTransaction", back_populates="user", cascade="save-update")
     ledger_entries = db.relationship("CreditLedgerEntry", back_populates="user", cascade="save-update")
+    generation_requests = db.relationship("GenerationRequest", back_populates="user", cascade="save-update")
 
     def __repr__(self):
         return f"<User {self.email}>"
@@ -38,9 +39,7 @@ class Wallet(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
-    __table_args__ = (
-        CheckConstraint("balance_credits >= 0", name="wallet_balance_non_negative"),
-    )
+    __table_args__ = (CheckConstraint("balance_credits >= 0", name="wallet_balance_non_negative"),)
 
     user = db.relationship("User", back_populates="wallet")
     ledger_entries = db.relationship("CreditLedgerEntry", back_populates="wallet", cascade="save-update")
@@ -122,7 +121,7 @@ class PaymentTransaction(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
-    provider = db.Column(db.String(64), nullable=False, default="stripe")
+    provider = db.Column(db.String(64), nullable=False, default="paystack")
     provider_payment_id = db.Column(db.String(255), nullable=True, index=True)
     provider_session_id = db.Column(db.String(255), nullable=True, index=True)
     currency = db.Column(db.String(8), nullable=False)
@@ -161,9 +160,7 @@ class CreditLedgerEntry(db.Model):
     extra_data = db.Column(db.JSON, nullable=True, default=dict)
     created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    __table_args__ = (
-        CheckConstraint("amount_credits != 0", name="credit_ledger_entry_amount_non_zero"),
-    )
+    __table_args__ = (CheckConstraint("amount_credits != 0", name="credit_ledger_entry_amount_non_zero"),)
 
     wallet = db.relationship("Wallet", back_populates="ledger_entries")
     user = db.relationship("User", back_populates="ledger_entries")
@@ -171,6 +168,25 @@ class CreditLedgerEntry(db.Model):
 
     def __repr__(self):
         return f"<CreditLedgerEntry {self.entry_type} {self.amount_credits}>"
+
+
+class GenerationRequest(db.Model):
+    __tablename__ = "generation_requests"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    request_key = db.Column(db.String(255), unique=True, nullable=False, index=True)
+    doc_type = db.Column(db.String(64), nullable=False)
+    input_hash = db.Column(db.String(255), nullable=False)
+    response_payload = db.Column(db.JSON, nullable=True)
+    status = db.Column(db.String(32), nullable=False, default="pending")
+    created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
+    user = db.relationship("User", back_populates="generation_requests")
+
+    def __repr__(self):
+        return f"<GenerationRequest {self.request_key} {self.status}>"
 
 
 def get_or_create_wallet(user_id: int, currency: str = "USD") -> Wallet:
@@ -182,11 +198,51 @@ def get_or_create_wallet(user_id: int, currency: str = "USD") -> Wallet:
     return wallet
 
 
+def ensure_user(email: str, full_name: str | None = None, country_code: str | None = None) -> User:
+    email = (email or "").strip().lower()
+    if not email:
+        raise ValueError("An email address is required for billing.")
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        user = User(email=email, full_name=full_name, country_code=country_code or "KE")
+        db.session.add(user)
+        db.session.commit()
+    return user
+
+
+def seed_default_credit_packages():
+    packages = [
+        {"code": "starter", "name": "Starter Pack", "currency": "KES", "price_cents": 50000, "credit_units": 25},
+        {"code": "growth", "name": "Growth Pack", "currency": "KES", "price_cents": 100000, "credit_units": 55},
+        {"code": "pro", "name": "Pro Pack", "currency": "KES", "price_cents": 200000, "credit_units": 120},
+    ]
+    for item in packages:
+        existing = CreditPackage.query.filter_by(code=item["code"]).first()
+        if existing is None:
+            db.session.add(
+                CreditPackage(
+                    code=item["code"],
+                    name=item["name"],
+                    description=f"{item['credit_units']} credits",
+                    currency=item["currency"],
+                    price_cents=item["price_cents"],
+                    credit_units=item["credit_units"],
+                    is_active=True,
+                    sort_order=packages.index(item),
+                )
+            )
+    db.session.commit()
+    return CreditPackage.query.filter_by(is_active=True).order_by(CreditPackage.sort_order).all()
+
+
 __all__ = [
     "User",
     "Wallet",
     "CreditPackage",
     "PaymentTransaction",
     "CreditLedgerEntry",
+    "GenerationRequest",
     "get_or_create_wallet",
+    "ensure_user",
+    "seed_default_credit_packages",
 ]
