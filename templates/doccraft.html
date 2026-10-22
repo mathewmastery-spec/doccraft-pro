@@ -521,6 +521,16 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
+      <div id="billingPanel" style="padding:12px;border-bottom:1px solid rgba(255,255,255,.12);">
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <label for="billingEmail" style="font-size:12px">Account email</label>
+          <input id="billingEmail" type="email" autocomplete="email" placeholder="you@example.com" style="flex:1;min-width:180px;padding:9px;border-radius:8px;border:1px solid #444;background:#111;color:#fff">
+          <button type="button" class="btn btn-sm btn-outline" onclick="loadCreditPackages()">Credit packages</button>
+        </div>
+        <div id="billingStatus" role="status" style="font-size:12px;margin-top:7px;opacity:.85">Enter your email to use your credit wallet.</div>
+        <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
+      </div>
+
       <div class="tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('chat',this)">AI Chat</button>
         <button class="tab-btn" onclick="switchTab('form',this)">Form</button>
@@ -582,6 +592,85 @@ const state = {
   tool: 'resume', subType: 'resume', clType: 'job', orgType: 'job_application',
   template: 'classic', resume: {}, portfolio: {}, letter: '', orgLetter: ''
 };
+
+function billingEmailValue() {
+  return (document.getElementById('billingEmail')?.value || '').trim().toLowerCase();
+}
+
+async function loadCreditPackages() {
+  const email = billingEmailValue();
+  const status = document.getElementById('billingStatus');
+  const container = document.getElementById('creditPackages');
+  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+    status.textContent = 'Enter a valid email address first.';
+    document.getElementById('billingEmail')?.focus();
+    return;
+  }
+  status.textContent = 'Loading credit packages…';
+  try {
+    const response = await fetch('/api/payments/packages');
+    const data = await response.json();
+    if (!response.ok || !data.success || !Array.isArray(data.packages)) throw new Error(data.error || 'Packages are unavailable.');
+    container.innerHTML = '';
+    data.packages.forEach(pkg => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-sm btn-outline';
+      button.textContent = pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')';
+      button.addEventListener('click', () => startCreditCheckout(pkg.code, button));
+      container.appendChild(button);
+    });
+    status.textContent = 'Choose a package to continue to secure checkout.';
+  } catch (error) {
+    status.textContent = error.message || 'Could not load packages. Please retry.';
+  }
+}
+
+async function startCreditCheckout(packageCode, button) {
+  const email = billingEmailValue();
+  const status = document.getElementById('billingStatus');
+  button.disabled = true;
+  status.textContent = 'Preparing secure checkout…';
+  try {
+    const response = await fetch('/api/payments/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, package_code: packageCode })
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success || !data.checkout?.url) throw new Error(data.error || 'Checkout could not be started.');
+    window.location.assign(data.checkout.url);
+  } catch (error) {
+    status.textContent = error.message || 'Checkout failed. Please retry.';
+    button.disabled = false;
+  }
+}
+
+async function verifyReturnedPayment() {
+  const params = new URLSearchParams(window.location.search);
+  const reference = params.get('reference') || params.get('session_id');
+  if (!reference) return;
+  const status = document.getElementById('billingStatus');
+  status.textContent = 'Checking payment status…';
+  try {
+    const response = await fetch('/api/payments/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reference })
+    });
+    const data = await response.json();
+    status.textContent = response.ok && data.success
+      ? 'Payment confirmed. Credit balance: ' + (data.credits_balance ?? 'updated') + '.'
+      : (data.error || 'Payment is not confirmed yet. Please retry verification later.');
+    if (response.ok && data.success) {
+      params.delete('reference'); params.delete('session_id');
+      const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', clean);
+    }
+  } catch (_) {
+    status.textContent = 'Could not verify payment right now. Your payment has not been assumed successful.';
+  }
+}
 
 function showHome() {
   document.getElementById('homeScreen').style.display = '';
@@ -903,7 +992,7 @@ async function sendMessage() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: docType, user_input: msg, extra: { currentData: state.resume } })
+      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.resume } })
     });
     const json = await res.json();
     removeSpinner();
@@ -990,7 +1079,7 @@ async function generateCoverLetter() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, extra: {} })
+      body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
     if (json.success) renderLetter(json.data.full_letter || '', json.data.subject || '');
@@ -1006,7 +1095,7 @@ async function generateOrgLetter() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, extra: {} })
+      body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
     if (json.success) renderOrgLetter(json.data.letter_text || '');
@@ -1097,6 +1186,6 @@ function toggleMobilePreview() {
   right.style.display = previewVisible ? '' : 'none';
   document.getElementById('mobilePreviewBtn').textContent = previewVisible ? '👁' : '📝';
 }
-</script>
+\nverifyReturnedPayment();\n</script>
 </body>
 </html>
