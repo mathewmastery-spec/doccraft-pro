@@ -80,6 +80,16 @@ class PaystackProvider(PaymentProviderAdapter):
         if not self.secret_key:
             raise PaymentProviderError("PAYSTACK_SECRET_KEY is not configured; payments are disabled.")
 
+        # A live checkout must never silently run with Paystack test credentials.
+        billing_enabled = (os.getenv("BILLING_ENABLED") or "false").strip().lower() == "true"
+        app_base_url = (os.getenv("APP_BASE_URL") or "").strip().lower()
+        is_production_url = app_base_url.startswith("https://") and "localhost" not in app_base_url
+        if billing_enabled and is_production_url and self.secret_key.startswith("sk_test_"):
+            raise PaymentProviderError(
+                "Production billing is enabled but PAYSTACK_SECRET_KEY is a test key. "
+                "Set the approved Paystack live secret key in the hosting environment."
+            )
+
     def create_checkout_session(self, *, amount_cents: int, currency: str,
                                 customer_email: str, metadata: Optional[dict] = None,
                                 package_code: Optional[str] = None,
