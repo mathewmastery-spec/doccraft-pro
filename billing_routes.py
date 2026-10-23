@@ -97,6 +97,9 @@ def list_packages():
 
 @billing_bp.post("/payments/checkout")
 def checkout():
+    if not current_app.config.get("BILLING_ENABLED", False):
+        return _json_error("Paid checkout is currently disabled.", 503)
+
     body = request.get_json(silent=True) or {}
     email = (body.get("email") or body.get("user_email") or "").strip().lower()
     package_code = (body.get("package_code") or "").strip()
