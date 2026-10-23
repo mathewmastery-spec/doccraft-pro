@@ -5,7 +5,7 @@ import json
 import os
 import uuid
 
-from flask import Flask, Response, jsonify, render_template, request
+from flask import Flask, Response, jsonify, render_template, request, send_from_directory
 from openai import OpenAI
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -85,6 +85,14 @@ def create_app(test_config=None):
             "</urlset>\n",
             mimetype="application/xml",
         )
+
+    @app.route("/service-worker.js")
+    def service_worker():
+        # Serve the worker at the site root so its default scope covers the app.
+        response = send_from_directory("static", "service-worker.js", mimetype="application/javascript")
+        response.headers["Service-Worker-Allowed"] = "/"
+        response.headers["Cache-Control"] = "no-cache"
+        return response
 
     @app.route("/health")
     def health():
