@@ -2,6 +2,7 @@
   "name": "DocCraft Pro — Document Studio",
   "short_name": "DocCraft Pro",
   "description": "Create professional CVs, resumes, cover letters, portfolios and formal letters with DocCraft Pro.",
+  "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -14,6 +15,5 @@
       "type": "image/svg+xml",
       "purpose": "any"
     }
-  ],
-  "id": "doccraft-pro"
+  ]
 }
