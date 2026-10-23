@@ -2,14 +2,38 @@ from __future__ import annotations
 
 import json
 
+import pytest
+
+import billing_routes
 from extensions import db
-from models import (
-    CreditLedgerEntry,
-    CreditPackage,
-    PaymentTransaction,
-    User,
-    Wallet,
-)
+from models import CreditLedgerEntry, CreditPackage, PaymentTransaction, Wallet
+
+
+class FakePaymentProvider:
+    provider_name = "paystack"
+
+    def create_checkout_session(
+        self, *, amount_cents, currency, customer_email, metadata=None,
+        package_code=None, reference=None
+    ):
+        return {
+            "id": reference,
+            "reference": reference,
+            "url": "https://payments.example.test/checkout",
+            "status": "pending",
+            "metadata": metadata or {},
+        }
+
+    def verify_webhook(self, *, raw_body, signature, headers=None):
+        return json.loads(raw_body.decode("utf-8"))
+
+    def verify_payment(self, *, payment_reference, **kwargs):
+        raise AssertionError("This test should not make a real provider verification request.")
+
+
+@pytest.fixture(autouse=True)
+def fake_payment_provider(monkeypatch):
+    monkeypatch.setattr(billing_routes, "_provider", lambda: FakePaymentProvider())
 
 
 def test_packages_endpoint_returns_configured_packages(client):
