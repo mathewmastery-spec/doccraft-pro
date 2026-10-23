@@ -54,6 +54,16 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     app.register_blueprint(billing_bp)
 
+    # One-time safe bootstrap for a newly provisioned database. SQLAlchemy's
+    # create_all() creates missing tables without dropping existing tables.
+    # Enable explicitly with AUTO_INIT_DB=true, then disable after first success.
+    if os.getenv("AUTO_INIT_DB", "false").strip().lower() == "true":
+        from models import seed_default_credit_packages
+
+        with app.app_context():
+            db.create_all()
+            seed_default_credit_packages()
+
     @app.route("/")
     def home():
         return render_template("doccraft.html")
