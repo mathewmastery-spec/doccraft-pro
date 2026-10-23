@@ -86,6 +86,12 @@ def create_app(test_config=None):
             mimetype="application/xml",
         )
 
+    @app.route("/doccraft-icon-192.png")
+    @app.route("/doccraft-icon-512.png")
+    def doccraft_icon():
+        # The PWA icons currently live in the repository root.
+        return send_from_directory(app.root_path, request.path.rsplit("/", 1)[-1], mimetype="image/png")
+
     @app.route("/service-worker.js")
     def service_worker():
         # Serve the worker at the site root so its default scope covers the app.
