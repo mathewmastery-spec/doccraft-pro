@@ -17,6 +17,8 @@
 <title>DocCraft Pro | Free Online Document &amp; CV Builder</title>
 <meta name="description" content="Create professional CVs, resumes, portfolios, and letters with DocCraft Pro. Design documents, preview templates, copy content, and print or save as PDF.">
 <meta name="theme-color" content="#0f1117">
+<link rel="manifest" href="/static/manifest.json">
+<link rel="apple-touch-icon" href="/static/doccraft-icon.svg">
 <meta property="og:title" content="DocCraft Pro — Student Document Studio">
 <meta property="og:description" content="Create and format professional documents, CVs, portfolios, and letters with DocCraft Pro.">
 <meta property="og:type" content="website">
@@ -410,6 +412,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   </div>
 
   <div class="nav-right">
+    <button class="btn btn-ghost" id="installAppBtn" type="button" hidden style="padding:7px 12px;font-size:12px;margin-right:8px" onclick="installDocCraftApp()">Install App</button>
     <button class="nav-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
       <span></span><span></span><span></span>
     </button>
@@ -1214,6 +1217,37 @@ function toggleMobilePreview() {
   document.getElementById('mobilePreviewBtn').textContent = previewVisible ? '👁' : '📝';
 }
 
+
+// Progressive Web App installation support. Installation is offered only when
+// the browser says the app can be installed; unsupported browsers keep working normally.
+let docCraftInstallPrompt = null;
+const docCraftInstallButton = document.getElementById('installAppBtn');
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  docCraftInstallPrompt = event;
+  if (docCraftInstallButton) docCraftInstallButton.hidden = false;
+});
+async function installDocCraftApp() {
+  if (!docCraftInstallPrompt) {
+    showToast('Use your browser menu and choose Install app or Add to Home screen.');
+    return;
+  }
+  docCraftInstallPrompt.prompt();
+  await docCraftInstallPrompt.userChoice;
+  docCraftInstallPrompt = null;
+  if (docCraftInstallButton) docCraftInstallButton.hidden = true;
+}
+window.addEventListener('appinstalled', () => {
+  if (docCraftInstallButton) docCraftInstallButton.hidden = true;
+  showToast('DocCraft Pro installed successfully.');
+});
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').catch((error) => {
+      console.warn('DocCraft offline support could not be enabled:', error);
+    });
+  });
+}
 verifyReturnedPayment();
 </script>
 </body>
