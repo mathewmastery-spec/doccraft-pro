@@ -12,6 +12,10 @@ This checklist deliberately separates code readiness from account/provider activ
 - [x] The webhook endpoint is `POST /api/payments/webhook`; Paystack events are authenticated using the `x-paystack-signature` HMAC.
 - [x] Credit grants check the stored transaction amount, currency, and active package and avoid issuing a second grant for an already-granted transaction.
 - [x] Checkout retry handling was tightened so a failed/incomplete initialization is not returned as a successful checkout with a missing URL.
+- [x] New paid checkout requests now respect `BILLING_ENABLED`; when disabled, the endpoint returns a controlled 503 instead of initializing a payment.
+- [x] Production Paystack key guard rejects a test secret when billing is enabled on the HTTPS production URL.
+- [x] Added a focused pytest file for the production key guard. CI execution is not confirmed in this session.
+- [x] Added draft privacy and terms documents under `docs/`; these are deliberately drafts and must not be published until their owner-specific placeholders and actual practices are confirmed.
 
 ### Still required in the live accounts
 - [ ] Paystack account is approved for live payments.
