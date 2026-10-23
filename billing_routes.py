@@ -122,19 +122,23 @@ def checkout():
     if existing:
         if existing.user and existing.user.email.lower() != email:
             return _json_error("That checkout reference belongs to another account.", 409)
-        if existing.provider_session_id or existing.provider_payment_id:
+        existing_metadata = existing.provider_metadata if isinstance(existing.provider_metadata, dict) else {}
+        existing_checkout_url = existing_metadata.get("checkout_url")
+        if existing.status == "failed":
+            return _json_error("The previous checkout could not be initialized. Start a new checkout.", 409)
+        if existing_checkout_url and existing.status in {"pending", "succeeded"}:
             return jsonify({
                 "success": True,
                 "checkout": {
                     "reference": existing.idempotency_key,
                     "provider_reference": existing.provider_payment_id,
-                    "url": (existing.provider_metadata or {}).get("checkout_url"),
+                    "url": existing_checkout_url,
                     "status": existing.status,
                     "currency": existing.currency,
                     "amount_cents": existing.amount_cents,
                 },
             })
-        return _json_error("A checkout with this reference is already being processed.", 409)
+        return _json_error("A checkout with this reference is already being processed. Please retry with a new checkout reference.", 409)
 
     user = ensure_user(email, full_name=body.get("full_name"), country_code=body.get("country_code") or "KE")
     currency = (package.currency or "KES").upper()
