@@ -200,3 +200,14 @@ def test_payment_webhook_rejects_amount_mismatch(client):
     db_transaction = db.session.get(PaymentTransaction, transaction.id)
     assert db_transaction.status == "pending"
     assert db_transaction.paid_cents == 0
+
+
+
+def test_checkout_is_disabled_when_billing_flag_is_false(app, client):
+    app.config["BILLING_ENABLED"] = False
+    response = client.post(
+        "/api/payments/checkout",
+        json={"email": "disabled@example.com", "package_code": "starter"},
+    )
+    assert response.status_code == 503
+    assert response.get_json()["success"] is False
