@@ -1,0 +1,18 @@
+{
+  "name": "DocCraft Pro — Document Studio",
+  "short_name": "DocCraft Pro",
+  "description": "Create professional CVs, resumes, cover letters, portfolios and formal letters.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f1117",
+  "theme_color": "#0f1117",
+  "icons": [
+    {
+      "src": "/static/doccraft-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
