@@ -99,7 +99,7 @@ class PaystackProvider(PaymentProviderAdapter):
         }
         result = _http_json(
             "POST", "https://api.paystack.co/transaction/initialize",
-            headers={"Authorization": f"Bearer {self.secret_key}", "Content-Type": "application/json"},
+            headers={"Authorization": f"Bearer {self.secret_key}", "Content-Type": "application/json", "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"},
             payload=payload,
         )
         data = result.get("data") or {}
@@ -118,7 +118,7 @@ class PaystackProvider(PaymentProviderAdapter):
         ref = parse.quote(str(payment_reference), safe="")
         result = _http_json(
             "GET", f"https://api.paystack.co/transaction/verify/{ref}",
-            headers={"Authorization": f"Bearer {self.secret_key}"},
+            headers={"Authorization": f"Bearer {self.secret_key}", "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"},
         )
         data = result.get("data") or {}
         paid = result.get("status") is True and data.get("status") == "success"
