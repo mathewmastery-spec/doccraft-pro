@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import CheckConstraint
+from sqlalchemy import CheckConstraint, UniqueConstraint
 from sqlalchemy.orm import validates
 
 from extensions import db
@@ -160,7 +160,14 @@ class CreditLedgerEntry(db.Model):
     extra_data = db.Column(db.JSON, nullable=True, default=dict)
     created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
-    __table_args__ = (CheckConstraint("amount_credits != 0", name="credit_ledger_entry_amount_non_zero"),)
+    __table_args__ = (
+        CheckConstraint("amount_credits != 0", name="credit_ledger_entry_amount_non_zero"),
+        UniqueConstraint(
+            "payment_transaction_id",
+            "entry_type",
+            name="uq_credit_ledger_payment_entry_type",
+        ),
+    )
 
     wallet = db.relationship("Wallet", back_populates="ledger_entries")
     user = db.relationship("User", back_populates="ledger_entries")
