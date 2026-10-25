@@ -124,8 +124,10 @@ def create_app(test_config=None):
         content = payload.get("document")
         if not isinstance(content, dict) or doc_type not in SYSTEM_PROMPTS:
             return jsonify({"success": False, "error": "Invalid document request."}), 400
-        if not email or "@" not in email or len(email) > 254:
-            return jsonify({"success": False, "error": "Enter your account email in the Wallet to use document credits."}), 400
+        if not email:
+            return jsonify({"success": True, "preview_only": True, "wallet_balance": None})
+        if "@" not in email or len(email) > 254:
+            return jsonify({"success": False, "error": "Enter a valid email address in the Wallet to use document credits."}), 400
         if not app.config.get("BILLING_ENABLED", False):
             production_runtime = (
                 str(os.getenv("RENDER", "")).strip().lower() == "true"
