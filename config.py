@@ -39,6 +39,7 @@ class Config:
     BILLING_ENABLED = os.getenv("BILLING_ENABLED", "false").lower() == "true"
     DOCCRAFT_FREE_GENERATIONS = int(os.getenv("DOCCRAFT_FREE_GENERATIONS", "0"))
     DOC_CREDIT_COST = int(os.getenv("DOC_CREDIT_COST", "1"))
+    DOC_ACTION_CREDIT_COST = int(os.getenv("DOC_ACTION_CREDIT_COST", "1"))
     PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
     PAYSTACK_PUBLIC_KEY = os.getenv("PAYSTACK_PUBLIC_KEY")
     PAYSTACK_WEBHOOK_SECRET = os.getenv("PAYSTACK_WEBHOOK_SECRET")
