@@ -135,6 +135,18 @@ def create_app(test_config=None):
         email_value = payload.get("email") or payload.get("user_email") or ""
         email = email_value.strip().lower() if isinstance(email_value, str) else ""
         billing_enabled = bool(app.config.get("BILLING_ENABLED", False))
+        # Fail closed on Render/production: a missing or false billing flag must
+        # never silently turn paid document generation into a free service.
+        production_runtime = (
+            str(os.getenv("RENDER", "")).strip().lower() == "true"
+            or str(os.getenv("FLASK_ENV", "")).strip().lower() == "production"
+            or str(os.getenv("APP_ENV", "")).strip().lower() == "production"
+        )
+        if production_runtime and not billing_enabled:
+            return jsonify({
+                "success": False,
+                "error": "Paid document generation is temporarily unavailable. Please try again later.",
+            }), 503
         if billing_enabled and (not email or "@" not in email or len(email) > 254):
             return jsonify({"success": False, "error": "Enter a valid email address to use your credit wallet."}), 400
         if email and ("@" not in email or len(email) > 254):
