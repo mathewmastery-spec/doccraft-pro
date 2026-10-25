@@ -524,16 +524,37 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
-      <div id="billingPanel" style="padding:12px;border-bottom:1px solid rgba(255,255,255,.12);">
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <label for="billingEmail" style="font-size:12px">Account email</label>
-          <input id="billingEmail" type="email" autocomplete="email" placeholder="you@example.com" style="flex:1;min-width:180px;padding:9px;border-radius:8px;border:1px solid #444;background:#111;color:#fff">
-          <button type="button" class="btn btn-sm btn-outline" onclick="loadCreditPackages()">Credit packages</button>
+      <section id="billingPanel" aria-labelledby="walletTitle" style="position:relative;overflow:hidden;padding:18px;border-bottom:1px solid rgba(96,165,250,.28);background:linear-gradient(125deg,rgba(30,64,175,.38) 0%,rgba(37,99,235,.20) 48%,rgba(14,165,233,.12) 100%);">
+        <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
+        <div style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
+          <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;flex:0 0 40px;height:40px;border:1px solid rgba(147,197,253,.35);border-radius:13px;background:linear-gradient(145deg,rgba(59,130,246,.45),rgba(14,165,233,.22));color:#dbeafe;font-size:21px;box-shadow:0 5px 18px rgba(37,99,235,.18)">✦</span>
+          <div style="min-width:0">
+            <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Your DocCraft wallet</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:3px">Your credits. Your next document. All in one place.</div>
+          </div>
         </div>
-        <div id="creditBalance" role="status" aria-live="polite" style="font-size:12px;margin-top:7px;opacity:.9">Enter your account email to check your credit balance.</div>
-        <div id="billingStatus" role="status" style="font-size:12px;margin-top:5px;opacity:.85">Your balance will appear automatically when you enter your email.</div>
-        <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
-      </div>
+        <form id="walletLookupForm" style="position:relative;display:flex;gap:9px;align-items:stretch;flex-wrap:wrap">
+          <label for="billingEmail" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Account email</label>
+          <input id="billingEmail" type="email" autocomplete="email" placeholder="Enter your account email" aria-describedby="billingStatus" required style="flex:1;min-width:190px;padding:12px 13px;border-radius:11px;border:1px solid rgba(147,197,253,.4);background:rgba(8,18,38,.72);color:#eff6ff;font:inherit;font-size:13px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)">
+          <button id="checkBalanceBtn" type="submit" class="btn btn-sm btn-primary" style="border-radius:11px;padding:11px 15px;white-space:nowrap;background:linear-gradient(110deg,#2563eb,#0891b2);border:1px solid rgba(191,219,254,.3);box-shadow:0 5px 16px rgba(37,99,235,.25);font-weight:750">Check my balance <span aria-hidden="true">→</span></button>
+        </form>
+        <div id="creditBalance" role="status" aria-live="polite" style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:14px 15px;border:1px solid rgba(147,197,253,.27);border-radius:13px;background:linear-gradient(110deg,rgba(15,23,42,.78),rgba(30,58,138,.24));">
+          <div style="display:flex;align-items:center;gap:11px;min-width:0">
+            <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;width:37px;height:37px;flex:0 0 37px;border-radius:11px;background:rgba(59,130,246,.18);color:#93c5fd;font-size:20px">◉</span>
+            <div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:#93c5fd">AVAILABLE CREDITS</div>
+              <div id="creditBalanceValue" style="font-size:20px;font-weight:850;line-height:1.25;margin-top:4px;color:#f8fafc">— credits</div>
+            </div>
+          </div>
+          <span aria-hidden="true" style="font-size:11px;color:#bfdbfe;border:1px solid rgba(147,197,253,.22);border-radius:99px;padding:5px 8px;white-space:nowrap">WALLET</span>
+        </div>
+        <div id="billingStatus" role="status" aria-live="polite" style="position:relative;font-size:12px;line-height:1.5;margin-top:9px;color:var(--text2)">Enter your email, then select “Check my balance”.</div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px;padding-top:11px;border-top:1px solid rgba(147,197,253,.18)">
+          <span style="font-size:12px;color:var(--text2)">Ready for more documents?</span>
+          <button type="button" class="btn btn-sm btn-outline" onclick="loadCreditPackages()" style="border-radius:9px;border-color:rgba(96,165,250,.42);color:#93c5fd">View credit packages</button>
+        </div>
+        <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"></div>
+      </section>
 
       <div class="tabs" id="mainTabs">
         <button class="tab-btn active" onclick="switchTab('chat',this)">AI Chat</button>
@@ -624,13 +645,25 @@ let walletBalanceRequest = 0;
 async function refreshCreditBalance() {
   const email = billingEmailValue();
   const display = document.getElementById('creditBalance');
-  if (!display) return;
+  const value = document.getElementById('creditBalanceValue');
+  const button = document.getElementById('checkBalanceBtn');
+  const status = document.getElementById('billingStatus');
+  if (!display || !value || !button || !status) return;
+
   if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
-    display.textContent = 'Enter a valid account email to see your credit balance.';
+    status.textContent = 'Please enter a valid email address to check your wallet.';
+    status.style.color = '#fbbf24';
+    document.getElementById('billingEmail')?.focus();
     return;
   }
+
+  rememberBillingEmail();
   const requestNumber = ++walletBalanceRequest;
-  display.textContent = 'Checking credit balance…';
+  button.disabled = true;
+  button.textContent = 'Checking…';
+  value.textContent = 'Checking balance…';
+  status.textContent = 'Securely checking your wallet. This will not start a payment.';
+  status.style.color = 'var(--text2)';
   try {
     const response = await fetch('/api/wallet/balance', {
       method: 'POST',
@@ -638,27 +671,36 @@ async function refreshCreditBalance() {
       body: JSON.stringify({ email })
     });
     const data = await response.json();
-    if (requestNumber !== walletBalanceRequest || email !== billingEmailValue()) return;
+    if (requestNumber !== walletBalanceRequest) return;
     if (!response.ok || !data.success) throw new Error(data.error || 'Balance is temporarily unavailable.');
     const credits = Number(data.credits_balance || 0);
-    display.textContent = 'Credit balance: ' + credits + (credits === 1 ? ' credit' : ' credits') + '.';
+    value.textContent = credits + (credits === 1 ? ' credit' : ' credits');
     display.dataset.balance = String(credits);
+    status.textContent = credits > 0
+      ? 'Wallet confirmed. Your available credits are ready to use.'
+      : 'No credits found for this email yet. You can view the packages below whenever you are ready.';
+    status.style.color = credits > 0 ? '#6ee7b7' : 'var(--text2)';
   } catch (error) {
-    if (requestNumber === walletBalanceRequest) display.textContent = error.message || 'Could not check your credit balance. Try again.';
+    if (requestNumber === walletBalanceRequest) {
+      value.textContent = 'Balance unavailable';
+      status.textContent = error.message || 'Could not check your balance. Please try again.';
+      status.style.color = '#fbbf24';
+    }
+  } finally {
+    if (requestNumber === walletBalanceRequest) {
+      button.disabled = false;
+      button.innerHTML = 'Check my balance <span aria-hidden="true">→</span>';
+    }
   }
 }
 
-const billingEmailInput = document.getElementById('billingEmail');
-if (billingEmailInput) {
-  billingEmailInput.addEventListener('input', () => {
-    rememberBillingEmail();
-    if (walletBalanceTimer) clearTimeout(walletBalanceTimer);
-    walletBalanceTimer = setTimeout(refreshCreditBalance, 350);
+const walletLookupForm = document.getElementById('walletLookupForm');
+if (walletLookupForm) {
+  walletLookupForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    refreshCreditBalance();
   });
-  billingEmailInput.addEventListener('change', refreshCreditBalance);
-  billingEmailInput.addEventListener('blur', refreshCreditBalance);
 }
-refreshCreditBalance();
 
 async function loadCreditPackages() {
   const email = billingEmailValue();
