@@ -137,6 +137,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
 .tab-btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
 @media(max-width:420px){.tabs{gap:7px;padding:10px}.tab-btn{min-height:84px;padding:10px}.tab-title{font-size:13px}.tab-hint{font-size:10px}}
+.workspace-guide{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(99,102,241,.08);border-bottom:1px solid var(--border);flex-shrink:0}
+.workspace-guide-icon{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:9px;background:rgba(99,102,241,.18);color:#a5b4fc}
+.workspace-guide strong{display:block;font-size:12px;line-height:1.4;color:var(--text)}
+.workspace-guide p{font-size:11px;line-height:1.5;color:var(--text2);margin-top:3px}
+.form-guidance{padding:11px 12px;border:1px solid var(--border);border-radius:10px;background:rgba(99,102,241,.07);font-size:11px;line-height:1.55;color:var(--text2)}
+.form-guidance strong{display:block;color:var(--text);font-size:12px;margin-bottom:3px}
 #pane-chat .messages{min-height:130px}
 #pane-chat .chat-input-area{flex-shrink:0;background:var(--surface);padding:14px;border-top:1px solid var(--border)}
 #pane-chat .chat-input-area textarea{min-height:48px}
@@ -596,6 +602,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         <span aria-hidden="true">◉</span><span>Wallet &amp; credits</span><span aria-hidden="true">↗</span>
       </button>
 
+      <div id="workspaceGuide" class="workspace-guide" role="note">
+        <span class="workspace-guide-icon" aria-hidden="true">✦</span>
+        <div><strong id="workspaceGuideTitle">Start with what you know</strong><p id="workspaceGuideText">Describe yourself in AI Chat, or choose Fill a Form to enter details step by step. You can edit the result before downloading.</p></div>
+      </div>
       <div class="tabs" id="mainTabs" aria-label="Choose how to create your document">
         <button type="button" class="tab-btn active" onclick="switchTab('chat',this)" aria-controls="pane-chat" aria-pressed="true">
           <span class="tab-title"><span class="tab-icon" aria-hidden="true">✦</span>AI Chat</span>
@@ -615,7 +625,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
           </div>
         </div>
         <div class="chat-input-area">
-          <textarea id="userInput" placeholder="Type here..." rows="2"></textarea>
+          <textarea id="userInput" aria-label="Describe the document you want to create" placeholder="Example: I’m a recent graduate with customer service experience and strong computer skills…" rows="2"></textarea>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
         </div>
       </div>
@@ -646,7 +656,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         <div class="doc-sheet" id="docSheet">
           <div class="placeholder">
             <div class="placeholder-icon">✦</div>
-            <p>Select a tool from the home screen or start chatting to generate your document.</p>
+            <p>Your document preview will appear here. Start with AI Chat or Fill a Form, then review the result before copying or downloading it.</p>
           </div>
         </div>
       </div>
@@ -885,6 +895,26 @@ function openTool(tool) {
     </div>`;
 
   document.getElementById('docSheet').innerHTML = getPlaceholder(tool);
+  const guideTitles = {
+    resume: 'Build your resume or CV',
+    cover_letter: 'Create a targeted cover letter',
+    portfolio: 'Showcase your work',
+    org_letter: 'Write a formal organisation letter'
+  };
+  const guideTexts = {
+    resume: 'Use AI Chat for guided help, or Fill a Form to enter details step by step. Choose a template and preview your document before downloading.',
+    cover_letter: 'Complete the details for the job, internship, or scholarship. Include the role and organisation so the letter can be tailored.',
+    portfolio: 'Add your skills, projects, and contact details. You can update the information and preview your portfolio before copying or printing.',
+    org_letter: 'Choose the letter type above, enter the details you know, and generate a formal draft to review before using.'
+  };
+  const guideTitle = document.getElementById('workspaceGuideTitle');
+  const guideText = document.getElementById('workspaceGuideText');
+  if (guideTitle) guideTitle.textContent = guideTitles[tool] || 'Create your document';
+  if (guideText) guideText.textContent = guideTexts[tool] || 'Enter your details, review the preview, and download when ready.';
+  const mainTabs = document.getElementById('mainTabs');
+  if (mainTabs) mainTabs.style.display = (tool === 'org_letter' || tool === 'cover_letter') ? 'none' : '';
+  const guide = document.getElementById('workspaceGuide');
+  if (guide) guide.style.display = '';
   loadForm(tool);
 }
 
@@ -1152,6 +1182,9 @@ function loadForm(tool) {
     fc.innerHTML = (orgForms[state.orgType] || orgForms.job_application) +
       `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
   }
+  if (fc && !fc.querySelector('.form-guidance')) {
+    fc.insertAdjacentHTML('afterbegin', '<div class="form-guidance"><strong>Fill in what you can</strong>Use the examples as a guide. Leave unknown or irrelevant fields blank, then generate a draft and review it in the preview.</div>');
+  }
 }
 
 function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
@@ -1227,6 +1260,17 @@ function addSpinner() {
 function removeSpinner() { const s = document.getElementById('spinnerMsg'); if (s) s.remove(); }
 
 function buildFromForm() {
+  if (!v('f_name')) {
+    showToast('Enter your full name to build your document.');
+    document.getElementById('f_name')?.focus();
+    return;
+  }
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs'].some(id => v(id));
+  if (!hasDetails) {
+    showToast('Add at least one detail, such as your summary, skills, experience, or education.');
+    document.getElementById('f_summary')?.focus();
+    return;
+  }
   const skills = v('f_skills').split(',').map(s => s.trim()).filter(Boolean);
   const langs = v('f_languages').split(',').map(s => s.trim()).filter(Boolean);
   const certs = v('f_certs').split(',').map(s => s.trim()).filter(Boolean);
@@ -1248,6 +1292,16 @@ function buildFromForm() {
 }
 
 function buildPortfolioFromForm() {
+  if (!v('pf_name')) {
+    showToast('Enter your full name to build your portfolio.');
+    document.getElementById('pf_name')?.focus();
+    return;
+  }
+  if (!v('pf_title') && !v('pf_bio') && !v('pf_skills') && !v('pf_projects')) {
+    showToast('Add a title, bio, skill, or project before updating the preview.');
+    document.getElementById('pf_title')?.focus();
+    return;
+  }
   const skills = v('pf_skills').split(',').map(s => s.trim()).filter(Boolean).map(s => ({ name: s, level: 85 }));
   const projects = v('pf_projects').split('\n').filter(Boolean).map(line => {
     const p = line.split('|').map(s => s.trim());
