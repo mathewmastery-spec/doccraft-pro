@@ -110,6 +110,65 @@ def create_app(test_config=None):
     def health():
         return jsonify({"status": "ok", "app": "DocCraft"})
 
+
+    @app.route("/api/wallet/authorize-document", methods=["POST"])
+    def authorize_document():
+        """Authorize one form-built document; zero-credit users receive watermarked previews."""
+        from models import GenerationRequest, ensure_user, get_or_create_wallet
+
+        payload = request.get_json(silent=True) or {}
+        email_value = payload.get("email") or ""
+        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        doc_type = payload.get("doc_type") or "resume"
+        request_key = str(payload.get("request_id") or uuid.uuid4()).strip()
+        content = payload.get("document")
+        if not isinstance(content, dict) or doc_type not in SYSTEM_PROMPTS:
+            return jsonify({"success": False, "error": "Invalid document request."}), 400
+        if not email or "@" not in email or len(email) > 254:
+            return jsonify({"success": False, "error": "Enter your account email in the Wallet to use document credits."}), 400
+        if not app.config.get("BILLING_ENABLED", False):
+            production_runtime = (
+                str(os.getenv("RENDER", "")).strip().lower() == "true"
+                or str(os.getenv("FLASK_ENV", "")).strip().lower() == "production"
+                or str(os.getenv("APP_ENV", "")).strip().lower() == "production"
+            )
+            if production_runtime:
+                return jsonify({"success": False, "error": "Document access is temporarily unavailable. Please try again later."}), 503
+            return jsonify({"success": True, "preview_only": False, "wallet_balance": None})
+        fingerprint = _request_fingerprint(doc_type, json.dumps(content, sort_keys=True, ensure_ascii=False, default=str), {})
+        try:
+            user = ensure_user(email, country_code="KE")
+            if not user.is_active:
+                return jsonify({"success": False, "error": "This account is inactive."}), 403
+            existing = GenerationRequest.query.filter_by(request_key=request_key).first()
+            if existing:
+                if existing.user_id != user.id or existing.input_hash != fingerprint:
+                    return jsonify({"success": False, "error": "This request was already used. Please retry."}), 409
+                if existing.status == "succeeded" and isinstance(existing.response_payload, dict):
+                    return jsonify(existing.response_payload)
+                return jsonify({"success": False, "error": "This document request is still processing. Please retry."}), 409
+            wallet = get_or_create_wallet(user.id, currency="KES")
+            cost = int(app.config.get("DOC_CREDIT_COST", 1))
+            preview_only = cost <= 0 or wallet.balance_credits < cost
+            response_payload = {"success": True, "preview_only": preview_only, "wallet_balance": int(wallet.balance_credits)}
+            generation = GenerationRequest(user_id=user.id, request_key=request_key, doc_type=doc_type, input_hash=fingerprint, status="pending")
+            db.session.add(generation)
+            db.session.flush()
+            if not preview_only:
+                wallet.spend_credits(cost, f"Form document generation: {doc_type}", user=user)
+                response_payload["wallet_balance"] = int(wallet.balance_credits)
+            generation.status = "succeeded"
+            generation.response_payload = response_payload
+            db.session.commit()
+            return jsonify(response_payload)
+        except IntegrityError:
+            db.session.rollback()
+            return jsonify({"success": False, "error": "This document request was already processed. Please retry."}), 409
+        except Exception:
+            db.session.rollback()
+            app.logger.exception("DocCraft document authorization failed")
+            return jsonify({"success": False, "error": "Could not verify document access. Please try again."}), 503
+
     @app.route("/api/generate", methods=["POST"])
     def generate():
         # Import locally so the existing application can still start even if a
@@ -225,15 +284,9 @@ def create_app(test_config=None):
                     generation.status = "failed"
                     db.session.commit()
                     return jsonify({"success": False, "error": "Document credit cost is misconfigured."}), 503
-                if wallet.balance_credits < cost:
-                    generation.status = "failed"
-                    db.session.commit()
-                    return jsonify({
-                        "success": False,
-                        "error": "Insufficient wallet credits. Purchase a credit package before generating a document.",
-                        "wallet_balance": wallet.balance_credits,
-                        "credits_required": cost,
-                    }), 402
+                preview_only = wallet.balance_credits < cost
+            else:
+                preview_only = False
 
             context = ""
             if extra.get("currentData"):
@@ -264,9 +317,11 @@ def create_app(test_config=None):
                 "data": data,
                 "reply": REPLY_MESSAGES[doc_type],
                 "request_id": request_key,
+                "preview_only": bool(preview_only),
+                "wallet_balance": int(wallet.balance_credits) if wallet is not None else None,
             }
 
-            if billing_enabled:
+            if billing_enabled and not preview_only:
                 # Debit and persist the successful response in one transaction.
                 # A retry with the same key returns this response without another debit.
                 wallet = get_or_create_wallet(user.id, currency="KES")
