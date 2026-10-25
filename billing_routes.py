@@ -83,8 +83,31 @@ def _apply_credit_grant(tx: PaymentTransaction, *, package_code: Optional[str] =
     return wallet
 
 
+def _sync_small_package_price():
+    """Apply the Small Pack price change to the existing database record only."""
+    package = CreditPackage.query.filter_by(code="starter").first()
+    if package is None:
+        return
+    changed = False
+    if package.name != "Small Pack":
+        package.name = "Small Pack"
+        changed = True
+    if package.price_cents != 1000:
+        package.price_cents = 1000
+        changed = True
+    if package.currency != "KES":
+        package.currency = "KES"
+        changed = True
+    if package.description != "25 credits":
+        package.description = "25 credits"
+        changed = True
+    if changed:
+        db.session.commit()
+
+
 @billing_bp.get("/payments/packages")
 def list_packages():
+    _sync_small_package_price()
     packages = CreditPackage.query.filter_by(is_active=True).order_by(CreditPackage.sort_order).all()
     if not packages:
         packages = seed_default_credit_packages()
@@ -108,6 +131,7 @@ def checkout():
     if not package_code:
         return _json_error("package_code is required.", 400)
 
+    _sync_small_package_price()
     package = CreditPackage.query.filter_by(code=package_code, is_active=True).first()
     if package is None:
         packages = seed_default_credit_packages()
