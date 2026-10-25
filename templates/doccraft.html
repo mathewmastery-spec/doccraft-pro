@@ -153,7 +153,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .wallet-launcher{position:fixed;top:auto;right:22px;bottom:22px;z-index:490;display:grid;place-items:center;width:58px;height:58px;padding:0;border:1px solid rgba(96,165,250,.55);border-radius:50%;background:linear-gradient(145deg,#2563eb,#0e7490);color:#fff;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,.38)}
 .wallet-launcher:hover{filter:brightness(1.08)}
 .wallet-launcher.wallet-needs-credits{animation:walletAttention 2.2s ease-in-out infinite;border-color:#fbbf24;box-shadow:0 0 0 0 rgba(251,191,36,.55),0 8px 24px rgba(2,6,23,.38)}
-.wallet-nudge{position:fixed;right:94px;bottom:31px;z-index:489;max-width:min(290px,calc(100vw - 125px));padding:11px 14px;border:1px solid rgba(251,191,36,.5);border-radius:14px;background:linear-gradient(120deg,#fff7ed,#ffedd5);color:#7c2d12;font:700 12px/1.35 inherit;text-align:left;box-shadow:0 8px 30px rgba(2,6,23,.28);cursor:pointer;animation:walletNudgeIn .35s ease-out}
+.wallet-nudge{position:fixed;right:94px;bottom:31px;z-index:489;max-width:min(290px,calc(100vw - 125px));padding:11px 14px;border:1px solid rgba(251,191,36,.5);border-radius:14px;background:linear-gradient(120deg,#fff7ed,#ffedd5);color:#7c2d12;font-family:inherit;font-size:12px;font-weight:700;line-height:1.35;text-align:left;box-shadow:0 8px 30px rgba(2,6,23,.28);cursor:pointer;animation:walletNudgeIn .35s ease-out}
 .wallet-nudge[hidden]{display:none!important}
 .wallet-nudge strong{display:block;font-size:12px;margin-bottom:2px}
 .wallet-nudge span{display:block;font-size:11px;font-weight:600;opacity:.88}
@@ -1447,7 +1447,7 @@ function setPreviewAccess(isPreviewOnly) {
     launcher.setAttribute('aria-label', previewOnly ? 'Open wallet to unlock clean copy and PDF export' : 'Open wallet');
     launcher.title = previewOnly ? 'Unlock clean document with credits' : 'Wallet';
   }
-  if (nudge) nudge.hidden = !previewOnly || !document.getElementById('billingPanel')?.hidden === false;
+  if (nudge) nudge.hidden = !previewOnly || !document.getElementById('billingPanel')?.hidden;
 }
 async function authorizeLocalDocument(docType, documentData) {
   const email = billingEmailValue();
@@ -1460,7 +1460,7 @@ async function authorizeLocalDocument(docType, documentData) {
     if (!res.ok || !json.success) throw new Error(json.error || 'Could not verify wallet access.');
     if (typeof json.wallet_balance === 'number') {
       const balance = document.getElementById('creditBalanceValue');
-      if (balance) balance.textContent = String(json.wallet_balance);
+      if (balance) balance.textContent = String(json.wallet_balance) + ' credits';
     }
     return json;
   } catch (error) {
