@@ -147,9 +147,21 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .tab-pane{min-height:360px}
 }
 
-/* TAB PANES */
-.tab-pane{display:none;flex:1;overflow:hidden;flex-direction:column}
+/* Workspace sizing: keep the mode switcher and active editor visible. */
+.tab-pane{display:none;flex:1 1 0;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
 .tab-pane.active{display:flex}
+.left-panel{min-height:0}
+#billingPanel{flex:0 0 auto}
+#billingPanel.billing-collapsed{padding:13px 15px!important}
+#billingPanel.billing-collapsed > :not([data-billing-heading]){display:none!important}
+#billingPanel.billing-collapsed [data-billing-heading]{margin-bottom:0!important}
+#billingPanel:not(.billing-collapsed) [data-billing-heading]{margin-bottom:15px}
+@media(max-width:768px){
+  .app-layout{height:auto;min-height:0;overflow:visible;flex-direction:column}
+  .left-panel{width:100%;max-height:none;min-height:0;overflow:visible;border-right:0;border-bottom:1px solid var(--border)}
+  .left-panel .tab-pane{height:380px;min-height:320px;flex:0 0 380px}
+  .right-panel{height:60vh;min-height:420px;flex:0 0 auto}
+}
 
 /* MESSAGES */
 .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
@@ -540,13 +552,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
-      <section id="billingPanel" aria-labelledby="walletTitle" style="position:relative;overflow:hidden;padding:18px;border-bottom:1px solid rgba(96,165,250,.28);background:linear-gradient(125deg,rgba(30,64,175,.38) 0%,rgba(37,99,235,.20) 48%,rgba(14,165,233,.12) 100%);">
+      <section id="billingPanel" class="billing-collapsed" aria-labelledby="walletTitle" style="position:relative;overflow:hidden;padding:18px;border-bottom:1px solid rgba(96,165,250,.28);background:linear-gradient(125deg,rgba(30,64,175,.38) 0%,rgba(37,99,235,.20) 48%,rgba(14,165,233,.12) 100%);">
         <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
-        <div style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
+        <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
           <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;flex:0 0 40px;height:40px;border:1px solid rgba(147,197,253,.35);border-radius:13px;background:linear-gradient(145deg,rgba(59,130,246,.45),rgba(14,165,233,.22));color:#dbeafe;font-size:21px;box-shadow:0 5px 18px rgba(37,99,235,.18)">✦</span>
           <div style="min-width:0">
-            <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Your DocCraft wallet</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:3px">Your credits. Your next document. All in one place.</div>
+            <div style="min-width:0;flex:1"><div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Your DocCraft wallet</div><div style="font-size:12px;color:var(--text2);margin-top:3px">Credits for your next document</div></div><button id="billingToggle" type="button" aria-expanded="false" aria-controls="billingPanel" onclick="toggleBillingPanel()" style="flex-shrink:0;border:1px solid rgba(147,197,253,.38);border-radius:9px;padding:8px 10px;background:rgba(8,18,38,.38);color:#dbeafe;font:inherit;font-size:12px;font-weight:750;cursor:pointer">Expand wallet +</button>
+            
           </div>
         </div>
         <form id="walletLookupForm" style="position:relative;display:flex;gap:9px;align-items:stretch;flex-wrap:wrap">
@@ -867,6 +879,15 @@ function getPlaceholder(tool) {
     org_letter: 'Select a letter type, fill in the details, and click Generate.'
   };
   return `<div class="placeholder"><div class="placeholder-icon">${icons[tool]||'✦'}</div><p>${hints[tool]||''}</p></div>`;
+}
+
+function toggleBillingPanel() {
+  const panel = document.getElementById('billingPanel');
+  const button = document.getElementById('billingToggle');
+  if (!panel || !button) return;
+  const collapsed = panel.classList.toggle('billing-collapsed');
+  button.setAttribute('aria-expanded', String(!collapsed));
+  button.textContent = collapsed ? 'Expand wallet +' : 'Collapse wallet −';
 }
 
 function switchTab(pane, btn) {
