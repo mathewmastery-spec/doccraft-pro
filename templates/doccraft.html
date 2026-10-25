@@ -885,7 +885,6 @@ function openTool(tool) {
   const guideText = document.getElementById('workspaceGuideText');
   if (guideTitle) guideTitle.textContent = guideTitles[tool] || 'Create your document';
   if (guideText) guideText.textContent = guideTexts[tool] || 'Enter your details, review the preview, and download when ready.';
-  const mainTabs = document.getElementById('mainTabs');
   if (mainTabs) mainTabs.style.display = (tool === 'org_letter' || tool === 'cover_letter') ? 'none' : '';
   const guide = document.getElementById('workspaceGuide');
   if (guide) guide.style.display = '';
