@@ -31,6 +31,8 @@ REPLY_MESSAGES = {
     "org_letter": "Your formal letter is ready.",
 }
 
+# Startup fix: prompt settings are defined in this file; no backup file is required.
+
 
 def _request_fingerprint(doc_type: str, user_input: str, extra: object) -> str:
     """Stable fingerprint used to reject reuse of a key for different content."""
