@@ -212,7 +212,7 @@ def ensure_user(email: str, full_name: str | None = None, country_code: str | No
 
 def seed_default_credit_packages():
     packages = [
-        {"code": "starter", "name": "Starter Pack", "currency": "KES", "price_cents": 50000, "credit_units": 25},
+        {"code": "starter", "name": "Small Pack", "currency": "KES", "price_cents": 1000, "credit_units": 25},
         {"code": "growth", "name": "Growth Pack", "currency": "KES", "price_cents": 100000, "credit_units": 55},
         {"code": "pro", "name": "Pro Pack", "currency": "KES", "price_cents": 200000, "credit_units": 120},
     ]
