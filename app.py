@@ -125,6 +125,8 @@ def create_app(test_config=None):
         if not isinstance(content, dict) or doc_type not in SYSTEM_PROMPTS:
             return jsonify({"success": False, "error": "Invalid document request."}), 400
         if not email:
+            if app.config.get("BILLING_ENABLED", False):
+                return jsonify({"success": False, "error": "Open Wallet and enter your account email before generating a document."}), 400
             return jsonify({"success": True, "preview_only": True, "wallet_balance": None})
         if "@" not in email or len(email) > 254:
             return jsonify({"success": False, "error": "Enter a valid email address in the Wallet to use document credits."}), 400
@@ -308,6 +310,11 @@ def create_app(test_config=None):
                 "success": False,
                 "error": "Paid document generation is temporarily unavailable. Please try again later.",
             }), 503
+        if billing_enabled and not email:
+            return jsonify({
+                "success": False,
+                "error": "Open Wallet and enter your account email before generating a document.",
+            }), 400
         if email and ("@" not in email or len(email) > 254):
             return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
         if email and ("@" not in email or len(email) > 254):
