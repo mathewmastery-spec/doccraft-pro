@@ -1495,7 +1495,8 @@ async function sendMessage() {
       addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
-      else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || '', json.data.subject || '');
+      else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
+      else if (state.tool === 'org_letter') renderOrgLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
     } else {
       addMsg(json.error || 'Something went wrong. Please try again.', 'ai');
       if (json.requires_topup || res.status === 402) toggleWalletPalette();
