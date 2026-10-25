@@ -208,8 +208,8 @@ def create_app(test_config=None):
                 "success": False,
                 "error": "Paid document generation is temporarily unavailable. Please try again later.",
             }), 503
-        if billing_enabled and (not email or "@" not in email or len(email) > 254):
-            return jsonify({"success": False, "error": "Enter a valid email address to use your credit wallet."}), 400
+        if email and ("@" not in email or len(email) > 254):
+            return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
         if email and ("@" not in email or len(email) > 254):
             return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
 
@@ -277,9 +277,9 @@ def create_app(test_config=None):
                         return jsonify({"success": False, "error": "This request is already being processed. Please wait before retrying."}), 409
                     return jsonify({"success": False, "error": "This request ID was already used. Start a new request."}), 409
 
-            if billing_enabled:
-                # Re-check balance immediately before generation. The actual
-                # debit is committed with the saved result after successful AI output.
+            if billing_enabled and user is not None:
+                # Users without a wallet identity can generate watermarked previews.
+                # Only an identified wallet with sufficient credits unlocks clean output.
                 wallet = get_or_create_wallet(user.id, currency="KES")
                 cost = int(app.config.get("DOC_CREDIT_COST", 1))
                 if cost <= 0:
@@ -288,7 +288,7 @@ def create_app(test_config=None):
                     return jsonify({"success": False, "error": "Document credit cost is misconfigured."}), 503
                 preview_only = wallet.balance_credits < cost
             else:
-                preview_only = False
+                preview_only = bool(billing_enabled)
 
             context = ""
             if extra.get("currentData"):
