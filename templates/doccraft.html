@@ -1605,10 +1605,21 @@ async function generateCoverLetter() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
-    const json = await res.json();
-    if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else { showToast(json.error || 'Error generating letter. Please try again.'); if (json.requires_topup || res.status === 402) toggleWalletPalette(); }
-  } catch(e) { showToast('Network error. Please try again.'); }
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderLetter(letter, json.data?.subject || '');
+      setPreviewAccess(json.preview_only);
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
 }
 
 async function generateOrgLetter() {
@@ -1621,10 +1632,21 @@ async function generateOrgLetter() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
-    const json = await res.json();
-    if (json.success) { renderOrgLetter(json.data.letter_text || json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else { showToast(json.error || 'Error generating letter.'); if (json.requires_topup || res.status === 402) toggleWalletPalette(); }
-  } catch(e) { showToast('Network error. Please try again.'); }
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderOrgLetter(letter, json.data?.subject || '');
+      setPreviewAccess(json.preview_only);
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Formal-letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -1680,7 +1702,13 @@ function renderLetter(text, subject) {
   if (!text) return;
   document.getElementById('docSheet').innerHTML = `<div class="letter-sheet">${subject?`<div class="letter-subject-line">${esc(subject)}</div>`:''}<pre>${esc(text)}</pre></div>`;
 }
-function renderOrgLetter(text) { renderLetter(text, ''); }
+function renderOrgLetter(text, subject) { renderLetter(text, subject || ''); }
+
+function showGenerationFailure(message) {
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.innerHTML = `<div class="placeholder"><p style="font-weight:700;color:#fca5a5">Document generation failed</p><p style="margin-top:10px">${esc(message || 'Please try again.')}</p></div>`;
+  showToast(message || 'Document generation failed. Please try again.');
+}
 
 function setPreviewLoading() {
   document.getElementById('docSheet').innerHTML = `<div class="placeholder"><div class="spinner" style="width:32px;height:32px;border-width:3px"></div><p style="margin-top:16px">Generating your document...</p></div>`;
