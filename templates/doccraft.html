@@ -650,7 +650,7 @@ async function refreshCreditBalance() {
   const status = document.getElementById('billingStatus');
   if (!display || !value || !button || !status) return;
 
-  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     status.textContent = 'Please enter a valid email address to check your wallet.';
     status.style.color = '#fbbf24';
     document.getElementById('billingEmail')?.focus();
