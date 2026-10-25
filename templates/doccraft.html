@@ -150,13 +150,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 #pane-form .section-sep{font-size:11px;padding-bottom:4px}
 
 /* Wallet command palette: separate from the AI/Form workspace. */
-.wallet-launcher{position:fixed;top:74px;right:20px;z-index:490;display:flex;align-items:center;gap:8px;padding:10px 15px;border:1px solid rgba(96,165,250,.45);border-radius:12px;background:linear-gradient(120deg,#1d4ed8,#0e7490);color:#fff;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,.3)}
+.wallet-launcher{position:fixed;top:auto;right:22px;bottom:22px;z-index:490;display:grid;place-items:center;width:58px;height:58px;padding:0;border:1px solid rgba(96,165,250,.55);border-radius:50%;background:linear-gradient(145deg,#2563eb,#0e7490);color:#fff;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,.38)}
 .wallet-launcher:hover{filter:brightness(1.08)}
-.wallet-palette{position:fixed;top:122px;right:20px;z-index:500;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 145px);overflow:auto;padding:18px;border:1px solid rgba(96,165,250,.38);border-radius:18px;background:linear-gradient(145deg,#111b30,#0b1220);box-shadow:0 24px 80px rgba(0,0,0,.55);color:#e5edff}
+.wallet-palette{position:fixed;top:auto;bottom:92px;right:20px;z-index:500;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 120px);overflow:auto;padding:18px;border:1px solid rgba(96,165,250,.38);border-radius:18px;background:linear-gradient(145deg,#111b30,#0b1220);box-shadow:0 24px 80px rgba(0,0,0,.55);color:#e5edff}
 .wallet-palette[hidden]{display:none!important}
 .wallet-close{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border:1px solid rgba(148,163,184,.3);border-radius:10px;background:rgba(15,23,42,.7);color:#e2e8f0;font-size:24px;line-height:1;cursor:pointer}
 .wallet-close:hover{background:rgba(71,85,105,.7)}
-@media(max-width:600px){.wallet-launcher{top:68px;right:12px}.wallet-palette{top:112px;right:12px;max-height:calc(100vh - 124px)}}
+@media(max-width:600px){.wallet-launcher{top:auto;right:14px;bottom:14px;width:54px;height:54px}.wallet-palette{top:auto;bottom:78px;right:10px;max-height:calc(100vh - 96px)}}
 
 /* Workspace sizing: keep the mode switcher and active editor visible. */
 .tab-pane{display:none;flex:1 1 0;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
@@ -616,8 +616,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     </div>
 
   </div>
+</div>
 
-<button type="button" id="walletLauncher" class="wallet-launcher" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()"><span aria-hidden="true">◉</span> Wallet</button>
+
+<button type="button" id="walletLauncher" class="wallet-launcher" aria-label="Open wallet" title="Wallet" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()">◉</button>
       <section id="billingPanel" class="wallet-palette" hidden aria-labelledby="walletTitle">
         <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
         <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
