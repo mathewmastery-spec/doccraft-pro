@@ -151,7 +151,16 @@ def create_app(test_config=None):
                 return jsonify({"success": False, "error": "This document request is still processing. Please retry."}), 409
             wallet = get_or_create_wallet(user.id, currency="KES")
             cost = int(app.config.get("DOC_CREDIT_COST", 1))
-            preview_only = cost <= 0 or wallet.balance_credits < cost
+            if cost <= 0:
+                return jsonify({"success": False, "error": "Document credit cost is misconfigured."}), 503
+            if wallet.balance_credits < cost:
+                return jsonify({
+                    "success": False,
+                    "error": "You have 0 available credits. Add credits in Wallet to generate another document.",
+                    "credits_balance": int(wallet.balance_credits),
+                    "requires_topup": True,
+                }), 402
+            preview_only = False
             response_payload = {"success": True, "preview_only": preview_only, "wallet_balance": int(wallet.balance_credits)}
             generation = GenerationRequest(user_id=user.id, request_key=request_key, doc_type=doc_type, input_hash=fingerprint, status="pending")
             db.session.add(generation)
@@ -170,6 +179,97 @@ def create_app(test_config=None):
             db.session.rollback()
             app.logger.exception("DocCraft document authorization failed")
             return jsonify({"success": False, "error": "Could not verify document access. Please try again."}), 503
+
+    @app.route("/api/wallet/consume-action", methods=["POST"])
+    def consume_wallet_action():
+        """Charge one credit for a successful user-facing document action, idempotently."""
+        from models import CreditLedgerEntry, GenerationRequest, ensure_user, get_or_create_wallet
+
+        payload = request.get_json(silent=True) or {}
+        email_value = payload.get("email") or ""
+        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        action = str(payload.get("action") or "").strip().lower()
+        action_id = str(payload.get("action_id") or "").strip()
+        allowed_actions = {"preview", "copy", "download", "template"}
+        if action not in allowed_actions:
+            return jsonify({"success": False, "error": "Invalid document action."}), 400
+        if not email or "@" not in email or len(email) > 254:
+            return jsonify({"success": False, "error": "Open Wallet and enter your account email to use document credits."}), 400
+        if not action_id or len(action_id) > 180:
+            return jsonify({"success": False, "error": "A valid action reference is required. Please retry."}), 400
+
+        billing_enabled = bool(app.config.get("BILLING_ENABLED", False))
+        production_runtime = (
+            str(os.getenv("RENDER", "")).strip().lower() == "true"
+            or str(os.getenv("FLASK_ENV", "")).strip().lower() == "production"
+            or str(os.getenv("APP_ENV", "")).strip().lower() == "production"
+        )
+        if not billing_enabled:
+            if production_runtime:
+                return jsonify({"success": False, "error": "Document access is temporarily unavailable. Please try again later."}), 503
+            return jsonify({"success": True, "charged": False, "wallet_balance": None})
+
+        request_key = "usage:" + action_id
+        fingerprint = _request_fingerprint("usage:" + action, action_id, {})
+        try:
+            user = ensure_user(email, country_code="KE")
+            if not user.is_active:
+                return jsonify({"success": False, "error": "This account is inactive."}), 403
+
+            existing = GenerationRequest.query.filter_by(request_key=request_key).first()
+            if existing:
+                if existing.user_id != user.id or existing.input_hash != fingerprint:
+                    return jsonify({"success": False, "error": "This action reference has already been used. Please retry."}), 409
+                if existing.status == "succeeded" and isinstance(existing.response_payload, dict):
+                    return jsonify(existing.response_payload)
+                return jsonify({"success": False, "error": "This action is still processing. Please retry."}), 409
+
+            wallet = Wallet.query.filter_by(user_id=user.id).with_for_update().first()
+            if wallet is None:
+                wallet = get_or_create_wallet(user.id, currency="KES")
+                wallet = Wallet.query.filter_by(user_id=user.id).with_for_update().first()
+            if (wallet.status or "active").lower() != "active":
+                return jsonify({"success": False, "error": "Your credit wallet is inactive."}), 403
+
+            cost = int(app.config.get("DOC_ACTION_CREDIT_COST", 1))
+            if cost <= 0:
+                return jsonify({"success": False, "error": "Document action credit cost is misconfigured."}), 503
+            if wallet.balance_credits < cost:
+                return jsonify({
+                    "success": False,
+                    "error": "You have 0 available credits. Add credits in Wallet to continue.",
+                    "credits_balance": int(wallet.balance_credits),
+                    "requires_topup": True,
+                }), 402
+
+            usage = GenerationRequest(
+                user_id=user.id, request_key=request_key, doc_type="wallet_action",
+                input_hash=fingerprint, status="pending"
+            )
+            db.session.add(usage)
+            db.session.flush()
+            wallet.spend_credits(cost, f"Document action: {action}", user=user)
+            result = {
+                "success": True,
+                "charged": True,
+                "action": action,
+                "credits_used": cost,
+                "wallet_balance": int(wallet.balance_credits),
+            }
+            usage.status = "succeeded"
+            usage.response_payload = result
+            db.session.commit()
+            return jsonify(result)
+        except IntegrityError:
+            db.session.rollback()
+            existing = GenerationRequest.query.filter_by(request_key=request_key).first()
+            if existing and existing.user_id == user.id and existing.input_hash == fingerprint and existing.status == "succeeded":
+                return jsonify(existing.response_payload or {"success": True, "charged": True})
+            return jsonify({"success": False, "error": "This action was already processed. Please retry."}), 409
+        except Exception:
+            db.session.rollback()
+            app.logger.exception("DocCraft wallet action authorization failed")
+            return jsonify({"success": False, "error": "Could not verify credit access. Please try again."}), 503
 
     @app.route("/api/generate", methods=["POST"])
     def generate():
@@ -257,6 +357,17 @@ def create_app(test_config=None):
                 generation.response_payload = None
                 db.session.commit()
             else:
+                if billing_enabled and user is not None:
+                    required_cost = int(app.config.get("DOC_CREDIT_COST", 1))
+                    if required_cost <= 0:
+                        return jsonify({"success": False, "error": "Document credit cost is misconfigured."}), 503
+                    if wallet is None or wallet.balance_credits < required_cost:
+                        return jsonify({
+                            "success": False,
+                            "error": "You have 0 available credits. Add credits in Wallet to generate another document.",
+                            "credits_balance": int(wallet.balance_credits) if wallet is not None else 0,
+                            "requires_topup": True,
+                        }), 402
                 generation = GenerationRequest(
                     user_id=user.id if user else None,
                     request_key=request_key,
