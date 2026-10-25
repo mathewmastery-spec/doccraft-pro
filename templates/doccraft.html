@@ -515,6 +515,111 @@ body{
   .wallet-launcher,.tab-btn,.form-group input,.form-group textarea,.form-group select{transition:none!important}
 }
 
+
+/* Catchy, energetic and ergonomic form experience: glass surfaces, clear hierarchy, bright focus states. */
+#pane-form .form-scroll{
+  background:
+    radial-gradient(ellipse at 10% 0%,rgba(249,115,22,.09),transparent 34%),
+    radial-gradient(ellipse at 100% 18%,rgba(99,102,241,.11),transparent 38%),
+    linear-gradient(160deg,rgba(17,21,35,.96),rgba(12,16,27,.98));
+}
+#pane-form .form-group{
+  position:relative;
+  gap:7px;
+  padding:11px 12px 12px;
+  border:1px solid rgba(148,163,184,.15);
+  border-radius:14px;
+  background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.035);
+  transition:border-color .18s ease,background .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+#pane-form .form-group:focus-within{
+  border-color:rgba(129,140,248,.65);
+  background:linear-gradient(145deg,rgba(99,102,241,.105),rgba(255,255,255,.025));
+  box-shadow:0 0 0 3px rgba(99,102,241,.09),0 8px 22px rgba(0,0,0,.12);
+}
+#pane-form .form-group label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  color:#dbeafe;
+  font-size:12px;
+  font-weight:750;
+  letter-spacing:.015em;
+}
+#pane-form .form-group input,
+#pane-form .form-group textarea,
+#pane-form .form-group select{
+  min-height:44px;
+  padding:11px 12px;
+  border:1px solid rgba(148,163,184,.26);
+  border-radius:10px;
+  background:rgba(7,12,23,.68);
+  color:#f8fafc;
+  font-size:14px;
+  line-height:1.45;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+}
+#pane-form .form-group textarea{min-height:92px;resize:vertical}
+#pane-form .form-group input::placeholder,
+#pane-form .form-group textarea::placeholder{color:#8794aa;opacity:1}
+#pane-form .form-group input:focus,
+#pane-form .form-group textarea:focus,
+#pane-form .form-group select:focus{
+  outline:none;
+  border-color:#818cf8;
+  background:rgba(12,18,34,.96);
+  box-shadow:0 0 0 3px rgba(99,102,241,.17),0 0 22px rgba(99,102,241,.09);
+}
+#pane-form .form-group select{cursor:pointer}
+#pane-form .form-group select option{background:#151a2a;color:#f8fafc}
+#pane-form .form-hint{color:#a5b4fc;font-size:11px;line-height:1.45}
+#pane-form .section-sep{
+  margin:18px 0 7px;
+  padding:10px 12px;
+  border:1px solid rgba(99,102,241,.23);
+  border-left:3px solid #818cf8;
+  border-radius:10px;
+  background:linear-gradient(90deg,rgba(99,102,241,.13),rgba(34,211,238,.035));
+  color:#c7d2fe;
+  font-size:11px;
+  font-weight:850;
+  letter-spacing:.095em;
+  text-transform:uppercase;
+}
+#pane-form .form-row{gap:10px;align-items:start}
+#pane-form .full-btn{
+  min-height:48px;
+  border-radius:12px;
+  font-weight:800;
+  letter-spacing:.01em;
+  box-shadow:0 8px 24px rgba(99,102,241,.2);
+}
+#pane-form .full-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+#pane-form .form-group input:focus-visible,
+#pane-form .form-group textarea:focus-visible,
+#pane-form .form-group select:focus-visible,
+#pane-form button:focus-visible{outline:2px solid #a5b4fc;outline-offset:2px}
+#billingPanel #walletTitle{color:#fff7ed!important}
+#billingPanel [data-billing-heading]>span{
+  border-color:rgba(253,186,116,.45)!important;
+  background:linear-gradient(145deg,rgba(249,115,22,.42),rgba(194,65,12,.22))!important;
+  color:#ffedd5!important;
+}
+#billingPanel #billingEmail{border-color:rgba(251,146,60,.45)!important;background:rgba(24,16,14,.72)!important;color:#fff7ed!important}
+#billingPanel #checkBalanceBtn{background:linear-gradient(110deg,#f97316,#c2410c)!important;border-color:rgba(255,237,213,.35)!important;box-shadow:0 5px 18px rgba(249,115,22,.23)!important;color:#fff!important}
+#billingPanel #creditBalance{border-color:rgba(251,146,60,.3)!important;background:linear-gradient(110deg,rgba(41,25,21,.82),rgba(124,45,18,.2))!important}
+#billingPanel #creditBalanceValue{color:#fff7ed!important}
+#billingPanel button.btn-outline{border-color:rgba(251,146,60,.45)!important;color:#fdba74!important}
+@media(max-width:520px){
+  #pane-form .form-group{padding:10px;border-radius:12px}
+  #pane-form .form-row{grid-template-columns:minmax(0,1fr)!important}
+  #pane-form .form-group input,#pane-form .form-group textarea,#pane-form .form-group select{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  #pane-form .form-group,#pane-form .full-btn{transition:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -722,7 +827,7 @@ body{
         <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
           <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;flex:0 0 40px;height:40px;border:1px solid rgba(147,197,253,.35);border-radius:13px;background:linear-gradient(145deg,rgba(59,130,246,.45),rgba(14,165,233,.22));color:#dbeafe;font-size:21px;box-shadow:0 5px 18px rgba(37,99,235,.18)">✦</span>
           <div style="min-width:0;flex:1">
-            <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Your DocCraft wallet</div>
+            <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Wallet</div>
             <div style="font-size:12px;color:var(--text2);margin-top:3px">Credits for your next document</div>
           </div>
           <button type="button" class="wallet-close" aria-label="Close wallet" title="Close wallet (Esc)" onclick="closeWalletPalette()">×</button>
