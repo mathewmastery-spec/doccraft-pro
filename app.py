@@ -329,6 +329,7 @@ def create_app(test_config=None):
                 wallet = get_or_create_wallet(user.id, currency="KES")
                 cost = int(app.config.get("DOC_CREDIT_COST", 1))
                 wallet.spend_credits(cost, f"Document generation: {doc_type}", user=user)
+                result["wallet_balance"] = int(wallet.balance_credits)
             generation.status = "succeeded"
             generation.response_payload = result
             db.session.commit()
