@@ -125,32 +125,51 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lt-btn span{font-size:14px}
 .lt-btn.active,.lt-btn:hover{background:rgba(99,102,241,.15);border-color:var(--accent);color:var(--text)}
 
-/* TABS — clearly visible mode switcher */
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.tab-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;color:var(--text2);cursor:pointer;font-size:13px;font-weight:750;font-family:inherit;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
-.tab-btn::before{font-size:17px;line-height:1}
-.tab-btn[onclick*="'chat'"]::before{content:"✦"}
-.tab-btn[onclick*="'form'"]::before{content:"☷"}
+/* MODE PICKER — make both document creation paths unmistakable */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;min-height:88px;padding:13px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:13px;color:var(--text2);text-align:left;cursor:pointer;font-family:inherit;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.tab-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;line-height:1.25;color:inherit}
+.tab-icon{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:8px;background:rgba(148,163,184,.14);font-size:15px}
+.tab-hint{font-size:11px;font-weight:500;line-height:1.4;color:var(--text2)}
 .tab-btn.active{color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);border-color:#60a5fa;box-shadow:0 5px 16px rgba(37,99,235,.24)}
+.tab-btn.active .tab-hint{color:#e0e7ff}
+.tab-btn.active .tab-icon{background:rgba(255,255,255,.18)}
 .tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
-.tab-pane{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
-.tab-pane.active{display:flex}
+.tab-btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+@media(max-width:420px){.tabs{gap:7px;padding:10px}.tab-btn{min-height:84px;padding:10px}.tab-title{font-size:13px}.tab-hint{font-size:10px}}
 #pane-chat .messages{min-height:130px}
 #pane-chat .chat-input-area{flex-shrink:0;background:var(--surface);padding:14px;border-top:1px solid var(--border)}
 #pane-chat .chat-input-area textarea{min-height:48px}
 #pane-form .form-scroll{min-height:0;padding:18px 16px 22px}
 #pane-form .section-sep{font-size:11px;padding-bottom:4px}
-@media(max-width:760px){
-  .app-layout{height:100%;overflow-y:auto;flex-direction:column}
-  .left-panel{width:100%;max-height:none;min-height:580px;overflow:visible;border-right:0;border-bottom:1px solid var(--border)}
-  .right-panel{min-height:420px}
-  .tab-pane{min-height:360px}
-}
 
-/* TAB PANES */
-.tab-pane{display:none;flex:1;overflow:hidden;flex-direction:column}
+/* Workspace sizing: keep the mode switcher and active editor visible. */
+.tab-pane{display:none;flex:1 1 0;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
 .tab-pane.active{display:flex}
-
+.left-panel{min-height:0}
+#billingPanel{flex:0 0 auto}
+#billingPanel.billing-collapsed{padding:13px 15px!important}
+#billingPanel.billing-collapsed > :not([data-billing-heading]):not(#creditBalance){display:none!important}
+#billingPanel.billing-collapsed [data-billing-heading]{margin-bottom:0!important}
+#billingPanel.billing-collapsed #creditBalance{margin-top:10px!important;padding:9px 11px!important;background:rgba(15,23,42,.38)!important}
+#billingPanel.billing-collapsed #creditBalance > div > span{display:none!important}
+#billingPanel.billing-collapsed #creditBalanceValue{font-size:16px!important;margin-top:2px!important}
+#billingPanel.billing-collapsed #creditBalance > span{font-size:10px!important}
+#billingPanel:not(.billing-collapsed) [data-billing-heading]{margin-bottom:15px}
+/* Wallet lives in a floating, dismissible panel so it never pushes the document workspace down. */
+#billingPanel.wallet-docked{position:fixed!important;right:18px!important;bottom:76px!important;top:auto!important;left:auto!important;width:min(420px,calc(100vw - 32px))!important;max-height:min(76vh,680px)!important;overflow-y:auto!important;z-index:1200!important;border:1px solid rgba(96,165,250,.45)!important;border-radius:18px!important;box-shadow:0 18px 60px rgba(0,0,0,.48)!important;padding:18px!important}
+#billingPanel.wallet-docked.wallet-hidden{display:none!important}
+#billingPanel.wallet-docked .wallet-close{display:inline-flex;align-items:center;justify-content:center;flex:0 0 36px;width:36px;height:36px;border:1px solid rgba(147,197,253,.38);border-radius:10px;background:rgba(8,18,38,.55);color:#dbeafe;font-size:21px;line-height:1;cursor:pointer}
+#billingLauncher{position:fixed;right:18px;bottom:18px;z-index:1190;display:flex;align-items:center;gap:9px;min-height:46px;padding:11px 15px;border:1px solid rgba(147,197,253,.42);border-radius:999px;background:linear-gradient(120deg,#1d4ed8,#4338ca);color:#fff;font:inherit;font-size:13px;font-weight:800;box-shadow:0 8px 26px rgba(37,99,235,.35);cursor:pointer}
+#billingLauncher:hover{filter:brightness(1.1);transform:translateY(-1px)}
+#billingLauncher:focus-visible,#billingPanel .wallet-close:focus-visible{outline:3px solid #93c5fd;outline-offset:3px}
+@media(max-width:600px){
+ #billingPanel.wallet-docked{left:10px!important;right:10px!important;bottom:68px!important;width:auto!important;max-height:75dvh!important;padding:14px!important}
+ #billingLauncher{right:12px;bottom:12px;min-height:44px;padding:10px 14px}
+ #billingPanel.wallet-docked #walletLookupForm{flex-direction:column}
+ #billingPanel.wallet-docked #billingEmail{min-width:0!important;width:100%;box-sizing:border-box}
+ #billingPanel.wallet-docked #checkBalanceBtn{width:100%}
+}
 /* MESSAGES */
 .messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 .msg{display:flex;gap:10px;align-items:flex-start}
@@ -323,9 +342,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .hero{flex-direction:column;padding:32px 0 40px}
   .hero-title{font-size:34px}
   .hero-visual{display:none}
-  .left-panel{width:100%;border-right:none;border-bottom:1px solid var(--border);max-height:50vh}
-  .app-layout{flex-direction:column;height:auto}
-  .right-panel{height:60vh}
+  .app-layout{height:auto;min-height:0;overflow:visible;flex-direction:column}
+  .left-panel{width:100%;max-height:none;min-height:0;overflow:visible;border-right:0;border-bottom:1px solid var(--border)}
+  .left-panel .tab-pane{height:380px;min-height:320px;flex:0 0 380px}
+  .right-panel{height:60vh;min-height:420px;flex:0 0 auto}
   .nav-tools{display:none}
   .nav-tools[style*="flex"]{display:flex!important;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:12px;z-index:99}
   .nav-menu-btn{display:flex}
@@ -540,14 +560,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
       </div>
 
-      <section id="billingPanel" aria-labelledby="walletTitle" style="position:relative;overflow:hidden;padding:18px;border-bottom:1px solid rgba(96,165,250,.28);background:linear-gradient(125deg,rgba(30,64,175,.38) 0%,rgba(37,99,235,.20) 48%,rgba(14,165,233,.12) 100%);">
+      <section id="billingPanel" class="billing-collapsed wallet-docked wallet-hidden" aria-labelledby="walletTitle" style="position:relative;overflow:hidden;padding:18px;border-bottom:1px solid rgba(96,165,250,.28);background:linear-gradient(125deg,rgba(30,64,175,.38) 0%,rgba(37,99,235,.20) 48%,rgba(14,165,233,.12) 100%);">
         <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
-        <div style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
+        <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
           <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;flex:0 0 40px;height:40px;border:1px solid rgba(147,197,253,.35);border-radius:13px;background:linear-gradient(145deg,rgba(59,130,246,.45),rgba(14,165,233,.22));color:#dbeafe;font-size:21px;box-shadow:0 5px 18px rgba(37,99,235,.18)">✦</span>
-          <div style="min-width:0">
+          <div style="min-width:0;flex:1">
             <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Your DocCraft wallet</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:3px">Your credits. Your next document. All in one place.</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:3px">Credits for your next document</div>
           </div>
+          <button id="billingToggle" class="wallet-close" type="button" aria-label="Close wallet" onclick="toggleBillingPanel()" title="Close wallet">×</button>
         </div>
         <form id="walletLookupForm" style="position:relative;display:flex;gap:9px;align-items:stretch;flex-wrap:wrap">
           <label for="billingEmail" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Account email</label>
@@ -571,10 +592,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         </div>
         <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"></div>
       </section>
+      <button id="billingLauncher" type="button" onclick="toggleBillingPanel(true)" aria-controls="billingPanel" aria-expanded="false">
+        <span aria-hidden="true">◉</span><span>Wallet &amp; credits</span><span aria-hidden="true">↗</span>
+      </button>
 
-      <div class="tabs" id="mainTabs">
-        <button class="tab-btn active" onclick="switchTab('chat',this)">AI Chat</button>
-        <button class="tab-btn" onclick="switchTab('form',this)">Form</button>
+      <div class="tabs" id="mainTabs" aria-label="Choose how to create your document">
+        <button type="button" class="tab-btn active" onclick="switchTab('chat',this)" aria-controls="pane-chat" aria-pressed="true">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">✦</span>AI Chat</span>
+          <span class="tab-hint">Describe yourself; AI guides you</span>
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTab('form',this)" aria-controls="pane-form" aria-pressed="false">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">☷</span>Fill a Form</span>
+          <span class="tab-hint">Enter details step by step</span>
+        </button>
       </div>
 
       <div class="tab-pane active" id="pane-chat">
@@ -869,11 +899,41 @@ function getPlaceholder(tool) {
   return `<div class="placeholder"><div class="placeholder-icon">${icons[tool]||'✦'}</div><p>${hints[tool]||''}</p></div>`;
 }
 
+function toggleBillingPanel(forceOpen) {
+  const panel = document.getElementById('billingPanel');
+  const launcher = document.getElementById('billingLauncher');
+  if (!panel || !launcher) return;
+  const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('wallet-hidden');
+  panel.classList.toggle('wallet-hidden', !shouldOpen);
+  panel.classList.toggle('billing-collapsed', !shouldOpen);
+  launcher.setAttribute('aria-expanded', String(shouldOpen));
+  if (shouldOpen) {
+    const email = document.getElementById('billingEmail');
+    if (email && !email.value) email.setAttribute('autocomplete', 'email');
+    const closeButton = document.getElementById('billingToggle');
+    if (closeButton) closeButton.focus({ preventScroll: true });
+  } else {
+    launcher.focus({ preventScroll: true });
+  }
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const panel = document.getElementById('billingPanel');
+    if (panel && !panel.classList.contains('wallet-hidden')) toggleBillingPanel(false);
+  }
+});
+
 function switchTab(pane, btn) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('pane-' + pane).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  const activePane = document.getElementById('pane-' + pane);
+  if (activePane) activePane.classList.add('active');
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed', 'true');
 }
 
 function setSubType(sub, btn) {
