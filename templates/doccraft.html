@@ -1243,7 +1243,9 @@ function setOrgType(type, btn) {
   btn.classList.add('active');
   loadForm('org_letter');
 }
-function setTemplate(tpl, btn) {
+async function setTemplate(tpl, btn) {
+  if (tpl === state.template) return;
+  if (state.resume && state.resume.name && !(await authorizeDocumentAction('template'))) return;
   state.template = tpl;
   document.querySelectorAll('.tpl-pill').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1716,12 +1718,49 @@ async function authorizeLocalDocument(docType, documentData) {
     return {success:false, preview_only:true};
   }
 }
-function downloadDocument() {
-  if (previewOnly) { showToast('This is a watermarked preview. Add credits to unlock a clean PDF.'); toggleWalletPalette(); return; }
+async function authorizeDocumentAction(action) {
+  const email = billingEmailValue();
+  if (!email) {
+    showToast('Open Wallet and enter your account email before using credits.');
+    toggleWalletPalette();
+    return false;
+  }
+  try {
+    const res = await fetch('/api/wallet/consume-action', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, action, action_id: crypto.randomUUID()})
+    });
+    const json = await res.json();
+    if (!res.ok || !json.success) {
+      if (json.requires_topup || res.status === 402) {
+        setPreviewAccess(true);
+        showToast(json.error || 'No credits left. Add credits in Wallet to continue.');
+        toggleWalletPalette();
+      } else {
+        showToast(json.error || 'Could not verify credit access. Please try again.');
+      }
+      return false;
+    }
+    if (typeof json.wallet_balance === 'number') {
+      const balance = document.getElementById('creditBalanceValue');
+      if (balance) balance.textContent = String(json.wallet_balance) + ' credits';
+      refreshCreditBalance();
+    }
+    return true;
+  } catch (error) {
+    showToast('Could not verify credit access. Please try again.');
+    return false;
+  }
+}
+async function downloadDocument() {
+  if (previewOnly) { showToast('Add credits in Wallet to download a clean document.'); toggleWalletPalette(); return; }
+  if (!(await authorizeDocumentAction('download'))) return;
   window.print();
 }
-function copyDocument() {
-  if (previewOnly) { showToast('This is a watermarked preview. Add credits to unlock copying.'); toggleWalletPalette(); return; }
+async function copyDocument() {
+  if (previewOnly) { showToast('Add credits in Wallet to copy a clean document.'); toggleWalletPalette(); return; }
+  if (!(await authorizeDocumentAction('copy'))) return;
   const sheet = document.getElementById('docSheet');
   navigator.clipboard.writeText(sheet.innerText).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Copy failed. Please select and copy manually.'));
 }
@@ -1739,9 +1778,11 @@ function toggleMobileMenu() {
 }
 
 let previewVisible = true;
-function toggleMobilePreview() {
+async function toggleMobilePreview() {
   const right = document.querySelector('.right-panel');
-  previewVisible = !previewVisible;
+  const nextVisible = !previewVisible;
+  if (nextVisible && !(await authorizeDocumentAction('preview'))) return;
+  previewVisible = nextVisible;
   right.style.display = previewVisible ? '' : 'none';
   document.getElementById('mobilePreviewBtn').textContent = previewVisible ? '👁' : '📝';
 }
