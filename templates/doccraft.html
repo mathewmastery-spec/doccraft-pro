@@ -1495,7 +1495,8 @@ async function sendMessage() {
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
       else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || '', json.data.subject || '');
     } else {
-      addMsg('Something went wrong. Please try again.', 'ai');
+      addMsg(json.error || 'Something went wrong. Please try again.', 'ai');
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
     }
   } catch(e) {
     removeSpinner();
@@ -1553,6 +1554,7 @@ async function buildFromForm() {
   });
   state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects };
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
+  if (!access.success) return;
   renderResume(state.resume);
   setPreviewAccess(access.preview_only);
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
@@ -1582,6 +1584,7 @@ async function buildPortfolioFromForm() {
   const achievements = v('pf_achievements').split('\n').filter(Boolean);
   state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements };
   const access = await authorizeLocalDocument('portfolio', state.portfolio);
+  if (!access.success) return;
   renderPortfolio(state.portfolio);
   setPreviewAccess(access.preview_only);
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
@@ -1602,7 +1605,7 @@ async function generateCoverLetter() {
     });
     const json = await res.json();
     if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast('Error generating letter. Please try again.');
+    else showToast(json.error || 'Error generating letter. Please try again.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
 
@@ -1618,7 +1621,7 @@ async function generateOrgLetter() {
     });
     const json = await res.json();
     if (json.success) { renderOrgLetter(json.data.letter_text || json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast('Error generating letter.');
+    else showToast(json.error || 'Error generating letter.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
 
