@@ -685,6 +685,50 @@ body{
   .doc-sheet{padding:9px!important}
 }
 
+/* Mobile workspace: compact mode controls, full-width editing and a prominent PDF action. */
+.mobile-workspace-switch{display:none}
+@media(max-width:768px){
+  #appScreen{height:calc(100vh - 60px);height:calc(100dvh - 60px);min-height:0;overflow:hidden}
+  .app-layout{display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important;overflow:hidden!important}
+  .mobile-workspace-switch{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;padding:8px;background:var(--surface);border-bottom:1px solid var(--border);flex:0 0 auto}
+  .mobile-workspace-switch button{min-width:0;min-height:44px;padding:10px 8px;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-size:13px;font-weight:700;line-height:1.2}
+  .mobile-workspace-switch button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 12px rgba(99,102,241,.24)}
+  .left-panel,.right-panel{width:100%!important;max-width:none!important;min-width:0!important;flex:1 1 0!important;height:auto!important;max-height:none!important;min-height:0!important;overflow:hidden!important}
+  .left-panel{border-right:0!important;border-bottom:0!important}
+  .right-panel{display:flex;flex-direction:column}
+  .app-layout[data-mobile-view="edit"] .right-panel{display:none!important}
+  .app-layout[data-mobile-view="preview"] .left-panel{display:none!important}
+  .left-panel .tab-pane{min-height:0!important;max-height:none!important;flex:1 1 0!important;overflow:auto!important}
+  .left-panel .tabs{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:7px 8px}
+  .left-panel .tab-btn{min-width:0;min-height:42px;height:42px;padding:6px 8px;border-radius:9px;gap:0;align-items:center;justify-content:center}
+  .left-panel .tab-title{font-size:12px;line-height:1.15;gap:5px;white-space:nowrap}
+  .left-panel .tab-icon{width:20px;height:20px;flex:0 0 20px;font-size:12px;border-radius:6px}
+  .left-panel .tab-hint,.workspace-guide{display:none!important}
+  #pane-form .form-scroll{overflow-y:auto;overscroll-behavior:contain}
+  .preview-bar{padding:10px 10px 9px;gap:10px;align-items:stretch;flex-direction:column;flex:0 0 auto}
+  .preview-bar-left{width:100%;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .preview-label{font-size:13px}
+  .tpl-pills{gap:5px;flex-wrap:wrap}
+  .tpl-pill{min-height:36px;padding:7px 10px;font-size:12px}
+  .preview-actions{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.4fr);gap:8px;width:100%}
+  .preview-actions .btn{display:flex;align-items:center;justify-content:center;min-width:0;min-height:48px;padding:10px 8px;font-size:14px;font-weight:700;white-space:normal;line-height:1.2}
+  #downloadDocumentBtn{background:linear-gradient(120deg,#fb923c,#ea580c)!important;border:1px solid rgba(255,237,213,.65)!important;color:#fff!important;box-shadow:0 4px 14px rgba(234,88,12,.28)!important}
+  .preview-body{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:8px 8px 16px}
+  .doc-sheet{width:100%;max-width:100%;min-height:0;overflow-wrap:anywhere}
+  .mobile-preview-toggle{display:none!important}
+}
+@media(max-width:390px){
+  .mobile-workspace-switch{gap:6px;padding:7px}
+  .mobile-workspace-switch button{font-size:12px;padding:9px 5px}
+  .left-panel .tabs{gap:5px;padding:6px}
+  .left-panel .tab-btn{height:38px;min-height:38px;padding:5px 4px}
+  .left-panel .tab-title{font-size:11px;gap:4px}
+  .left-panel .tab-icon{width:18px;height:18px;flex-basis:18px;font-size:11px}
+  .preview-bar{padding:8px}
+  .preview-actions{grid-template-columns:minmax(0,.72fr) minmax(0,1.5fr);gap:6px}
+  .preview-actions .btn{font-size:13px;padding:9px 5px}
+  .tpl-pill{padding:6px 8px;font-size:11px}
+}
 </style>
 </head>
 <body>
@@ -784,7 +828,12 @@ body{
 
 <!-- ── APP SCREEN ─────────────────────────────────── -->
 <div id="appScreen">
-  <div class="app-layout">
+  <div class="app-layout" data-mobile-view="edit">
+
+    <div class="mobile-workspace-switch" role="tablist" aria-label="Workspace view">
+      <button type="button" role="tab" data-view="edit" aria-pressed="true" onclick="setMobileWorkspace(\'edit\')">✎ Edit / Form</button>
+      <button type="button" role="tab" data-view="preview" aria-pressed="false" onclick="setMobileWorkspace(\'preview\')">▣ Preview &amp; Export</button>
+    </div>
 
     <!-- LEFT PANEL -->
     <div class="left-panel">
@@ -818,18 +867,14 @@ body{
 
 
 
-      <div id="workspaceGuide" class="workspace-guide" role="note">
-        <span class="workspace-guide-icon" aria-hidden="true">✦</span>
-        <div><strong id="workspaceGuideTitle">Start with what you know</strong><p id="workspaceGuideText">Describe yourself in AI Chat, or choose Fill a Form to enter details step by step. You can edit the result before downloading.</p></div>
-      </div>
       <div class="tabs" id="mainTabs" aria-label="Choose how to create your document">
         <button type="button" class="tab-btn active" onclick="switchTab('chat',this)" aria-controls="pane-chat" aria-pressed="true">
           <span class="tab-title"><span class="tab-icon" aria-hidden="true">✦</span>AI Chat</span>
-          <span class="tab-hint">Describe yourself; AI guides you</span>
+          
         </button>
         <button type="button" class="tab-btn" onclick="switchTab('form',this)" aria-controls="pane-form" aria-pressed="false">
           <span class="tab-title"><span class="tab-icon" aria-hidden="true">☷</span>Fill a Form</span>
-          <span class="tab-hint">Enter details step by step</span>
+          
         </button>
       </div>
 
@@ -1140,6 +1185,7 @@ function openTool(tool) {
   state.tool = tool;
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('appScreen').style.display = 'block';
+  setMobileWorkspace('edit');
 
   const titles = { resume:'Resume & CV Builder', cover_letter:'Cover Letter Generator', portfolio:'Portfolio Builder', org_letter:'Organisation Letters' };
   const panelTitleEl = document.getElementById('panelTitle');
@@ -1172,11 +1218,13 @@ function openTool(tool) {
     portfolio: "Tell me about yourself, your projects, and your skills. I'll create your professional portfolio!",
     org_letter: "Fill in the form and I'll generate your formal letter."
   };
-  document.getElementById('welcomeMsg').textContent = welcomes[tool];
-  document.getElementById('messages').innerHTML = `
+  const welcomeMsg = document.getElementById('welcomeMsg');
+  if (welcomeMsg) welcomeMsg.textContent = welcomes[tool] || 'Let’s create your document.';
+  const messages = document.getElementById('messages');
+  if (messages) messages.innerHTML = `
     <div class="msg ai-msg">
       <div class="msg-avatar">AI</div>
-      <div class="msg-bubble">${welcomes[tool]}</div>
+      <div class="msg-bubble">${welcomes[tool] || 'Let’s create your document.'}</div>
     </div>`;
 
   document.getElementById('docSheet').innerHTML = getPlaceholder(tool);
@@ -1493,9 +1541,11 @@ async function sendMessage() {
       addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
-      else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || '', json.data.subject || '');
+      else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
+      else if (state.tool === 'org_letter') renderOrgLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
     } else {
-      addMsg('Something went wrong. Please try again.', 'ai');
+      addMsg(json.error || 'Something went wrong. Please try again.', 'ai');
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
     }
   } catch(e) {
     removeSpinner();
@@ -1553,6 +1603,7 @@ async function buildFromForm() {
   });
   state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects };
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
+  if (!access.success) return;
   renderResume(state.resume);
   setPreviewAccess(access.preview_only);
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
@@ -1582,6 +1633,7 @@ async function buildPortfolioFromForm() {
   const achievements = v('pf_achievements').split('\n').filter(Boolean);
   state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements };
   const access = await authorizeLocalDocument('portfolio', state.portfolio);
+  if (!access.success) return;
   renderPortfolio(state.portfolio);
   setPreviewAccess(access.preview_only);
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
@@ -1600,10 +1652,21 @@ async function generateCoverLetter() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
-    const json = await res.json();
-    if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast('Error generating letter. Please try again.');
-  } catch(e) { showToast('Network error. Please try again.'); }
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderLetter(letter, json.data?.subject || '');
+      setPreviewAccess(json.preview_only);
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
 }
 
 async function generateOrgLetter() {
@@ -1616,10 +1679,21 @@ async function generateOrgLetter() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
-    const json = await res.json();
-    if (json.success) { renderOrgLetter(json.data.letter_text || json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast('Error generating letter.');
-  } catch(e) { showToast('Network error. Please try again.'); }
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderOrgLetter(letter, json.data?.subject || '');
+      setPreviewAccess(json.preview_only);
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Formal-letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
 }
 
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -1675,7 +1749,13 @@ function renderLetter(text, subject) {
   if (!text) return;
   document.getElementById('docSheet').innerHTML = `<div class="letter-sheet">${subject?`<div class="letter-subject-line">${esc(subject)}</div>`:''}<pre>${esc(text)}</pre></div>`;
 }
-function renderOrgLetter(text) { renderLetter(text, ''); }
+function renderOrgLetter(text, subject) { renderLetter(text, subject || ''); }
+
+function showGenerationFailure(message) {
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.innerHTML = `<div class="placeholder"><p style="font-weight:700;color:#fca5a5">Document generation failed</p><p style="margin-top:10px">${esc(message || 'Please try again.')}</p></div>`;
+  showToast(message || 'Document generation failed. Please try again.');
+}
 
 function setPreviewLoading() {
   document.getElementById('docSheet').innerHTML = `<div class="placeholder"><div class="spinner" style="width:32px;height:32px;border-width:3px"></div><p style="margin-top:16px">Generating your document...</p></div>`;
@@ -1775,6 +1855,21 @@ function showToast(msg) {
 function toggleMobileMenu() {
   const menu = document.getElementById('navTools');
   menu.style.display = menu.style.display === 'flex' ? '' : 'flex';
+}
+
+async function setMobileWorkspace(view) {
+  const layout = document.querySelector('.app-layout');
+  if (!layout) return;
+  const nextView = view === 'preview' ? 'preview' : 'edit';
+  const currentView = layout.dataset.mobileView || 'edit';
+  if (nextView === currentView) return;
+  if (nextView === 'preview' && window.matchMedia('(max-width: 768px)').matches) {
+    if (!(await authorizeDocumentAction('preview'))) return;
+  }
+  layout.dataset.mobileView = nextView;
+  document.querySelectorAll('.mobile-workspace-switch [data-view]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.view === nextView));
+  });
 }
 
 let previewVisible = true;
