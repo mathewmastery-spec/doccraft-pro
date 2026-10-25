@@ -183,7 +183,7 @@ def create_app(test_config=None):
     @app.route("/api/wallet/consume-action", methods=["POST"])
     def consume_wallet_action():
         """Charge one credit for a successful user-facing document action, idempotently."""
-        from models import CreditLedgerEntry, GenerationRequest, ensure_user, get_or_create_wallet
+        from models import GenerationRequest, Wallet, ensure_user, get_or_create_wallet
 
         payload = request.get_json(silent=True) or {}
         email_value = payload.get("email") or ""
