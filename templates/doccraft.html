@@ -152,11 +152,19 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 /* Wallet command palette: separate from the AI/Form workspace. */
 .wallet-launcher{position:fixed;top:auto;right:22px;bottom:22px;z-index:490;display:grid;place-items:center;width:58px;height:58px;padding:0;border:1px solid rgba(96,165,250,.55);border-radius:50%;background:linear-gradient(145deg,#2563eb,#0e7490);color:#fff;font-family:inherit;font-size:24px;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(2,6,23,.38)}
 .wallet-launcher:hover{filter:brightness(1.08)}
+.wallet-launcher.wallet-needs-credits{animation:walletAttention 2.2s ease-in-out infinite;border-color:#fbbf24;box-shadow:0 0 0 0 rgba(251,191,36,.55),0 8px 24px rgba(2,6,23,.38)}
+.wallet-nudge{position:fixed;right:94px;bottom:31px;z-index:489;max-width:min(290px,calc(100vw - 125px));padding:11px 14px;border:1px solid rgba(251,191,36,.5);border-radius:14px;background:linear-gradient(120deg,#fff7ed,#ffedd5);color:#7c2d12;font:700 12px/1.35 inherit;text-align:left;box-shadow:0 8px 30px rgba(2,6,23,.28);cursor:pointer;animation:walletNudgeIn .35s ease-out}
+.wallet-nudge[hidden]{display:none!important}
+.wallet-nudge strong{display:block;font-size:12px;margin-bottom:2px}
+.wallet-nudge span{display:block;font-size:11px;font-weight:600;opacity:.88}
+@keyframes walletAttention{0%,100%{box-shadow:0 0 0 0 rgba(251,191,36,.48),0 8px 24px rgba(2,6,23,.38);transform:translateY(0)}50%{box-shadow:0 0 0 8px rgba(251,191,36,0),0 10px 28px rgba(2,6,23,.42);transform:translateY(-2px)}}
+@keyframes walletNudgeIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+@media(prefers-reduced-motion:reduce){.wallet-launcher.wallet-needs-credits,.wallet-nudge{animation:none}}
 .wallet-palette{position:fixed;top:auto;bottom:92px;right:20px;z-index:500;width:min(390px,calc(100vw - 28px));max-height:calc(100vh - 120px);overflow:auto;padding:18px;border:1px solid rgba(96,165,250,.38);border-radius:18px;background:linear-gradient(145deg,#111b30,#0b1220);box-shadow:0 24px 80px rgba(0,0,0,.55);color:#e5edff}
 .wallet-palette[hidden]{display:none!important}
 .wallet-close{display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;border:1px solid rgba(148,163,184,.3);border-radius:10px;background:rgba(15,23,42,.7);color:#e2e8f0;font-size:24px;line-height:1;cursor:pointer}
 .wallet-close:hover{background:rgba(71,85,105,.7)}
-@media(max-width:600px){.wallet-launcher{top:auto;right:14px;bottom:14px;width:54px;height:54px}.wallet-palette{top:auto;bottom:78px;right:10px;max-height:calc(100vh - 96px)}}
+@media(max-width:600px){.wallet-launcher{top:auto;right:14px;bottom:14px;width:54px;height:54px}.wallet-palette{top:auto;bottom:78px;right:10px;max-height:calc(100vh - 96px)}.wallet-nudge{right:78px;bottom:19px;max-width:calc(100vw - 115px);padding:9px 11px}}
 
 /* Workspace sizing: keep the mode switcher and active editor visible. */
 .tab-pane{display:none;flex:1 1 0;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
@@ -626,6 +634,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 
 <button type="button" id="walletLauncher" class="wallet-launcher" aria-label="Open wallet" title="Wallet" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()">◉</button>
+<button type="button" id="walletNudge" class="wallet-nudge" hidden onclick="openWalletPalette()" aria-label="Open wallet to unlock clean document">
+  <strong>Unlock your clean document</strong>
+  <span>Get credits for copy and PDF export →</span>
+</button>
       <section id="billingPanel" class="wallet-palette" hidden aria-labelledby="walletTitle">
         <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
         <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
@@ -674,12 +686,16 @@ function openWalletPalette() {
   if (!panel || !launcher) return;
   panel.hidden = false;
   launcher.setAttribute('aria-expanded', 'true');
+  const nudge = document.getElementById('walletNudge');
+  if (nudge) nudge.hidden = true;
   document.getElementById('billingEmail')?.focus({ preventScroll: true });
 }
 function closeWalletPalette() {
   const panel = document.getElementById('billingPanel');
   const launcher = document.getElementById('walletLauncher');
   if (panel) panel.hidden = true;
+  const nudge = document.getElementById('walletNudge');
+  if (nudge) nudge.hidden = !previewOnly;
   if (launcher) {
     launcher.setAttribute('aria-expanded', 'false');
     launcher.focus({ preventScroll: true });
@@ -1220,6 +1236,10 @@ async function sendMessage() {
     if (json.success) {
       refreshCreditBalance();
       setPreviewAccess(json.preview_only);
+      if (typeof json.wallet_balance === 'number') {
+        const balanceValue = document.getElementById('creditBalanceValue');
+        if (balanceValue) balanceValue.textContent = String(json.wallet_balance) + ' credits';
+      }
       addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
@@ -1418,8 +1438,16 @@ function setPreviewAccess(isPreviewOnly) {
   if (sheet) sheet.classList.toggle('preview-watermarked', previewOnly);
   const copyBtn = document.getElementById('copyDocumentBtn');
   const downloadBtn = document.getElementById('downloadDocumentBtn');
+  const launcher = document.getElementById('walletLauncher');
+  const nudge = document.getElementById('walletNudge');
   if (copyBtn) { copyBtn.title = previewOnly ? 'Copy unlocks with wallet credits' : 'Copy document'; copyBtn.setAttribute('aria-label', copyBtn.title); }
   if (downloadBtn) { downloadBtn.title = previewOnly ? 'PDF export unlocks with wallet credits' : 'Download PDF'; downloadBtn.setAttribute('aria-label', downloadBtn.title); }
+  if (launcher) {
+    launcher.classList.toggle('wallet-needs-credits', previewOnly);
+    launcher.setAttribute('aria-label', previewOnly ? 'Open wallet to unlock clean copy and PDF export' : 'Open wallet');
+    launcher.title = previewOnly ? 'Unlock clean document with credits' : 'Wallet';
+  }
+  if (nudge) nudge.hidden = !previewOnly || !document.getElementById('billingPanel')?.hidden === false;
 }
 async function authorizeLocalDocument(docType, documentData) {
   const email = billingEmailValue();
