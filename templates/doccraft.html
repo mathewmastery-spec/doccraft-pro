@@ -530,7 +530,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
           <input id="billingEmail" type="email" autocomplete="email" placeholder="you@example.com" style="flex:1;min-width:180px;padding:9px;border-radius:8px;border:1px solid #444;background:#111;color:#fff">
           <button type="button" class="btn btn-sm btn-outline" onclick="loadCreditPackages()">Credit packages</button>
         </div>
-        <div id="billingStatus" role="status" style="font-size:12px;margin-top:7px;opacity:.85">Enter your email to use your credit wallet.</div>
+        <div id="creditBalance" role="status" aria-live="polite" style="font-size:12px;margin-top:7px;opacity:.9">Enter your account email to check your credit balance.</div>
+        <div id="billingStatus" role="status" style="font-size:12px;margin-top:5px;opacity:.85">Your balance will appear automatically when you enter your email.</div>
         <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"></div>
       </div>
 
@@ -617,6 +618,48 @@ function restoreBillingEmail() {
 
 restoreBillingEmail();
 
+let walletBalanceTimer = null;
+let walletBalanceRequest = 0;
+
+async function refreshCreditBalance() {
+  const email = billingEmailValue();
+  const display = document.getElementById('creditBalance');
+  if (!display) return;
+  if (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {
+    display.textContent = 'Enter a valid account email to see your credit balance.';
+    return;
+  }
+  const requestNumber = ++walletBalanceRequest;
+  display.textContent = 'Checking credit balance…';
+  try {
+    const response = await fetch('/api/wallet/balance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await response.json();
+    if (requestNumber !== walletBalanceRequest || email !== billingEmailValue()) return;
+    if (!response.ok || !data.success) throw new Error(data.error || 'Balance is temporarily unavailable.');
+    const credits = Number(data.credits_balance || 0);
+    display.textContent = 'Credit balance: ' + credits + (credits === 1 ? ' credit' : ' credits') + '.';
+    display.dataset.balance = String(credits);
+  } catch (error) {
+    if (requestNumber === walletBalanceRequest) display.textContent = error.message || 'Could not check your credit balance. Try again.';
+  }
+}
+
+const billingEmailInput = document.getElementById('billingEmail');
+if (billingEmailInput) {
+  billingEmailInput.addEventListener('input', () => {
+    rememberBillingEmail();
+    if (walletBalanceTimer) clearTimeout(walletBalanceTimer);
+    walletBalanceTimer = setTimeout(refreshCreditBalance, 350);
+  });
+  billingEmailInput.addEventListener('change', refreshCreditBalance);
+  billingEmailInput.addEventListener('blur', refreshCreditBalance);
+}
+refreshCreditBalance();
+
 async function loadCreditPackages() {
   const email = billingEmailValue();
   const status = document.getElementById('billingStatus');
@@ -642,6 +685,7 @@ async function loadCreditPackages() {
       container.appendChild(button);
     });
     status.textContent = 'Choose a package to continue to secure checkout.';
+    refreshCreditBalance();
   } catch (error) {
     status.textContent = error.message || 'Could not load packages. Please retry.';
   }
@@ -693,6 +737,7 @@ async function verifyReturnedPayment() {
       ? 'Payment confirmed. Credit balance: ' + (data.credits_balance ?? 'updated') + '.'
       : (data.error || 'Payment is not confirmed yet. Please retry verification later.');
     if (response.ok && data.success) {
+      refreshCreditBalance();
       params.delete('reference'); params.delete('session_id');
       const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
       window.history.replaceState({}, '', clean);
