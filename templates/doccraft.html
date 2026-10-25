@@ -817,7 +817,7 @@ body{
 </div>
 
 
-<button type="button" id="walletLauncher" class="wallet-launcher" aria-label="Open wallet" title="Wallet" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()">◉</button>
+<button type="button" id="walletLauncher" class="wallet-launcher" aria-label="Open wallet" title="Wallet" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()">💵</button>
 <button type="button" id="walletNudge" class="wallet-nudge" hidden onclick="openWalletPalette()" aria-label="Open wallet to unlock clean document">
   <strong>Unlock your clean document</strong>
   <span>Get credits for copy and PDF export →</span>
@@ -1116,7 +1116,7 @@ function openTool(tool) {
 
   document.getElementById('docSheet').innerHTML = getPlaceholder(tool);
   const guideTitles = {
-    resume: 'Build your resume or CV',
+    resume: '',
     cover_letter: 'Create a targeted cover letter',
     portfolio: 'Showcase your work',
     org_letter: 'Write a formal organisation letter'
@@ -1130,6 +1130,7 @@ function openTool(tool) {
   const guideTitle = document.getElementById('workspaceGuideTitle');
   const guideText = document.getElementById('workspaceGuideText');
   if (guideTitle) guideTitle.textContent = guideTitles[tool] || 'Create your document';
+  if (guideTitle) guideTitle.style.display = guideTitle.textContent ? '' : 'none';
   if (guideText) guideText.textContent = guideTexts[tool] || 'Enter your details, review the preview, and download when ready.';
   if (mainTabs) mainTabs.style.display = (tool === 'org_letter' || tool === 'cover_letter') ? 'none' : '';
   const guide = document.getElementById('workspaceGuide');
@@ -1376,9 +1377,7 @@ function loadForm(tool) {
     fc.innerHTML = (orgForms[state.orgType] || orgForms.job_application) +
       `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
   }
-  if (fc && !fc.querySelector('.form-guidance')) {
-    fc.insertAdjacentHTML('afterbegin', '<div class="form-guidance"><strong>Fill in what you can</strong>Use the examples as a guide. Leave unknown or irrelevant fields blank, then generate a draft and review it in the preview.</div>');
-  }
+  
 }
 
 function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
