@@ -67,7 +67,12 @@ def create_app(test_config=None):
 
     @app.route("/")
     def home():
-        return render_template("doccraft.html")
+        response = Response(render_template("doccraft.html"), mimetype="text/html")
+        # Prevent browsers and intermediary caches from keeping an outdated homepage.
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
 
     @app.route("/robots.txt")
     def robots_txt():
