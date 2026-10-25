@@ -17,9 +17,9 @@ SYSTEM_PROMPTS = {
     "resume": "You are an expert resume writer. Parse the user's input and return a JSON object with these fields:\n{\n  \"name\": \"\", \"email\": \"\", \"phone\": \"\", \"location\": \"\", \"linkedin\": \"\", \"website\": \"\", \"summary\": \"\", \"skills\": [], \"languages\": [], \"experience\": [], \"education\": [], \"certifications\": [], \"projects\": []\n}\n",
     "cv": "You are an expert CV writer. Return valid JSON with personal info, summary, skills, experience, education, languages, and certs.",
     "academic_cv": "You are a professional academic CV writer. Return valid JSON with personal info, research, teaching, publications, and education.",
-    "cover_letter": "You are a professional cover letter writer. Return valid JSON containing subject and full_letter.",
-    "portfolio": "You are a portfolio writer. Return valid JSON with personal info, bio, skills, projects, education, and achievements.",
-    "org_letter": "You are a formal letter writer. Return valid JSON with subject and full_letter.",
+    "cover_letter": "You are a professional cover-letter writer. Return ONLY a valid JSON object with exactly these keys: subject (string) and full_letter (string containing the complete tailored letter). Use the applicant and role details supplied. Do not return Markdown fences.",
+    "portfolio": "You are a professional portfolio writer. Return ONLY a valid JSON object with keys name (string), title (string), bio (string), contact (object with email, github, linkedin strings), skills (array of objects with name string and level number), projects (array of objects with name, description, tech array of strings), education (array of objects with degree, institution, year strings), and achievements (array of strings). Do not return Markdown fences.",
+    "org_letter": "You are a professional formal-letters writer. Return ONLY a valid JSON object with exactly these keys: subject (string) and full_letter (string containing the complete formal letter). Use the letter type and supplied details. Do not return Markdown fences.",
 }
 
 REPLY_MESSAGES = {
@@ -453,9 +453,9 @@ def create_app(test_config=None):
             db.session.commit()
             return jsonify(result)
 
-        except Exception:
+        except Exception as exc:
             db.session.rollback()
-            app.logger.exception("DocCraft generation failed")
+            app.logger.exception("DocCraft generation failed for doc_type=%s", doc_type)
             # Keep a saved request retryable after a provider or parsing failure.
             try:
                 failed = GenerationRequest.query.filter_by(request_key=request_key).first()
@@ -464,7 +464,24 @@ def create_app(test_config=None):
                     db.session.commit()
             except SQLAlchemyError:
                 db.session.rollback()
-            return jsonify({"success": False, "error": "Generation failed. Please try again."}), 502
+            # Keep technical details in server logs; return a safe actionable message.
+            from openai import APIConnectionError, APIStatusError, RateLimitError
+            if isinstance(exc, RateLimitError):
+                message = "The AI service is busy. Please wait a moment and try again."
+                status = 503
+            elif isinstance(exc, APIConnectionError):
+                message = "DocCraft could not reach the AI service. Please retry shortly."
+                status = 502
+            elif isinstance(exc, APIStatusError):
+                message = "The AI service rejected this request. Please try again shortly."
+                status = 502
+            elif isinstance(exc, (json.JSONDecodeError, ValueError)):
+                message = "The AI returned an unreadable document. Please retry; no credits were charged."
+                status = 502
+            else:
+                message = "Generation failed before the document was saved. Please retry; contact support if it repeats."
+                status = 502
+            return jsonify({"success": False, "error": message, "doc_type": doc_type}), status
 
     return app
 
