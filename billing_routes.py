@@ -13,6 +13,8 @@ from models import (
     CreditLedgerEntry,
     CreditPackage,
     PaymentTransaction,
+    User,
+    Wallet,
     ensure_user,
     get_or_create_wallet,
     seed_default_credit_packages,
@@ -115,6 +117,25 @@ def list_packages():
         "success": True,
         "provider": current_app.config.get("PAYMENT_PROVIDER", "paystack"),
         "packages": [_serialize_package(item) for item in packages],
+    })
+
+@billing_bp.post("/wallet/balance")
+def wallet_balance():
+    """Return the current credit balance for the supplied account email without creating accounts."""
+    body = request.get_json(silent=True) or {}
+    email = str(body.get("email") or "").strip().lower()
+    if not email or len(email) > 254 or "@" not in email or email.startswith("@") or email.endswith("@"):
+        return _json_error("Enter a valid account email to check your balance.", 400)
+
+    user = User.query.filter_by(email=email).first()
+    if user is None:
+        return jsonify({"success": True, "email": email, "credits_balance": 0, "currency": "KES"})
+    wallet = Wallet.query.filter_by(user_id=user.id).first()
+    return jsonify({
+        "success": True,
+        "email": email,
+        "credits_balance": int(wallet.balance_credits) if wallet is not None else 0,
+        "currency": (wallet.currency if wallet is not None else "KES"),
     })
 
 
