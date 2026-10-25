@@ -1172,11 +1172,13 @@ function openTool(tool) {
     portfolio: "Tell me about yourself, your projects, and your skills. I'll create your professional portfolio!",
     org_letter: "Fill in the form and I'll generate your formal letter."
   };
-  document.getElementById('welcomeMsg').textContent = welcomes[tool];
-  document.getElementById('messages').innerHTML = `
+  const welcomeMsg = document.getElementById('welcomeMsg');
+  if (welcomeMsg) welcomeMsg.textContent = welcomes[tool] || 'Let’s create your document.';
+  const messages = document.getElementById('messages');
+  if (messages) messages.innerHTML = `
     <div class="msg ai-msg">
       <div class="msg-avatar">AI</div>
-      <div class="msg-bubble">${welcomes[tool]}</div>
+      <div class="msg-bubble">${welcomes[tool] || 'Let’s create your document.'}</div>
     </div>`;
 
   document.getElementById('docSheet').innerHTML = getPlaceholder(tool);
