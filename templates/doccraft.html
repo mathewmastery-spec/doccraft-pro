@@ -125,11 +125,27 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lt-btn span{font-size:14px}
 .lt-btn.active,.lt-btn:hover{background:rgba(99,102,241,.15);border-color:var(--accent);color:var(--text)}
 
-/* TABS */
-.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
-.tab-btn{flex:1;padding:11px;background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;font-weight:600;font-family:inherit;border-bottom:2px solid transparent;transition:.15s}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
-.tab-btn:hover:not(.active){color:var(--text2)}
+/* TABS — clearly visible mode switcher */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;color:var(--text2);cursor:pointer;font-size:13px;font-weight:750;font-family:inherit;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.tab-btn::before{font-size:17px;line-height:1}
+.tab-btn[onclick*="'chat'"]::before{content:"✦"}
+.tab-btn[onclick*="'form'"]::before{content:"☷"}
+.tab-btn.active{color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);border-color:#60a5fa;box-shadow:0 5px 16px rgba(37,99,235,.24)}
+.tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
+.tab-pane{display:none;flex:1;min-height:0;overflow:hidden;flex-direction:column;background:var(--bg)}
+.tab-pane.active{display:flex}
+#pane-chat .messages{min-height:130px}
+#pane-chat .chat-input-area{flex-shrink:0;background:var(--surface);padding:14px;border-top:1px solid var(--border)}
+#pane-chat .chat-input-area textarea{min-height:48px}
+#pane-form .form-scroll{min-height:0;padding:18px 16px 22px}
+#pane-form .section-sep{font-size:11px;padding-bottom:4px}
+@media(max-width:760px){
+  .app-layout{height:100%;overflow-y:auto;flex-direction:column}
+  .left-panel{width:100%;max-height:none;min-height:580px;overflow:visible;border-right:0;border-bottom:1px solid var(--border)}
+  .right-panel{min-height:420px}
+  .tab-pane{min-height:360px}
+}
 
 /* TAB PANES */
 .tab-pane{display:none;flex:1;overflow:hidden;flex-direction:column}
