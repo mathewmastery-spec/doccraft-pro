@@ -349,8 +349,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 }
 
   
-/* DocCraft — clean document-only PDF and printing */
+/* Free previews remain visibly watermarked in preview and print. */
+#docSheet.preview-watermarked{position:relative!important}
+#docSheet.preview-watermarked::after{content:"PREVIEW • DOC CRAFT PRO • UNLOCK WITH CREDITS";position:absolute;z-index:100;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;pointer-events:none;overflow:hidden;color:rgba(185,28,28,.22);font-size:clamp(22px,5vw,48px);font-weight:900;letter-spacing:3px;white-space:normal;line-height:1.8;background:repeating-linear-gradient(-32deg,transparent 0,transparent 115px,rgba(185,28,28,.035) 116px,rgba(185,28,28,.035) 155px)}
+#docSheet.preview-watermarked::before{content:"WATERMARKED PREVIEW — Copy and PDF export unlock with credits";position:sticky;top:0;z-index:101;display:block;padding:8px 10px;text-align:center;background:#fff7ed;color:#9a3412;border-bottom:1px solid #fed7aa;font-size:11px;font-weight:800;letter-spacing:.3px}
 @media print {
+  #docSheet.preview-watermarked::after{position:fixed!important;inset:0!important;display:flex!important;align-items:center!important;justify-content:center!important;transform:rotate(-32deg)!important;color:rgba(185,28,28,.20)!important;background:repeating-linear-gradient(-32deg,transparent 0,transparent 115px,rgba(185,28,28,.04) 116px,rgba(185,28,28,.04) 155px)!important}
+  #docSheet.preview-watermarked::before{position:relative!important;display:block!important}
+
   @page {
     size: A4;
     margin: 12mm;
@@ -601,8 +607,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
           </div>
         </div>
         <div class="preview-actions">
-          <button class="btn btn-sm btn-outline" onclick="copyDocument()">Copy</button>
-          <button class="btn btn-sm btn-primary" onclick="window.print()">Download PDF</button>
+          <button id="copyDocumentBtn" class="btn btn-sm btn-outline" onclick="copyDocument()">Copy</button>
+          <button class="btn btn-sm btn-primary" id="downloadDocumentBtn" onclick="downloadDocument()">Download PDF</button>
         </div>
       </div>
       <div class="preview-body">
@@ -1213,7 +1219,8 @@ async function sendMessage() {
     btn.disabled = false;
     if (json.success) {
       refreshCreditBalance();
-      addMsg(json.reply || 'Document updated!', 'ai');
+      setPreviewAccess(json.preview_only);
+      addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
       else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || '', json.data.subject || '');
@@ -1247,7 +1254,7 @@ function addSpinner() {
 }
 function removeSpinner() { const s = document.getElementById('spinnerMsg'); if (s) s.remove(); }
 
-function buildFromForm() {
+async function buildFromForm() {
   if (!v('f_name')) {
     showToast('Enter your full name to build your document.');
     document.getElementById('f_name')?.focus();
@@ -1275,11 +1282,14 @@ function buildFromForm() {
     return { name: parts[0]||'', description: parts[1]||'', tech: parts[2] ? parts[2].split(',').map(s=>s.trim()) : [] };
   });
   state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects };
+  const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
   renderResume(state.resume);
-  showToast('Preview updated!');
+  setPreviewAccess(access.preview_only);
+  if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
+  else showToast('Document generated successfully. Your credit was used.');
 }
 
-function buildPortfolioFromForm() {
+async function buildPortfolioFromForm() {
   if (!v('pf_name')) {
     showToast('Enter your full name to build your portfolio.');
     document.getElementById('pf_name')?.focus();
@@ -1301,8 +1311,11 @@ function buildPortfolioFromForm() {
   });
   const achievements = v('pf_achievements').split('\n').filter(Boolean);
   state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements };
+  const access = await authorizeLocalDocument('portfolio', state.portfolio);
   renderPortfolio(state.portfolio);
-  showToast('Portfolio updated!');
+  setPreviewAccess(access.preview_only);
+  if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
+  else showToast('Portfolio generated successfully. Your credit was used.');
 }
 
 async function generateCoverLetter() {
@@ -1318,7 +1331,7 @@ async function generateCoverLetter() {
       body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
-    if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); refreshCreditBalance(); }
+    if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
     else showToast('Error generating letter. Please try again.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
@@ -1334,7 +1347,7 @@ async function generateOrgLetter() {
       body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
-    if (json.success) { renderOrgLetter(json.data.letter_text || ''); refreshCreditBalance(); }
+    if (json.success) { renderOrgLetter(json.data.letter_text || json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
     else showToast('Error generating letter.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
@@ -1398,7 +1411,41 @@ function setPreviewLoading() {
   document.getElementById('docSheet').innerHTML = `<div class="placeholder"><div class="spinner" style="width:32px;height:32px;border-width:3px"></div><p style="margin-top:16px">Generating your document...</p></div>`;
 }
 
+let previewOnly = false;
+function setPreviewAccess(isPreviewOnly) {
+  previewOnly = Boolean(isPreviewOnly);
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.classList.toggle('preview-watermarked', previewOnly);
+  const copyBtn = document.getElementById('copyDocumentBtn');
+  const downloadBtn = document.getElementById('downloadDocumentBtn');
+  if (copyBtn) { copyBtn.title = previewOnly ? 'Copy unlocks with wallet credits' : 'Copy document'; copyBtn.setAttribute('aria-label', copyBtn.title); }
+  if (downloadBtn) { downloadBtn.title = previewOnly ? 'PDF export unlocks with wallet credits' : 'Download PDF'; downloadBtn.setAttribute('aria-label', downloadBtn.title); }
+}
+async function authorizeLocalDocument(docType, documentData) {
+  const email = billingEmailValue();
+  try {
+    const res = await fetch('/api/wallet/authorize-document', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, doc_type: docType, document: documentData, request_id: crypto.randomUUID()})
+    });
+    const json = await res.json();
+    if (!res.ok || !json.success) throw new Error(json.error || 'Could not verify wallet access.');
+    if (typeof json.wallet_balance === 'number') {
+      const balance = document.getElementById('creditBalanceValue');
+      if (balance) balance.textContent = String(json.wallet_balance);
+    }
+    return json;
+  } catch (error) {
+    showToast(error.message || 'Could not verify wallet access. Please try again.');
+    return {success:false, preview_only:true};
+  }
+}
+function downloadDocument() {
+  if (previewOnly) { showToast('This is a watermarked preview. Add credits to unlock a clean PDF.'); toggleWalletPalette(); return; }
+  window.print();
+}
 function copyDocument() {
+  if (previewOnly) { showToast('This is a watermarked preview. Add credits to unlock copying.'); toggleWalletPalette(); return; }
   const sheet = document.getElementById('docSheet');
   navigator.clipboard.writeText(sheet.innerText).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Copy failed. Please select and copy manually.'));
 }
