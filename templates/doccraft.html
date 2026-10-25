@@ -1073,6 +1073,7 @@ async function sendMessage() {
     removeSpinner();
     btn.disabled = false;
     if (json.success) {
+      refreshCreditBalance();
       addMsg(json.reply || 'Document updated!', 'ai');
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
@@ -1157,7 +1158,7 @@ async function generateCoverLetter() {
       body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
-    if (json.success) renderLetter(json.data.full_letter || '', json.data.subject || '');
+    if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); refreshCreditBalance(); }
     else showToast('Error generating letter. Please try again.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
@@ -1173,7 +1174,7 @@ async function generateOrgLetter() {
       body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
     });
     const json = await res.json();
-    if (json.success) renderOrgLetter(json.data.letter_text || '');
+    if (json.success) { renderOrgLetter(json.data.letter_text || ''); refreshCreditBalance(); }
     else showToast('Error generating letter.');
   } catch(e) { showToast('Network error. Please try again.'); }
 }
