@@ -125,14 +125,18 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .lt-btn span{font-size:14px}
 .lt-btn.active,.lt-btn:hover{background:rgba(99,102,241,.15);border-color:var(--accent);color:var(--text)}
 
-/* TABS — clearly visible mode switcher */
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
-.tab-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;color:var(--text2);cursor:pointer;font-size:13px;font-weight:750;font-family:inherit;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
-.tab-btn::before{font-size:17px;line-height:1}
-.tab-btn[onclick*="'chat'"]::before{content:"✦"}
-.tab-btn[onclick*="'form'"]::before{content:"☷"}
+/* MODE PICKER — make both document creation paths unmistakable */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:14px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0}
+.tab-btn{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;min-height:88px;padding:13px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:13px;color:var(--text2);text-align:left;cursor:pointer;font-family:inherit;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.tab-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;line-height:1.25;color:inherit}
+.tab-icon{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:8px;background:rgba(148,163,184,.14);font-size:15px}
+.tab-hint{font-size:11px;font-weight:500;line-height:1.4;color:var(--text2)}
 .tab-btn.active{color:#fff;background:linear-gradient(135deg,#2563eb,#4f46e5);border-color:#60a5fa;box-shadow:0 5px 16px rgba(37,99,235,.24)}
+.tab-btn.active .tab-hint{color:#e0e7ff}
+.tab-btn.active .tab-icon{background:rgba(255,255,255,.18)}
 .tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
+.tab-btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+@media(max-width:420px){.tabs{gap:7px;padding:10px}.tab-btn{min-height:84px;padding:10px}.tab-title{font-size:13px}.tab-hint{font-size:10px}}
 #pane-chat .messages{min-height:130px}
 #pane-chat .chat-input-area{flex-shrink:0;background:var(--surface);padding:14px;border-top:1px solid var(--border)}
 #pane-chat .chat-input-area textarea{min-height:48px}
@@ -575,9 +579,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
         <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"></div>
       </section>
 
-      <div class="tabs" id="mainTabs">
-        <button class="tab-btn active" onclick="switchTab('chat',this)">AI Chat</button>
-        <button class="tab-btn" onclick="switchTab('form',this)">Form</button>
+      <div class="tabs" id="mainTabs" aria-label="Choose how to create your document">
+        <button type="button" class="tab-btn active" onclick="switchTab('chat',this)" aria-controls="pane-chat" aria-pressed="true">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">✦</span>AI Chat</span>
+          <span class="tab-hint">Describe yourself; AI guides you</span>
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTab('form',this)" aria-controls="pane-form" aria-pressed="false">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">☷</span>Fill a Form</span>
+          <span class="tab-hint">Enter details step by step</span>
+        </button>
       </div>
 
       <div class="tab-pane active" id="pane-chat">
