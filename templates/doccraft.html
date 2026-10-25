@@ -905,6 +905,7 @@ function toggleBillingPanel(forceOpen) {
   if (!panel || !launcher) return;
   const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : panel.classList.contains('wallet-hidden');
   panel.classList.toggle('wallet-hidden', !shouldOpen);
+  panel.classList.toggle('billing-collapsed', !shouldOpen);
   launcher.setAttribute('aria-expanded', String(shouldOpen));
   if (shouldOpen) {
     const email = document.getElementById('billingEmail');
