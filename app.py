@@ -263,8 +263,8 @@ def create_app(test_config=None):
         except IntegrityError:
             db.session.rollback()
             existing = GenerationRequest.query.filter_by(request_key=request_key).first()
-            if existing and existing.user_id == user.id and existing.input_hash == fingerprint and existing.status == "succeeded":
-                return jsonify(existing.response_payload or {"success": True, "charged": True})
+            if existing and existing.status == "succeeded" and isinstance(existing.response_payload, dict):
+                return jsonify(existing.response_payload)
             return jsonify({"success": False, "error": "This action was already processed. Please retry."}), 409
         except Exception:
             db.session.rollback()
