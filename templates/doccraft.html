@@ -1605,7 +1605,7 @@ async function generateCoverLetter() {
     });
     const json = await res.json();
     if (json.success) { renderLetter(json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast(json.error || 'Error generating letter. Please try again.');
+    else { showToast(json.error || 'Error generating letter. Please try again.'); if (json.requires_topup || res.status === 402) toggleWalletPalette(); }
   } catch(e) { showToast('Network error. Please try again.'); }
 }
 
@@ -1621,7 +1621,7 @@ async function generateOrgLetter() {
     });
     const json = await res.json();
     if (json.success) { renderOrgLetter(json.data.letter_text || json.data.full_letter || '', json.data.subject || ''); setPreviewAccess(json.preview_only); refreshCreditBalance(); if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.'); }
-    else showToast(json.error || 'Error generating letter.');
+    else { showToast(json.error || 'Error generating letter.'); if (json.requires_topup || res.status === 402) toggleWalletPalette(); }
   } catch(e) { showToast('Network error. Please try again.'); }
 }
 
