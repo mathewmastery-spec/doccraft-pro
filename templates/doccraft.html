@@ -436,6 +436,85 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   }
 }
 
+
+/* DocCraft UX polish: orange wallet + Spario-inspired glass workspace.
+   Visual-only overrides; do not change billing, form, AI, or document logic. */
+.wallet-launcher{
+  border:1px solid rgba(255,210,160,.78)!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,#ffad55 0%,#f97316 58%,#c2410c 100%)!important;
+  color:#fff!important;
+  font-weight:800!important;
+  box-shadow:0 10px 30px rgba(249,115,22,.3),inset 0 1px 0 rgba(255,255,255,.28)!important;
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease!important;
+}
+.wallet-launcher:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.07);
+  box-shadow:0 14px 36px rgba(249,115,22,.38),inset 0 1px 0 rgba(255,255,255,.3)!important;
+}
+.wallet-launcher.wallet-needs-credits{
+  border-color:#fed7aa!important;
+  box-shadow:0 0 0 0 rgba(249,115,22,.42),0 10px 30px rgba(249,115,22,.3)!important;
+}
+.wallet-palette{
+  border:1px solid rgba(251,146,60,.45)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(39,27,25,.94),rgba(17,20,31,.96) 62%,rgba(31,22,20,.96))!important;
+  color:#fff7ed!important;
+  backdrop-filter:blur(24px) saturate(145%)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(145%)!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.58),0 0 38px rgba(249,115,22,.1),inset 0 1px 0 rgba(255,255,255,.07)!important;
+}
+.wallet-close{
+  border-color:rgba(253,186,116,.28)!important;
+  background:rgba(255,255,255,.055)!important;
+  color:#ffedd5!important;
+  backdrop-filter:blur(12px);
+}
+.wallet-close:hover{background:rgba(249,115,22,.18)!important;border-color:rgba(251,146,60,.6)!important}
+.wallet-nudge{border-color:rgba(251,146,60,.58)!important;box-shadow:0 10px 30px rgba(249,115,22,.12)}
+body{
+  background:
+    radial-gradient(ellipse at 78% 12%,rgba(99,102,241,.09),transparent 38%),
+    radial-gradient(ellipse at 16% 88%,rgba(34,211,238,.055),transparent 36%),
+    var(--bg);
+}
+.navbar,.panel-top,.tabs,.left-panel,.workspace-guide,.form-guidance{
+  backdrop-filter:blur(20px) saturate(135%);
+  -webkit-backdrop-filter:blur(20px) saturate(135%);
+}
+.navbar{background:rgba(17,20,31,.88)!important}
+.left-panel{background:linear-gradient(155deg,rgba(27,32,49,.88),rgba(16,20,32,.94))!important}
+.panel-top,.tabs{background:rgba(25,30,46,.76)!important}
+.tab-pane{background:linear-gradient(145deg,rgba(17,21,34,.9),rgba(13,16,26,.96))}
+.form-group input,.form-group textarea,.form-group select,#pane-chat .chat-input-area textarea{
+  background:rgba(10,14,25,.62)!important;
+  border-color:rgba(148,163,184,.24)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.025);
+  transition:border-color .18s ease,box-shadow .18s ease,background .18s ease;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus,#pane-chat .chat-input-area textarea:focus{
+  background:rgba(15,20,34,.92)!important;
+  border-color:rgba(129,140,248,.82)!important;
+  box-shadow:0 0 0 3px rgba(99,102,241,.13),0 0 24px rgba(99,102,241,.07)!important;
+  outline:none;
+}
+.tab-btn{
+  background:linear-gradient(145deg,rgba(40,46,68,.62),rgba(22,27,43,.76))!important;
+  border-color:rgba(148,163,184,.19)!important;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+}
+.tab-btn.active{
+  background:linear-gradient(135deg,rgba(79,70,229,.94),rgba(124,58,237,.88))!important;
+  border-color:rgba(165,180,252,.72)!important;
+  box-shadow:0 8px 28px rgba(79,70,229,.24),inset 0 1px 0 rgba(255,255,255,.16)!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .wallet-launcher,.tab-btn,.form-group input,.form-group textarea,.form-group select{transition:none!important}
+}
+
 </style>
 </head>
 <body>
