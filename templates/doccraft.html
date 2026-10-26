@@ -1409,16 +1409,20 @@ function applyDocumentStyle() {
 }
 async function setTemplate(tpl, picker) {
   if (!DOCUMENT_STYLE_IDS.has(tpl) || tpl === state.template) return;
-  // Keep the existing credit authorization path for style changes on generated resumes.
-  if (state.resume && state.resume.name && !(await authorizeDocumentAction('template'))) {
+  const sheet = document.getElementById('docSheet');
+  const hasGeneratedDocument = Boolean(sheet && sheet.querySelector(
+    '.tpl-classic,.tpl-modern,.tpl-minimal,.portfolio-sheet,.letter-sheet'
+  ));
+  // Charge once through the existing action endpoint whenever a real document is restyled,
+  // regardless of whether it came from a form, AI chat, or which document family it is.
+  if (hasGeneratedDocument && !(await authorizeDocumentAction('template'))) {
     if (picker && picker.tagName === 'SELECT') picker.value = state.template;
     return;
   }
   state.template = tpl;
   if (picker && picker.tagName === 'SELECT') picker.value = tpl;
   applyDocumentStyle();
-  // Avoid replacing a portfolio or letter with a stale resume while changing appearance.
-  const sheet = document.getElementById('docSheet');
+  // Resume/CV families need layout selection; other document content stays in place.
   if (sheet && sheet.querySelector('.tpl-classic,.tpl-modern,.tpl-minimal')) renderResume(state.resume);
 }
 
