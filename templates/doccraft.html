@@ -470,8 +470,26 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     overflow: visible !important;
   }
 
+  /* Keep the document's ancestors printable even when the mobile editor
+     has hidden the preview panel. Hide all interface content, then reveal
+     only the document sheet and its descendants. */
   body * {
     visibility: hidden !important;
+  }
+
+  #appScreen,
+  #appScreen .app-layout,
+  #appScreen .right-panel,
+  #appScreen .preview-body {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    visibility: visible !important;
+    transform: none !important;
   }
 
   #docSheet,
@@ -480,9 +498,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   }
 
   #docSheet {
-    position: fixed !important;
-    inset: 0 !important;
+    display: block !important;
+    position: relative !important;
+    inset: auto !important;
     width: 100% !important;
+    max-width: none !important;
     min-height: 0 !important;
     height: auto !important;
     margin: 0 !important;
@@ -493,6 +513,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     background: #fff !important;
     color: #111 !important;
     box-shadow: none !important;
+    break-inside: auto !important;
   }
 
   #docSheet .tpl-modern {
