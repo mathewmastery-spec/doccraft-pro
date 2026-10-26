@@ -298,6 +298,44 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .min-exp-company{font-size:12px;color:#6366f1;margin:2px 0}
 .min-exp-desc{font-size:12px;color:#666;line-height:1.6;margin-top:4px}
 
+/* DOCUMENT DESIGN QUALITY BASELINE
+   Keep these refinements scoped to document output. No app, billing, or generation behavior changes. */
+.doc-sheet{box-sizing:border-box;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.doc-sheet *{box-sizing:border-box}
+.tpl-classic{font-family:Georgia,'Times New Roman',serif;color:#202124}
+.tpl-classic .classic-head{border-bottom:1px solid #9ca3af;padding-bottom:18px;margin-bottom:22px}
+.tpl-classic .classic-head h1{font-family:Georgia,'Times New Roman',serif;font-size:27px;letter-spacing:.15px;font-weight:700;line-height:1.18}
+.tpl-classic .classic-section h2{color:#303846;font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:1.15px;border-bottom:1px solid #cbd0d6;padding-bottom:6px}
+.tpl-classic .classic-section p,.tpl-classic .exp-bullets li{color:#30343b;line-height:1.65}
+.tpl-classic .exp-company{color:#414b5a}
+.tpl-modern{background:#fff;color:#182230;align-items:stretch;border:1px solid #e5e7eb;border-radius:0;overflow:hidden}
+.tpl-modern .modern-left{background:#172b4d;border-radius:0}
+.tpl-modern .modern-left h3{color:#c7d7f2}
+.tpl-modern .modern-contact-item{color:#eef4ff;line-height:1.45}
+.tpl-modern .modern-right{padding:30px 28px}
+.tpl-modern .m-section h2{color:#17365d;border-bottom:1px solid #a9bfd9;letter-spacing:.8px;padding-bottom:7px}
+.tpl-modern .m-exp-title,.tpl-modern .m-edu-degree{color:#1f2937}
+.tpl-modern .m-exp-company{color:#365d8d}
+.tpl-minimal{font-family:Arial,Helvetica,sans-serif;color:#202124;max-width:none}
+.tpl-minimal .min-head{border-bottom:2px solid #303846;padding-bottom:18px;margin-bottom:22px}
+.tpl-minimal .min-head h1{font-size:25px;font-weight:750;letter-spacing:-.35px;line-height:1.2}
+.tpl-minimal .min-section-title{color:#374151;font-size:10px;letter-spacing:1.25px;border-bottom:1px solid #d1d5db;padding-bottom:6px}
+.tpl-minimal .min-summary,.tpl-minimal .min-exp-desc{color:#374151;line-height:1.7}
+.tpl-minimal .min-contact{line-height:1.6}
+.tpl-classic .classic-section,.tpl-modern .m-section,.tpl-minimal .min-section,.exp-item,.edu-item{break-inside:avoid;page-break-inside:avoid}
+.tpl-classic h1,.tpl-classic h2,.tpl-modern h1,.tpl-modern h2,.tpl-minimal h1,.tpl-minimal .min-section-title{break-after:avoid;page-break-after:avoid}
+@media print{
+  .doc-sheet{width:100%!important;max-width:none!important;min-height:0!important;margin:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
+  .tpl-classic,.tpl-modern,.tpl-minimal{border-radius:0!important;box-shadow:none!important}
+  .tpl-modern .modern-left{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tpl-classic .classic-section,.tpl-modern .m-section,.tpl-minimal .min-section,.exp-item,.edu-item{break-inside:avoid-page;page-break-inside:avoid}
+  .doc-sheet p,.doc-sheet li{orphans:3;widows:3}
+}
+@media(max-width:768px){
+  .tpl-classic .classic-head h1,.tpl-minimal .min-head h1{overflow-wrap:anywhere}
+  .tpl-modern .modern-right{padding:18px 14px}
+}
+ 
 /* PORTFOLIO TEMPLATE */
 .portfolio-sheet{font-family:'Inter',sans-serif;color:#111}
 .pf-hero{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;padding:36px 36px 30px;border-radius:8px 8px 0 0;margin:-48px -48px 32px}
