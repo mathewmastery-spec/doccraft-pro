@@ -31,6 +31,8 @@ def test_style_switch_preserves_existing_wallet_authorization_for_resume():
         "\n}\n", 1
     )[0]
     assert "authorizeDocumentAction('template')" in switch
+    assert "hasGeneratedDocument" in switch
+    assert ".portfolio-sheet,.letter-sheet" in switch
     assert "state.template = tpl" in switch
     assert "picker.value = state.template" in switch
 
