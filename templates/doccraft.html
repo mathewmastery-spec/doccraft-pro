@@ -461,8 +461,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
     margin: 12mm;
   }
 
+  /* Ensure the preview's ancestors remain printable. A hidden/flex workspace
+     can otherwise produce a blank PDF containing only the browser's headers. */
+  #homeScreen,
+  .navbar,
+  .left-panel,
+  .preview-bar,
+  .preview-actions {
+    display: none !important;
+  }
+
+  #appScreen,
+  .app-layout,
+  .right-panel,
+  .preview-body {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    flex: none !important;
+  }
+
   html,
   body {
+    display: block !important;
     background: #fff !important;
     color: #111 !important;
     height: auto !important;
