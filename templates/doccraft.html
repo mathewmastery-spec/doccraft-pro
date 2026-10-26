@@ -213,6 +213,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .tpl-pills{display:flex;gap:4px}
 .tpl-pill{background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;transition:.15s}
 .tpl-pill.active,.tpl-pill:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.template-picker-label{font-size:12px;font-weight:600;color:var(--text2)}
+.template-picker{max-width:min(250px,42vw);min-width:155px;padding:7px 28px 7px 10px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--text);font:600 12px 'Inter',sans-serif;cursor:pointer}
+.template-picker:focus-visible{outline:2px solid #93c5fd;outline-offset:2px}
+@media(max-width:600px){.preview-bar{gap:8px;padding:8px 10px;flex-wrap:wrap}.preview-bar-left{gap:7px;flex-wrap:wrap}.template-picker{min-width:130px;max-width:52vw}.preview-actions{gap:5px}.btn-sm{padding:6px 9px;font-size:12px}}
 .preview-actions{display:flex;gap:8px}
 .btn-sm{padding:6px 14px;font-size:13px}
 .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text2)}
@@ -336,6 +340,55 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
   .tpl-modern .modern-right{padding:18px 14px}
 }
  
+
+/* Professional document style system: presentation-only skins across all document families. */
+#docSheet{--doc-accent:#4f46e5;--doc-accent-soft:#eef2ff;--doc-ink:#172033;--doc-rule:#dbe2ea}
+#docSheet .classic-section h2,#docSheet .pf-section h2,#docSheet .letter-subject-line{color:var(--doc-accent)}
+#docSheet .classic-section h2{border-color:var(--doc-rule)}
+#docSheet .exp-company{color:var(--doc-accent)}
+#docSheet .skill-tag,#docSheet .pf-skill{border-color:var(--doc-rule)}
+#docSheet .pf-hero{background:linear-gradient(135deg,var(--doc-ink),var(--doc-accent))}
+#docSheet .pf-hero-title{color:var(--doc-accent-soft)}
+#docSheet .pf-tech{background:var(--doc-accent-soft);color:var(--doc-ink)}
+#docSheet .letter-sheet{max-width:760px;margin:0 auto}
+#docSheet .letter-sheet pre{font-family:Georgia,'Times New Roman',serif;font-size:14px;line-height:1.8;color:#252525}
+#docSheet[data-doc-style="classic"]{--doc-accent:#334155;--doc-accent-soft:#f1f5f9;--doc-ink:#1e293b;--doc-rule:#cbd5e1}
+#docSheet[data-doc-style="modern"]{--doc-accent:#2563eb;--doc-accent-soft:#dbeafe;--doc-ink:#172554;--doc-rule:#bfdbfe}
+#docSheet[data-doc-style="minimal"]{--doc-accent:#374151;--doc-accent-soft:#f3f4f6;--doc-ink:#111827;--doc-rule:#d1d5db}
+#docSheet[data-doc-style="academic"]{--doc-accent:#1f2937;--doc-accent-soft:#f3f4f6;--doc-ink:#111827;--doc-rule:#9ca3af;font-family:Georgia,'Times New Roman',serif}
+#docSheet[data-doc-style="academic"] .classic-head{text-align:left;border-bottom:2px solid #374151}
+#docSheet[data-doc-style="academic"] .classic-section h2{text-transform:none;letter-spacing:.2px;font-family:Georgia,'Times New Roman',serif}
+#docSheet[data-doc-style="slate"]{--doc-accent:#475569;--doc-accent-soft:#f1f5f9;--doc-ink:#1e293b;--doc-rule:#cbd5e1}
+#docSheet[data-doc-style="slate"] .classic-head{border-left:5px solid #64748b;padding-left:18px;text-align:left}
+#docSheet[data-doc-style="editorial"]{--doc-accent:#9a3412;--doc-accent-soft:#ffedd5;--doc-ink:#431407;--doc-rule:#fed7aa;font-family:Georgia,'Times New Roman',serif}
+#docSheet[data-doc-style="editorial"] .classic-head{text-align:left;border-bottom:1px solid #9a3412}
+#docSheet[data-doc-style="editorial"] .classic-head h1{font-family:Georgia,'Times New Roman',serif;font-weight:700}
+#docSheet[data-doc-style="technical"]{--doc-accent:#0f766e;--doc-accent-soft:#ccfbf1;--doc-ink:#134e4a;--doc-rule:#99f6e4}
+#docSheet[data-doc-style="technical"] .classic-section h2,#docSheet[data-doc-style="technical"] .pf-section h2{letter-spacing:1.2px;border-bottom:2px solid var(--doc-accent)}
+#docSheet[data-doc-style="sidebar"]{--doc-accent:#6d28d9;--doc-accent-soft:#ede9fe;--doc-ink:#2e1065;--doc-rule:#ddd6fe}
+#docSheet[data-doc-style="sidebar"] .classic-head{border-bottom:0;border-left:7px solid var(--doc-accent);background:var(--doc-accent-soft);padding:18px;text-align:left}
+#docSheet[data-doc-style="correspondence"]{--doc-accent:#334155;--doc-accent-soft:#f8fafc;--doc-ink:#0f172a;--doc-rule:#cbd5e1}
+#docSheet[data-doc-style="correspondence"] .letter-sheet pre{font-family:Georgia,'Times New Roman',serif;font-size:14px;line-height:1.9}
+#docSheet[data-doc-style="correspondence"] .letter-subject-line{text-transform:none;letter-spacing:0;border-bottom:1px solid var(--doc-rule);padding-bottom:10px}
+#docSheet[data-doc-style="institutional"]{--doc-accent:#1e3a8a;--doc-accent-soft:#dbeafe;--doc-ink:#172554;--doc-rule:#93c5fd}
+#docSheet[data-doc-style="institutional"] .classic-head{border-bottom:3px double var(--doc-accent)}
+#docSheet[data-doc-style="institutional"] .classic-section h2{border-left:3px solid var(--doc-accent);padding-left:8px}
+#docSheet[data-doc-style="creative"]{--doc-accent:#be185d;--doc-accent-soft:#fce7f3;--doc-ink:#831843;--doc-rule:#fbcfe8}
+#docSheet[data-doc-style="creative"] .pf-hero{background:linear-gradient(135deg,#831843,#be185d)}
+#docSheet[data-doc-style="creative"] .classic-head{border-bottom:3px solid var(--doc-accent)}
+#docSheet[data-doc-style="monochrome"]{--doc-accent:#111827;--doc-accent-soft:#f3f4f6;--doc-ink:#111827;--doc-rule:#9ca3af}
+#docSheet[data-doc-style="monochrome"] .pf-hero{background:#111827}
+#docSheet[data-doc-style="monochrome"] .classic-section h2{text-transform:uppercase;letter-spacing:1.5px}
+#docSheet[data-doc-style="emerald"]{--doc-accent:#047857;--doc-accent-soft:#d1fae5;--doc-ink:#064e3b;--doc-rule:#a7f3d0}
+#docSheet[data-doc-style="emerald"] .classic-head{border-bottom:3px solid var(--doc-accent)}
+#docSheet[data-doc-style="burgundy"]{--doc-accent:#9f1239;--doc-accent-soft:#ffe4e6;--doc-ink:#4c0519;--doc-rule:#fecdd3}
+#docSheet[data-doc-style="burgundy"] .classic-head{border-bottom:2px solid var(--doc-accent)}
+#docSheet[data-doc-style="burgundy"] .classic-head h1{font-family:Georgia,'Times New Roman',serif}
+#docSheet[data-doc-style="bluebook"]{--doc-accent:#1d4ed8;--doc-accent-soft:#eff6ff;--doc-ink:#172554;--doc-rule:#bfdbfe}
+#docSheet[data-doc-style="bluebook"] .classic-head{text-align:left;border-bottom:4px solid var(--doc-accent)}
+#docSheet[data-doc-style="bluebook"] .classic-section h2{border-bottom:2px solid var(--doc-accent);letter-spacing:.8px}
+@media print{#docSheet .pf-project,#docSheet .classic-section,#docSheet .m-section,#docSheet .pf-section{break-inside:avoid-page}}
+
 /* PORTFOLIO TEMPLATE */
 .portfolio-sheet{font-family:'Inter',sans-serif;color:#111}
 .pf-hero{background:linear-gradient(135deg,#1e1b4b,#312e81);color:#fff;padding:36px 36px 30px;border-radius:8px 8px 0 0;margin:-48px -48px 32px}
@@ -940,11 +993,28 @@ body{
       <div class="preview-bar">
         <div class="preview-bar-left">
           <span class="preview-label">Preview</span>
-          <div class="tpl-pills" id="tplPills">
-            <button class="tpl-pill active" onclick="setTemplate('classic',this)">Classic</button>
-            <button class="tpl-pill" onclick="setTemplate('modern',this)">Modern</button>
-            <button class="tpl-pill" onclick="setTemplate('minimal',this)">Minimal</button>
-          </div>
+          <label class="template-picker-label" for="templateSelect">Style</label>
+          <select id="templateSelect" class="template-picker" aria-label="Document style" onchange="setTemplate(this.value,this)">
+            <optgroup label="Original styles">
+              <option value="classic">Classic</option>
+              <option value="modern">Modern</option>
+              <option value="minimal">Basic / Minimal</option>
+            </optgroup>
+            <optgroup label="Professional styles">
+              <option value="academic">Academic Scholar</option>
+              <option value="slate">Professional Slate</option>
+              <option value="editorial">Elegant Editorial</option>
+              <option value="technical">Technical Grid</option>
+              <option value="sidebar">Contemporary Sidebar</option>
+              <option value="correspondence">Formal Correspondence</option>
+              <option value="institutional">Institutional</option>
+              <option value="creative">Creative Portfolio</option>
+              <option value="monochrome">Clean Monochrome</option>
+              <option value="emerald">Emerald Professional</option>
+              <option value="burgundy">Burgundy Formal</option>
+              <option value="bluebook">Bluebook Executive</option>
+            </optgroup>
+          </select>
         </div>
         <div class="preview-actions">
           <button id="copyDocumentBtn" class="btn btn-sm btn-outline" onclick="copyDocument()">Copy</button>
@@ -1329,13 +1399,27 @@ function setOrgType(type, btn) {
   btn.classList.add('active');
   loadForm('org_letter');
 }
-async function setTemplate(tpl, btn) {
-  if (tpl === state.template) return;
-  if (state.resume && state.resume.name && !(await authorizeDocumentAction('template'))) return;
+const DOCUMENT_STYLE_IDS = new Set([
+  'classic','modern','minimal','academic','slate','editorial','technical','sidebar',
+  'correspondence','institutional','creative','monochrome','emerald','burgundy','bluebook'
+]);
+function applyDocumentStyle() {
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.dataset.docStyle = DOCUMENT_STYLE_IDS.has(state.template) ? state.template : 'classic';
+}
+async function setTemplate(tpl, picker) {
+  if (!DOCUMENT_STYLE_IDS.has(tpl) || tpl === state.template) return;
+  // Keep the existing credit authorization path for style changes on generated resumes.
+  if (state.resume && state.resume.name && !(await authorizeDocumentAction('template'))) {
+    if (picker && picker.tagName === 'SELECT') picker.value = state.template;
+    return;
+  }
   state.template = tpl;
-  document.querySelectorAll('.tpl-pill').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderResume(state.resume);
+  if (picker && picker.tagName === 'SELECT') picker.value = tpl;
+  applyDocumentStyle();
+  // Avoid replacing a portfolio or letter with a stale resume while changing appearance.
+  const sheet = document.getElementById('docSheet');
+  if (sheet && sheet.querySelector('.tpl-classic,.tpl-modern,.tpl-minimal')) renderResume(state.resume);
 }
 
 function loadForm(tool) {
@@ -1744,8 +1828,12 @@ function escapeHtml(s) { return esc(s); }
 
 function renderResume(d) {
   if (!d || !d.name) return;
-  if (state.template === 'classic') renderClassic(d);
-  else if (state.template === 'modern') renderModern(d);
+  applyDocumentStyle();
+  const layout = state.template === 'modern' || state.template === 'sidebar' ? 'modern'
+    : state.template === 'minimal' || state.template === 'monochrome' ? 'minimal'
+    : 'classic';
+  if (layout === 'classic') renderClassic(d);
+  else if (layout === 'modern') renderModern(d);
   else renderMinimal(d);
 }
 
@@ -1781,6 +1869,7 @@ function renderMinimal(d) {
 
 function renderPortfolio(d) {
   if (!d || !d.name) return;
+  applyDocumentStyle();
   const contacts = [d.contact?.email?`<span class="pf-contact-chip">✉ ${esc(d.contact.email)}</span>`:'',d.contact?.github?`<span class="pf-contact-chip">⌥ ${esc(d.contact.github)}</span>`:'',d.contact?.linkedin?`<span class="pf-contact-chip">🔗 ${esc(d.contact.linkedin)}</span>`:''].filter(Boolean).join('');
   const skillsHtml = (d.skills||[]).map(s=>`<span class="pf-skill"><span class="pf-skill-dot"></span>${esc(s.name||s)}</span>`).join('');
   const projHtml = (d.projects||[]).map(p=>`<div class="pf-project"><div class="pf-project-name">${esc(p.name)}</div><div class="pf-project-desc">${esc(p.description||'')}</div><div class="pf-tech-wrap">${(p.tech||[]).map(t=>`<span class="pf-tech">${esc(t)}</span>`).join('')}</div></div>`).join('');
@@ -1790,6 +1879,7 @@ function renderPortfolio(d) {
 
 function renderLetter(text, subject) {
   if (!text) return;
+  applyDocumentStyle();
   document.getElementById('docSheet').innerHTML = `<div class="letter-sheet">${subject?`<div class="letter-subject-line">${esc(subject)}</div>`:''}<pre>${esc(text)}</pre></div>`;
 }
 function renderOrgLetter(text, subject) { renderLetter(text, subject || ''); }
@@ -1968,6 +2058,9 @@ if ('serviceWorker' in navigator && location.protocol === 'https:') {
     });
   });
 }
+applyDocumentStyle();
+const initialTemplatePicker = document.getElementById('templateSelect');
+if (initialTemplatePicker) initialTemplatePicker.value = state.template;
 verifyReturnedPayment();
 </script>
 </body>
