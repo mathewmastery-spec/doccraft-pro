@@ -1543,6 +1543,7 @@ async function sendMessage() {
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
       else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
       else if (state.tool === 'org_letter') renderOrgLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
+      showGeneratedDocumentOnMobile();
     } else {
       addMsg(json.error || 'Something went wrong. Please try again.', 'ai');
       if (json.requires_topup || res.status === 402) toggleWalletPalette();
@@ -1606,6 +1607,7 @@ async function buildFromForm() {
   if (!access.success) return;
   renderResume(state.resume);
   setPreviewAccess(access.preview_only);
+  showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
   else showToast('Document generated successfully. Your credit was used.');
 }
@@ -1636,6 +1638,7 @@ async function buildPortfolioFromForm() {
   if (!access.success) return;
   renderPortfolio(state.portfolio);
   setPreviewAccess(access.preview_only);
+  showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
   else showToast('Portfolio generated successfully. Your credit was used.');
 }
@@ -1658,6 +1661,7 @@ async function generateCoverLetter() {
       if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
       renderLetter(letter, json.data?.subject || '');
       setPreviewAccess(json.preview_only);
+      showGeneratedDocumentOnMobile();
       refreshCreditBalance();
       if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
     } else {
@@ -1685,6 +1689,7 @@ async function generateOrgLetter() {
       if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
       renderOrgLetter(letter, json.data?.subject || '');
       setPreviewAccess(json.preview_only);
+      showGeneratedDocumentOnMobile();
       refreshCreditBalance();
       if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
     } else {
@@ -1855,6 +1860,18 @@ function showToast(msg) {
 function toggleMobileMenu() {
   const menu = document.getElementById('navTools');
   menu.style.display = menu.style.display === 'flex' ? '' : 'flex';
+}
+
+function showGeneratedDocumentOnMobile() {
+  // Generation already performed its normal wallet authorization. Switching views
+  // here is presentation-only and must not consume an additional preview credit.
+  if (!window.matchMedia('(max-width: 768px)').matches) return;
+  const layout = document.querySelector('.app-layout');
+  if (!layout) return;
+  layout.dataset.mobileView = 'preview';
+  document.querySelectorAll('.mobile-workspace-switch [data-view]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.view === 'preview'));
+  });
 }
 
 async function setMobileWorkspace(view) {
