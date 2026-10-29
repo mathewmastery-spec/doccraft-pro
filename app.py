@@ -320,9 +320,15 @@ def create_app(test_config=None):
         if email and ("@" not in email or len(email) > 254):
             return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
 
-        api_key = app.config.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+        ai_provider = str(app.config.get("AI_PROVIDER") or os.getenv("AI_PROVIDER") or "openai").strip().lower()
+        if ai_provider == "gemini":
+            api_key = app.config.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+        elif ai_provider == "openai":
+            api_key = app.config.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+        else:
+            return jsonify({"success": False, "error": "The AI provider is misconfigured."}), 503
         if not api_key:
-            return jsonify({"success": False, "error": "Generation is not configured yet."}), 503
+            return jsonify({"success": False, "error": "The selected AI provider is not configured."}), 503
 
         if request_key is None or not str(request_key).strip():
             request_key = str(uuid.uuid4())
@@ -412,18 +418,35 @@ def create_app(test_config=None):
             if extra.get("currentData"):
                 context = "\n\nExisting data to merge with:\n" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
 
-            client = OpenAI(api_key=api_key)
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPTS[doc_type]},
-                    {"role": "user", "content": user_input.strip() + context},
-                ],
-                temperature=0.7,
-                max_tokens=2000,
-                response_format={"type": "json_object"},
-            )
-            raw = (response.choices[0].message.content or "").strip()
+            if ai_provider == "gemini":
+                from google import genai
+                from google.genai import types
+
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model=str(app.config.get("GEMINI_MODEL") or os.getenv("GEMINI_MODEL") or "gemini-3.8-flash"),
+                    contents=user_input.strip() + context,
+                    config=types.GenerateContentConfig(
+                        system_instruction=SYSTEM_PROMPTS[doc_type],
+                        temperature=0.7,
+                        max_output_tokens=2000,
+                        response_mime_type="application/json",
+                    ),
+                )
+                raw = (response.text or "").strip()
+            else:
+                client = OpenAI(api_key=api_key)
+                response = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {"role": "system", "content": SYSTEM_PROMPTS[doc_type]},
+                        {"role": "user", "content": user_input.strip() + context},
+                    ],
+                    temperature=0.7,
+                    max_tokens=2000,
+                    response_format={"type": "json_object"},
+                )
+                raw = (response.choices[0].message.content or "").strip()
             if raw.startswith("```"):
                 raw = raw.split("\n", 1)[-1]
                 if raw.endswith("```"):
