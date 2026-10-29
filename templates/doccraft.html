@@ -1708,6 +1708,7 @@ async function sendMessage() {
         if (balanceValue) balanceValue.textContent = String(json.wallet_balance) + ' credits';
       }
       addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
+      showQualityNotes(json.data);
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
       else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
@@ -1730,6 +1731,11 @@ document.addEventListener('keydown', function(e) {
     sendMessage();
   }
 });
+
+function showQualityNotes(data) {
+  const notes = Array.isArray(data?.quality_notes) ? data.quality_notes.filter(note => typeof note === 'string' && note.trim()) : [];
+  if (notes.length) addMsg('Before official use, review: ' + notes.slice(0, 6).join('; '), 'ai');
+}
 
 function addMsg(text, who) {
   const msgs = document.getElementById('messages');
@@ -1823,7 +1829,7 @@ async function buildPortfolioFromForm() {
     document.getElementById('pf_title')?.focus();
     return;
   }
-  const skills = v('pf_skills').split(',').map(s => s.trim()).filter(Boolean).map(s => ({ name: s, level: 85 }));
+  const skills = v('pf_skills').split(',').map(s => s.trim()).filter(Boolean).map(s => ({ name: s, level: 50 }));
   const projects = v('pf_projects').split('\n').filter(Boolean).map(line => {
     const p = line.split('|').map(s => s.trim());
     return { name: p[0]||'', description: p[1]||'', tech: p[2] ? p[2].split(',').map(s=>s.trim()) : [] };
@@ -1861,6 +1867,7 @@ async function generateCoverLetter() {
       const letter = json.data?.full_letter || json.data?.letter_text || '';
       if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
       renderLetter(letter, json.data?.subject || '');
+      showQualityNotes(json.data);
       setPreviewAccess(json.preview_only);
       showGeneratedDocumentOnMobile();
       refreshCreditBalance();
@@ -1890,6 +1897,7 @@ async function generateOrgLetter() {
       const letter = json.data?.full_letter || json.data?.letter_text || '';
       if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
       renderOrgLetter(letter, json.data?.subject || '');
+      showQualityNotes(json.data);
       setPreviewAccess(json.preview_only);
       showGeneratedDocumentOnMobile();
       refreshCreditBalance();
