@@ -1497,6 +1497,7 @@ function loadForm(tool) {
         <div class="section-sep">Job Details</div>
         <div class="form-group"><label>Position Applied For</label><input id="cl_position" placeholder="Software Engineer"></div>
         <div class="form-group"><label>Company / Organisation</label><input id="cl_company" placeholder="Google UK"></div>
+        <div class="form-group"><label>Company Address or Job Reference <span class="form-hint">(optional)</span></label><input id="cl_company_address" placeholder="Postal address or vacancy reference"></div>
         <div class="form-row">
           <div class="form-group"><label>Hiring Manager</label><input id="cl_manager" placeholder="Ms. Johnson (optional)"></div>
           <div class="form-group"><label>Years of Experience</label><input id="cl_exp" placeholder="3"></div>
@@ -1807,9 +1808,10 @@ async function buildPortfolioFromForm() {
 
 async function generateCoverLetter() {
   let userInput = '';
-  if (state.clType === 'job') userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
-  else if (state.clType === 'internship') userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
-  else userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  if (state.clType === 'job') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Company address / vacancy reference: ${v('cl_company_address')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
+  else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
+  else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
   setPreviewLoading();
   try {
     const res = await fetch('/api/generate', {
@@ -1837,7 +1839,8 @@ async function generateCoverLetter() {
 
 async function generateOrgLetter() {
   const data = collectOrgData();
-  const userInput = `Letter type: ${state.orgType}. Details: ${JSON.stringify(data)}`;
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  const userInput = `Letter type: ${state.orgType}. Today's date: ${currentDate}. Use this as the letter date unless the user supplied a specific date. Details: ${JSON.stringify(data)}`;
   setPreviewLoading();
   try {
     const res = await fetch('/api/generate', {
