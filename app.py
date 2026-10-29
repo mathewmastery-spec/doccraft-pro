@@ -429,7 +429,7 @@ def create_app(test_config=None):
                     or "gemini-3.8-flash"
                 )
                 fallback_model = str(
-                    os.getenv("GEMINI_FALLBACK_MODEL") or "gemini-3.7-flash"
+                    os.getenv("GEMINI_FALLBACK_MODEL") or "gemini-3.6-flash"
                 )
 
                 def generate_with_model(model_name):
