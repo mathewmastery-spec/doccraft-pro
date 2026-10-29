@@ -460,7 +460,15 @@ def create_app(test_config=None):
                 from google import genai
                 from google.genai import types
 
-                client = genai.Client(api_key=api_key)
+                # Keep provider waits below Gunicorn's 120-second worker timeout.
+                # The explicit fallback below handles one primary-model 503.
+                client = genai.Client(
+                    api_key=api_key,
+                    http_options=types.HttpOptions(
+                        timeout=45000,
+                        retry_options=types.HttpRetryOptions(attempts=1),
+                    ),
+                )
                 primary_model = str(
                     app.config.get("GEMINI_MODEL")
                     or os.getenv("GEMINI_MODEL")
