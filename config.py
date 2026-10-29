@@ -31,7 +31,10 @@ class Config:
     SECRET_KEY = _secret_key()
     SQLALCHEMY_DATABASE_URI = _database_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").strip().lower()
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
     PAYMENT_PROVIDER = (os.getenv("PAYMENT_PROVIDER") or "paystack").lower()
     PAYMENT_PROVIDER_MODE = os.getenv("PAYMENT_PROVIDER_MODE", "sandbox")
     APP_BASE_URL = os.getenv("APP_BASE_URL", "http://localhost:5000")
