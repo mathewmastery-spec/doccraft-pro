@@ -1738,7 +1738,7 @@ async function buildFromForm() {
     document.getElementById('f_name')?.focus();
     return;
   }
-  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs'].some(id => v(id));
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees'].some(id => v(id));
   if (!hasDetails) {
     showToast('Add at least one detail, such as your summary, skills, experience, or education.');
     document.getElementById('f_summary')?.focus();
@@ -1891,7 +1891,21 @@ function renderClassic(d) {
   const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
   const interestHtml = (d.interests||[]).map(a=>`<span class="skill-tag">${esc(a)}</span>`).join('');
   const refereeHtml = (d.referees||[]).map(r=>`<div class="exp-item"><strong>${esc(r.name||'')}</strong>${r.title?` · ${esc(r.title)}`:''}${r.organisation?` — ${esc(r.organisation)}`:''}${r.contact?`<div>${esc(r.contact)}</div>`:''}</div>`).join('');
-  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}</div>`;
+  const academicSection = (title, items) => {
+    const values = Array.isArray(items) ? items : (items ? [items] : []);
+    const rows = values.map(item => {
+      if (typeof item === 'string') return `<li>${esc(item)}</li>`;
+      if (item && typeof item === 'object') {
+        const label = [item.title, item.name, item.degree, item.role, item.institution, item.year].filter(Boolean).join(' — ');
+        const detail = [item.description, item.abstract, item.details, item.publisher, item.date].filter(Boolean).join(' ');
+        return `<li>${esc(label || JSON.stringify(item))}${detail ? `<div>${esc(detail)}</div>` : ''}</li>`;
+      }
+      return '';
+    }).join('');
+    return rows ? `<div class="classic-section"><h2>${esc(title)}</h2><ul>${rows}</ul></div>` : '';
+  };
+  const academicHtml = academicSection('Research', d.research) + academicSection('Teaching Experience', d.teaching) + academicSection('Publications', d.publications) + academicSection('Presentations', d.presentations) + academicSection('Grants & Awards', d.grants_awards) + academicSection('Professional Memberships', d.professional_memberships);
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}${academicHtml}</div>`;
 }
 
 function renderModern(d) {
