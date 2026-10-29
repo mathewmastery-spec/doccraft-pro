@@ -1691,6 +1691,9 @@ async function sendMessage() {
         if (balanceValue) balanceValue.textContent = String(json.wallet_balance) + ' credits';
       }
       addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
+      if (Array.isArray(json.data?.quality_notes) && json.data.quality_notes.length) {
+        addMsg('Before official use, please review: ' + json.data.quality_notes.slice(0, 6).join('; '), 'ai');
+      }
       if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
       else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
       else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
