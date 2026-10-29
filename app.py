@@ -371,6 +371,12 @@ def create_app(test_config=None):
             api_key = app.config.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
         elif ai_provider == "openai":
             api_key = app.config.get("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY")
+        elif ai_provider == "grok":
+            api_key = (
+                app.config.get("GROK_API_KEY")
+                or os.getenv("GROK_API_KEY")
+                or os.getenv("XAI_API_KEY")
+            )
         else:
             return jsonify({"success": False, "error": "The AI provider is misconfigured."}), 503
         if not api_key:
@@ -516,9 +522,18 @@ def create_app(test_config=None):
 
                 raw = (response.text or "").strip()
             else:
-                client = OpenAI(api_key=api_key)
+                if ai_provider == "grok":
+                    model_name = str(
+                        app.config.get("GROK_MODEL")
+                        or os.getenv("GROK_MODEL")
+                        or "grok-4.7"
+                    )
+                    client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
+                else:
+                    model_name = "gpt-4o-mini"
+                    client = OpenAI(api_key=api_key)
                 response = client.chat.completions.create(
-                    model="gpt-4o-mini",
+                    model=model_name,
                     messages=[
                         {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD},
                         {"role": "user", "content": user_input.strip() + context},
