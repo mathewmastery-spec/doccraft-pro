@@ -1473,18 +1473,30 @@ function loadForm(tool) {
       <div class="form-group"><label>Skills <span class="form-hint">(comma-separated)</span></label><input id="f_skills" placeholder="Python, React, SQL, Communication"></div>
       <div class="form-group"><label>Languages</label><input id="f_languages" placeholder="English (Fluent), French (B2)"></div>
       <div class="section-sep">Experience</div>
-      <div class="form-group"><label>Experience <span class="form-hint">Title | Company | Period | Description (one per line)</span></label><textarea id="f_experience" rows="4" placeholder="Software Engineer | Google | 2022–2023 | Built ML pipelines reducing latency by 40%"></textarea></div>
+      <div class="form-group"><label>Experience <span class="form-hint">Title | Employer | Period | Location (optional) | Responsibilities (separate bullets with ;, one role per line)</span></label><textarea id="f_experience" rows="4" placeholder="Network Technician | Example Ltd | 2023–2025 | Thika, Kenya | Installed fibre links; resolved network faults; documented maintenance"></textarea></div>
       <div class="section-sep">Education</div>
-      <div class="form-group"><label>Education <span class="form-hint">Degree | Institution | Year (one per line)</span></label><textarea id="f_education" rows="3" placeholder="BSc Computer Science | UCL | 2024"></textarea></div>
+      <div class="form-group"><label>Education <span class="form-hint">Qualification | Institution | Year | Grade (optional), one per line</span></label><textarea id="f_education" rows="3" placeholder="Diploma in Telecommunications | Thika Technical Training Institute | 2026 | Credit"></textarea></div>
       <div class="section-sep">Extra</div>
       <div class="form-group"><label>Certifications</label><input id="f_certs" placeholder="AWS Certified, Google Analytics"></div>
       <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | Python, Flask"></textarea></div>
       <div class="form-group"><label>Achievements <span class="form-hint">(one per line; include evidence where possible)</span></label><textarea id="f_achievements" rows="2" placeholder="Award, measurable result, leadership or contribution"></textarea></div>
+      <div id="academicCvFields" style="display:none">
+        <div class="section-sep">Academic & Research Record</div>
+        <div class="form-group"><label>Research Interests / Experience <span class="form-hint">(one item per line)</span></label><textarea id="f_research" rows="2" placeholder="Research area, methods, or relevant experience"></textarea></div>
+        <div class="form-group"><label>Teaching, Training & Academic Service <span class="form-hint">(one item per line)</span></label><textarea id="f_teaching" rows="2" placeholder="Teaching, tutoring, mentoring, laboratory or academic service"></textarea></div>
+        <div class="form-group"><label>Publications <span class="form-hint">(full citation, one per line)</span></label><textarea id="f_publications" rows="2" placeholder="Author(s), title, publication, year, DOI/URL if available"></textarea></div>
+        <div class="form-group"><label>Presentations <span class="form-hint">(one per line)</span></label><textarea id="f_presentations" rows="2" placeholder="Title, event, location, date"></textarea></div>
+        <div class="form-group"><label>Grants & Awards <span class="form-hint">(one per line)</span></label><textarea id="f_grants_awards" rows="2" placeholder="Award/grant, awarding body, year"></textarea></div>
+        <div class="form-group"><label>Professional Memberships <span class="form-hint">(one per line)</span></label><textarea id="f_memberships" rows="2" placeholder="Professional body and membership grade, if applicable"></textarea></div>
+        <p class="form-hint">Only include verified academic work. Leave fields blank if not applicable; do not invent publications or awards.</p>
+      </div>
       <div class="form-group"><label>Professional Interests <span class="form-hint">(optional, comma-separated)</span></label><input id="f_interests" placeholder="Telecommunications, network automation"></div>
       <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
       <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
-    `;
+    
+    const academicFields = document.getElementById('academicCvFields');
+    if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';`;
   } else if (tool === 'cover_letter') {
     const clForms = {
       job: `
@@ -1738,7 +1750,7 @@ async function buildFromForm() {
     document.getElementById('f_name')?.focus();
     return;
   }
-  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees'].some(id => v(id));
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees','f_research','f_teaching','f_publications','f_presentations','f_grants_awards','f_memberships'].some(id => v(id));
   if (!hasDetails) {
     showToast('Add at least one detail, such as your summary, skills, experience, or education.');
     document.getElementById('f_summary')?.focus();
@@ -1747,13 +1759,16 @@ async function buildFromForm() {
   const skills = v('f_skills').split(',').map(s => s.trim()).filter(Boolean);
   const langs = v('f_languages').split(',').map(s => s.trim()).filter(Boolean);
   const certs = v('f_certs').split(',').map(s => s.trim()).filter(Boolean);
-  const experience = v('f_experience').split('\n').filter(Boolean).map(line => {
+  const experience = v('f_experience').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
-    return { title: parts[0]||'', company: parts[1]||'', period: parts[2]||'', bullets: parts[3] ? [parts[3]] : [] };
+    const hasLocationColumn = parts.length >= 5;
+    const detailText = hasLocationColumn ? parts.slice(4).join(' | ') : parts.slice(3).join(' | ');
+    const bullets = detailText.split(/;|•/).map(item => item.trim()).filter(Boolean);
+    return { title: parts[0]||'', company: parts[1]||'', period: parts[2]||'', location: hasLocationColumn ? (parts[3]||'') : '', bullets };
   });
-  const education = v('f_education').split('\n').filter(Boolean).map(line => {
+  const education = v('f_education').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
-    return { degree: parts[0]||'', institution: parts[1]||'', year: parts[2]||'' };
+    return { degree: parts[0]||'', institution: parts[1]||'', year: parts[2]||'', grade: parts[3]||'' };
   });
   const projects = v('f_projects').split('\n').filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
@@ -1765,7 +1780,18 @@ async function buildFromForm() {
     const p = line.split('|').map(s => s.trim());
     return { name: p[0] || '', title: p[1] || '', organisation: p[2] || '', contact: p[3] || '' };
   });
-  state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects, achievements, interests, referees };
+  const lines = id => v(id).split('\n').map(item => item.trim()).filter(Boolean);
+  state.resume = {
+    name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'),
+    linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'),
+    skills, languages: langs, certifications: certs, experience, education, projects,
+    achievements, interests, referees,
+    ...(state.subType === 'academic_cv' ? {
+      research: lines('f_research'), teaching: lines('f_teaching'),
+      publications: lines('f_publications'), presentations: lines('f_presentations'),
+      grants_awards: lines('f_grants_awards'), professional_memberships: lines('f_memberships')
+    } : {})
+  };
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
   if (!access.success) return;
   renderResume(state.resume);
@@ -1773,6 +1799,17 @@ async function buildFromForm() {
   showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
   else showToast('Document generated successfully. Your credit was used.');
+  const missing = [];
+  if (!state.resume.email && !state.resume.phone) missing.push('at least one reliable contact method');
+  if (!state.resume.summary) missing.push('a tailored professional profile');
+  if (!state.resume.education.length) missing.push('education or relevant training');
+  if (!state.resume.skills.length) missing.push('role-relevant skills');
+  if (!state.resume.experience.length && !state.resume.projects.length) missing.push('experience, practical projects, or placements');
+  if (state.subType === 'academic_cv') {
+    if (!state.resume.research.length) missing.push('research interests or experience, if relevant');
+    if (!state.resume.publications.length) missing.push('publications, or confirmation none are applicable');
+  }
+  if (missing.length) addMsg('Completeness review before official submission: consider adding or verifying ' + missing.join('; ') + '. Do not invent missing facts.', 'ai');
 }
 
 async function buildPortfolioFromForm() {
