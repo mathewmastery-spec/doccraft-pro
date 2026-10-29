@@ -544,13 +544,19 @@ def create_app(test_config=None):
                 else:
                     model_name = "gpt-4o-mini"
                     client = OpenAI(api_key=api_key)
+                # Groq's GPT-OSS models require temperature=1; sending 0.7
+                # causes provider-side 400 errors that surfaced as generation 502s.
+                generation_temperature = (
+                    1.0 if ai_provider == "groq" and model_name.startswith("openai/gpt-oss")
+                    else 0.7
+                )
                 response = client.chat.completions.create(
                     model=model_name,
                     messages=[
                         {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD},
                         {"role": "user", "content": user_input.strip() + context},
                     ],
-                    temperature=0.7,
+                    temperature=generation_temperature,
                     max_tokens=2000,
                     response_format={"type": "json_object"},
                 )
