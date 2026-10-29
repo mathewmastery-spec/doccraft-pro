@@ -535,7 +535,7 @@ def create_app(test_config=None):
                     model_name = str(
                         app.config.get("GROQ_MODEL")
                         or os.getenv("GROQ_MODEL")
-                        or "llama-3.3-70b-versatile"
+                        or "openai/gpt-oss-120b"
                     )
                     client = OpenAI(
                         api_key=api_key,
