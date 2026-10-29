@@ -468,8 +468,8 @@ def create_app(test_config=None):
                 from google import genai
                 from google.genai import types
 
-                # Keep provider waits below Gunicorn's 120-second worker timeout.
-                # The explicit fallback below handles one primary-model 503.
+                # Bound each provider call and use the fallback model for temporary
+                # overloads or provider-side deadline failures (503/504).
                 client = genai.Client(
                     api_key=api_key,
                     http_options=types.HttpOptions(
@@ -501,10 +501,10 @@ def create_app(test_config=None):
                 try:
                     response = generate_with_model(primary_model)
                 except Exception as provider_error:
-                    # A temporary Gemini 503 can affect one model while another
-                    # stable Flash model remains available. Retry only that case.
+                    # A temporary overload (503) or provider-side deadline (504)
+                    # can affect one model while the fallback remains available.
                     status_code = getattr(provider_error, "status_code", None)
-                    if status_code != 503 or not fallback_model or fallback_model == primary_model:
+                    if status_code not in (503, 504) or not fallback_model or fallback_model == primary_model:
                         raise
                     app.logger.warning(
                         "Gemini model %s returned 503; retrying once with fallback model %s",
