@@ -1494,7 +1494,9 @@ function loadForm(tool) {
       <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
       <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
-    `;
+    
+    const academicFields = document.getElementById('academicCvFields');
+    if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';`;
   } else if (tool === 'cover_letter') {
     const clForms = {
       job: `
@@ -1797,6 +1799,17 @@ async function buildFromForm() {
   showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
   else showToast('Document generated successfully. Your credit was used.');
+  const missing = [];
+  if (!state.resume.email && !state.resume.phone) missing.push('at least one reliable contact method');
+  if (!state.resume.summary) missing.push('a tailored professional profile');
+  if (!state.resume.education.length) missing.push('education or relevant training');
+  if (!state.resume.skills.length) missing.push('role-relevant skills');
+  if (!state.resume.experience.length && !state.resume.projects.length) missing.push('experience, practical projects, or placements');
+  if (state.subType === 'academic_cv') {
+    if (!state.resume.research.length) missing.push('research interests or experience, if relevant');
+    if (!state.resume.publications.length) missing.push('publications, or confirmation none are applicable');
+  }
+  if (missing.length) addMsg('Completeness review before official submission: consider adding or verifying ' + missing.join('; ') + '. Do not invent missing facts.', 'ai');
 }
 
 async function buildPortfolioFromForm() {
