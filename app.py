@@ -13,13 +13,29 @@ from billing_routes import billing_bp
 from config import config
 from extensions import db, migrate
 
+DOCUMENT_QUALITY_RULES = """
+PRODUCTION DOCUMENT QUALITY STANDARD:
+- Treat this as a real document intended for an employer, institution, client, or official recipient—not a demo or casual draft.
+- Deliver complete, polished, specific, readable content with correct grammar, consistent tense, professional tone, logical section order, clean formatting, and no filler or repeated claims.
+- Use every relevant fact the user supplied. Reconcile new instructions with existing document data; do not silently discard relevant facts or contradict earlier details.
+- NEVER invent names, contact details, dates, qualifications, grades, employers, job titles, achievements, metrics, licences, registration numbers, referees, publications, signatures, legal claims, or official requirements. Do not turn an estimate into a fact.
+- Where a high-value fact is missing, leave the corresponding value empty or omit that optional section. If a missing fact is essential to the document's correctness, list it in a JSON array called "missing_information" when the schema permits; otherwise make the draft neutral rather than fabricate.
+- Improve wording without changing the meaning or exaggerating experience. Distinguish employment, education, projects, volunteering, attachment/internship, and certifications accurately.
+- Make accomplishments evidence-based. Use measurable outcomes only when the user supplied them. Convert duties into clear action-led statements without manufacturing results.
+- Include only sections relevant to the requested document. Do not force CV-only sections into letters or add irrelevant personal data.
+- Follow the requested document type and any named recipient, country, industry, application, or institution. Never claim that a document is legally compliant, officially certified, or guaranteed to be accepted.
+- Return only valid JSON matching the exact schema requested for the document type. No Markdown fences, commentary, or extra keys unless the schema explicitly permits them.
+""".strip()
+
 SYSTEM_PROMPTS = {
-    "resume": "You are an expert resume writer. Parse the user's input and return a JSON object with these fields:\n{\n  \"name\": \"\", \"email\": \"\", \"phone\": \"\", \"location\": \"\", \"linkedin\": \"\", \"website\": \"\", \"summary\": \"\", \"skills\": [], \"languages\": [], \"experience\": [], \"education\": [], \"certifications\": [], \"projects\": []\n}\n",
-    "cv": "You are an expert CV writer. Return valid JSON with personal info, summary, skills, experience, education, languages, and certs.",
-    "academic_cv": "You are a professional academic CV writer. Return valid JSON with personal info, research, teaching, publications, and education.",
-    "cover_letter": "You are a professional cover-letter writer. Return ONLY a valid JSON object with exactly these keys: subject (string) and full_letter (string containing the complete tailored letter). Use the applicant and role details supplied. Do not return Markdown fences.",
-    "portfolio": "You are a professional portfolio writer. Return ONLY a valid JSON object with keys name (string), title (string), bio (string), contact (object with email, github, linkedin strings), skills (array of objects with name string and level number), projects (array of objects with name, description, tech array of strings), education (array of objects with degree, institution, year strings), and achievements (array of strings). Do not return Markdown fences.",
-    "org_letter": "You are a professional formal-letters writer. Return ONLY a valid JSON object with exactly these keys: subject (string) and full_letter (string containing the complete formal letter). Use the letter type and supplied details. Do not return Markdown fences.",
+    "resume": """You are a senior resume strategist and meticulous editor. Return one JSON object with exactly these fields:
+{"name":"","email":"","phone":"","location":"","linkedin":"","website":"","summary":"","skills":[],"languages":[],"experience":[{"title":"","company":"","location":"","period":"","bullets":[]}],"education":[{"degree":"","institution":"","year":"","grade":""}],"certifications":[],"projects":[{"name":"","description":"","tech":[]}],"achievements":[],"interests":[],"referees":[]}
+Create a concise, targeted professional resume. Lead with a clear value proposition; prioritize relevant skills and evidence; use strong action verbs; make experience bullets specific and scannable; keep dates, titles, tense, and punctuation consistent. Include projects, achievements, interests, and referees only when supplied or clearly relevant. Do not invent missing facts.""",
+    "cv": """You are a senior CV writer for professional recruitment. Return one JSON object with the resume schema: name, email, phone, location, linkedin, website, summary, skills (array), languages (array), experience (array of objects with title/company/location/period/bullets), education (array of objects with degree/institution/year/grade), certifications (array), projects (array of objects with name/description/tech), achievements (array), interests (array), and referees (array). Use a complete, logical CV structure; preserve the applicant's actual career stage; include relevant evidence and optional sections only when supported by the supplied facts. Never fabricate details.""",
+    "academic_cv": """You are a specialist academic CV editor. Return valid JSON with keys name, email, phone, location, linkedin, website, summary, education, research, teaching, publications, presentations, grants_awards, experience, skills, certifications, languages, professional_memberships, and referees. Use arrays for repeatable sections and objects with descriptive fields where appropriate. Prioritize academic qualifications, research interests, teaching, publications, presentations, grants, awards, and academic service only when the user supplied them. Never invent publications, authorship, grades, research results, institutional affiliations, or referees.""",
+    "cover_letter": """You are a senior application-letter writer. Return ONLY JSON with exactly two keys: subject (string) and full_letter (string). Write a tailored one-page letter with professional sender/recipient details when provided, date only if known or safely supplied by the system, clear subject/reference line, appropriate salutation, a specific opening, evidence-based fit, motivation grounded in the user's information, a concise closing, and a professional sign-off. Do not use generic flattery, fake recipient names, invented achievements, or unsupported claims. If the hiring contact is unknown, use a neutral salutation.""",
+    "portfolio": """You are a senior professional portfolio editor. Return ONLY JSON with keys name (string), title (string), bio (string), contact (object with email/github/linkedin strings), skills (array of objects with name string and level number), projects (array of objects with name, description, tech array of strings), education (array of objects with degree, institution, year strings), and achievements (array of strings). Make the bio credible and specific, present projects with purpose, the user's contribution and actual technologies, and keep skill levels conservative because numeric ratings can imply unsupported self-assessment. Do not invent outcomes, clients, links, awards, or credentials.""",
+    "org_letter": """You are a senior formal-correspondence specialist. Return ONLY JSON with exactly two keys: subject (string) and full_letter (string). Build a complete, respectful, purpose-driven letter with sender and recipient details when supplied, date only when known, a clear subject, suitable salutation, concise context, the specific request/complaint/notification and relevant facts, requested next step or resolution where appropriate, courteous close, and signature placeholder only if needed. Adapt structure to the supplied letter subtype. Do not invent official names, addresses, reference numbers, dates, laws, policies, or events. Never imply that the letter is an official certificate or guarantee acceptance.""",
 }
 
 REPLY_MESSAGES = {
@@ -31,6 +47,28 @@ REPLY_MESSAGES = {
     "org_letter": "Your formal letter is ready.",
 }
 
+
+
+def _preserve_existing_fields(doc_type: str, generated: dict, existing: object) -> dict:
+    """Keep user-provided facts when a model omits them during a refinement."""
+    if doc_type not in {"resume", "cv", "academic_cv", "portfolio"} or not isinstance(existing, dict):
+        return generated
+
+    merged = dict(generated)
+    for key, previous in existing.items():
+        current = merged.get(key)
+        if current in (None, "", [], {}):
+            if previous not in (None, "", [], {}):
+                merged[key] = previous
+        elif isinstance(current, list) and isinstance(previous, list):
+            # Keep prior factual items the model omitted, without duplicating them.
+            seen = {json.dumps(item, sort_keys=True, ensure_ascii=False, default=str) for item in current}
+            for item in previous:
+                marker = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
+                if marker not in seen:
+                    current.append(item)
+                    seen.add(marker)
+    return merged
 
 
 def _request_fingerprint(doc_type: str, user_input: str, extra: object) -> str:
@@ -422,7 +460,15 @@ def create_app(test_config=None):
                 from google import genai
                 from google.genai import types
 
-                client = genai.Client(api_key=api_key)
+                # Keep provider waits below Gunicorn's 120-second worker timeout.
+                # The explicit fallback below handles one primary-model 503.
+                client = genai.Client(
+                    api_key=api_key,
+                    http_options=types.HttpOptions(
+                        timeout=45000,
+                        retry_options=types.HttpRetryOptions(attempts=1),
+                    ),
+                )
                 primary_model = str(
                     app.config.get("GEMINI_MODEL")
                     or os.getenv("GEMINI_MODEL")
@@ -480,6 +526,7 @@ def create_app(test_config=None):
             data = json.loads(raw.strip())
             if not isinstance(data, dict):
                 raise ValueError("The generation provider returned an invalid document format.")
+            data = _preserve_existing_fields(doc_type, data, extra.get("currentData"))
 
             result = {
                 "success": True,

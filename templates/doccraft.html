@@ -1478,7 +1478,11 @@ function loadForm(tool) {
       <div class="form-group"><label>Education <span class="form-hint">Degree | Institution | Year (one per line)</span></label><textarea id="f_education" rows="3" placeholder="BSc Computer Science | UCL | 2024"></textarea></div>
       <div class="section-sep">Extra</div>
       <div class="form-group"><label>Certifications</label><input id="f_certs" placeholder="AWS Certified, Google Analytics"></div>
-      <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | React, Flask"></textarea></div>
+      <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | Python, Flask"></textarea></div>
+      <div class="form-group"><label>Achievements <span class="form-hint">(one per line; include evidence where possible)</span></label><textarea id="f_achievements" rows="2" placeholder="Award, measurable result, leadership or contribution"></textarea></div>
+      <div class="form-group"><label>Professional Interests <span class="form-hint">(optional, comma-separated)</span></label><input id="f_interests" placeholder="Telecommunications, network automation"></div>
+      <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
+      <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
     `;
   } else if (tool === 'cover_letter') {
@@ -1493,6 +1497,7 @@ function loadForm(tool) {
         <div class="section-sep">Job Details</div>
         <div class="form-group"><label>Position Applied For</label><input id="cl_position" placeholder="Software Engineer"></div>
         <div class="form-group"><label>Company / Organisation</label><input id="cl_company" placeholder="Google UK"></div>
+        <div class="form-group"><label>Company Address or Job Reference <span class="form-hint">(optional)</span></label><input id="cl_company_address" placeholder="Postal address or vacancy reference"></div>
         <div class="form-row">
           <div class="form-group"><label>Hiring Manager</label><input id="cl_manager" placeholder="Ms. Johnson (optional)"></div>
           <div class="form-group"><label>Years of Experience</label><input id="cl_exp" placeholder="3"></div>
@@ -1678,7 +1683,7 @@ async function sendMessage() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.resume } })
+      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.tool === 'portfolio' ? state.portfolio : state.resume } })
     });
     const json = await res.json();
     removeSpinner();
@@ -1733,7 +1738,7 @@ async function buildFromForm() {
     document.getElementById('f_name')?.focus();
     return;
   }
-  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs'].some(id => v(id));
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees'].some(id => v(id));
   if (!hasDetails) {
     showToast('Add at least one detail, such as your summary, skills, experience, or education.');
     document.getElementById('f_summary')?.focus();
@@ -1754,7 +1759,13 @@ async function buildFromForm() {
     const parts = line.split('|').map(s => s.trim());
     return { name: parts[0]||'', description: parts[1]||'', tech: parts[2] ? parts[2].split(',').map(s=>s.trim()) : [] };
   });
-  state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects };
+  const achievements = v('f_achievements').split('\n').map(s => s.trim()).filter(Boolean);
+  const interests = v('f_interests').split(',').map(s => s.trim()).filter(Boolean);
+  const referees = v('f_referees').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+    const p = line.split('|').map(s => s.trim());
+    return { name: p[0] || '', title: p[1] || '', organisation: p[2] || '', contact: p[3] || '' };
+  });
+  state.resume = { name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'), linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'), skills, languages: langs, certifications: certs, experience, education, projects, achievements, interests, referees };
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
   if (!access.success) return;
   renderResume(state.resume);
@@ -1797,9 +1808,10 @@ async function buildPortfolioFromForm() {
 
 async function generateCoverLetter() {
   let userInput = '';
-  if (state.clType === 'job') userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
-  else if (state.clType === 'internship') userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
-  else userInput = `Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  if (state.clType === 'job') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Company address / vacancy reference: ${v('cl_company_address')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
+  else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
+  else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
   setPreviewLoading();
   try {
     const res = await fetch('/api/generate', {
@@ -1827,7 +1839,8 @@ async function generateCoverLetter() {
 
 async function generateOrgLetter() {
   const data = collectOrgData();
-  const userInput = `Letter type: ${state.orgType}. Details: ${JSON.stringify(data)}`;
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  const userInput = `Letter type: ${state.orgType}. Today's date: ${currentDate}. Use this as the letter date unless the user supplied a specific date. Details: ${JSON.stringify(data)}`;
   setPreviewLoading();
   try {
     const res = await fetch('/api/generate', {
@@ -1874,8 +1887,25 @@ function renderClassic(d) {
   const eduHtml = (d.education||[]).map(e=>`<div class="edu-item"><div class="edu-degree">${esc(e.degree)}</div><div class="edu-inst">${esc(e.institution||'')}${e.grade?' · '+esc(e.grade):''}</div><div class="edu-year">${esc(e.year||'')}</div></div>`).join('');
   const certHtml = (d.certifications||[]).map(c=>`<span class="skill-tag">${esc(c)}</span>`).join('');
   const langHtml = (d.languages||[]).map(l=>`<span class="skill-tag">${esc(l)}</span>`).join('');
-  const projHtml = (d.projects||[]).map(p=>`<div class="exp-item"><div class="exp-title-row"><span class="exp-title">${esc(p.name)}</span></div><div class="exp-company">${(p.tech||[]).join(', ')}</div><p style="font-size:13px;color:#555;margin-top:4px">${esc(p.description||'')}</p></div>`).join('');
-  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Skills</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Projects</h2>${projHtml}</div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}  </div>`;
+  const projHtml = (d.projects||[]).map(p=>`<div class="exp-item"><div class="exp-title-row"><span class="exp-title">${esc(p.name)}</span></div><div class="exp-company">${(p.tech||[]).map(esc).join(', ')}</div><p style="font-size:13px;color:#555;margin-top:4px">${esc(p.description||'')}</p></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const interestHtml = (d.interests||[]).map(a=>`<span class="skill-tag">${esc(a)}</span>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<div class="exp-item"><strong>${esc(r.name||'')}</strong>${r.title?` · ${esc(r.title)}`:''}${r.organisation?` — ${esc(r.organisation)}`:''}${r.contact?`<div>${esc(r.contact)}</div>`:''}</div>`).join('');
+  const academicSection = (title, items) => {
+    const values = Array.isArray(items) ? items : (items ? [items] : []);
+    const rows = values.map(item => {
+      if (typeof item === 'string') return `<li>${esc(item)}</li>`;
+      if (item && typeof item === 'object') {
+        const label = [item.title, item.name, item.degree, item.role, item.institution, item.year].filter(Boolean).join(' — ');
+        const detail = [item.description, item.abstract, item.details, item.publisher, item.date].filter(Boolean).join(' ');
+        return `<li>${esc(label || JSON.stringify(item))}${detail ? `<div>${esc(detail)}</div>` : ''}</li>`;
+      }
+      return '';
+    }).join('');
+    return rows ? `<div class="classic-section"><h2>${esc(title)}</h2><ul>${rows}</ul></div>` : '';
+  };
+  const academicHtml = academicSection('Research', d.research) + academicSection('Teaching Experience', d.teaching) + academicSection('Publications', d.publications) + academicSection('Presentations', d.presentations) + academicSection('Grants & Awards', d.grants_awards) + academicSection('Professional Memberships', d.professional_memberships);
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}${academicHtml}</div>`;
 }
 
 function renderModern(d) {
@@ -1885,7 +1915,10 @@ function renderModern(d) {
   const expHtml = (d.experience||[]).map(e=>`<div class="m-exp-item"><div class="m-exp-head"><span class="m-exp-title">${esc(e.title)}</span><span class="m-exp-period">${esc(e.period||'')}</span></div><div class="m-exp-company">${esc(e.company||'')}</div><ul class="m-bullets">${(e.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>`).join('');
   const eduHtml = (d.education||[]).map(e=>`<div class="m-edu-item"><div class="m-edu-degree">${esc(e.degree)}</div><div class="m-edu-inst">${esc(e.institution||'')} ${e.year?'· '+esc(e.year):''}</div></div>`).join('');
   const certHtml = (d.certifications||[]).map(c=>`<span class="m-tag">${esc(c)}</span>`).join('');
-  document.getElementById('docSheet').innerHTML = `<div class="tpl-modern"><div class="modern-left"><h1>${esc(d.name)}</h1><div class="m-role">${esc(d.summary||'').substring(0,80)}</div>${contactHtml}${skillsHtml?`<h3>Skills</h3>${skillsHtml}`:''}${langHtml?`<h3>Languages</h3>${langHtml}`:''}</div><div class="modern-right">${d.summary?`<div class="m-section"><h2>Profile</h2><p class="m-summary">${esc(d.summary)}</p></div>`:''}${expHtml?`<div class="m-section"><h2>Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="m-section"><h2>Education</h2>${eduHtml}</div>`:''}${certHtml?`<div class="m-section"><h2>Certifications</h2><div class="m-tags">${certHtml}</div></div>`:''}</div></div>`;
+  const projectHtml = (d.projects||[]).map(p=>`<div class="m-exp-item"><strong>${esc(p.name||'')}</strong><p>${esc(p.description||'')}</p><small>${(p.tech||[]).map(esc).join(', ')}</small></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<div class="m-exp-item"><strong>${esc(r.name||'')}</strong><div>${esc(r.title||'')}${r.organisation?` · ${esc(r.organisation)}`:''}</div>${r.contact?`<div>${esc(r.contact)}</div>`:''}</div>`).join('');
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-modern"><div class="modern-left"><h1>${esc(d.name)}</h1><div class="m-role">${esc(d.summary||'').substring(0,80)}</div>${contactHtml}${skillsHtml?`<h3>Core Skills</h3>${skillsHtml}`:''}${langHtml?`<h3>Languages</h3>${langHtml}`:''}${(d.interests||[]).length?`<h3>Interests</h3><p>${(d.interests||[]).map(esc).join(', ')}</p>`:''}</div><div class="modern-right">${d.summary?`<div class="m-section"><h2>Professional Profile</h2><p class="m-summary">${esc(d.summary)}</p></div>`:''}${expHtml?`<div class="m-section"><h2>Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="m-section"><h2>Education</h2>${eduHtml}</div>`:''}${projectHtml?`<div class="m-section"><h2>Projects</h2>${projectHtml}</div>`:''}${achievementHtml?`<div class="m-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="m-section"><h2>Certifications & Training</h2><div class="m-tags">${certHtml}</div></div>`:''}${refereeHtml?`<div class="m-section"><h2>Referees</h2>${refereeHtml}</div>`:''}</div></div>`;
 }
 
 function renderMinimal(d) {
@@ -1894,7 +1927,10 @@ function renderMinimal(d) {
   const langHtml = (d.languages||[]).map(l=>`<span class="min-skill">${esc(l)}</span>`).join('');
   const expHtml = (d.experience||[]).map(e=>`<div class="min-exp-item"><div class="min-period">${esc(e.period||'')}</div><div class="min-exp-body"><div class="min-exp-title">${esc(e.title)}</div><div class="min-exp-company">${esc(e.company||'')}</div><div class="min-exp-desc">${(e.bullets||[]).join(' · ')}</div></div></div>`).join('');
   const eduHtml = (d.education||[]).map(e=>`<div class="min-exp-item"><div class="min-period">${esc(e.year||'')}</div><div class="min-exp-body"><div class="min-exp-title">${esc(e.degree)}</div><div class="min-exp-company">${esc(e.institution||'')}</div></div></div>`).join('');
-  document.getElementById('docSheet').innerHTML = `<div class="tpl-minimal"><div class="min-head"><h1>${esc(d.name)}</h1><div class="min-contact">${contact}</div></div>${d.summary?`<p class="min-summary">${esc(d.summary)}</p>`:''}${skillsHtml?`<div class="min-section"><div class="min-section-title">Skills</div><div class="min-skills">${skillsHtml}</div></div>`:''}${expHtml?`<div class="min-section"><div class="min-section-title">Experience</div>${expHtml}</div>`:''}${eduHtml?`<div class="min-section"><div class="min-section-title">Education</div>${eduHtml}</div>`:''}${langHtml?`<div class="min-section"><div class="min-section-title">Languages</div><div class="min-skills">${langHtml}</div></div>`:''}</div>`;
+  const projectHtml = (d.projects||[]).map(p=>`<div class="min-exp-item"><div class="min-exp-body"><div class="min-exp-title">${esc(p.name||'')}</div><div class="min-exp-company">${esc((p.tech||[]).map(esc).join(', '))}</div><p>${esc(p.description||'')}</p></div></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<p><strong>${esc(r.name||'')}</strong>${r.title?` · ${esc(r.title)}`:''}${r.organisation?` — ${esc(r.organisation)}`:''}${r.contact?` · ${esc(r.contact)}`:''}</p>`).join('');
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-minimal"><div class="min-head"><h1>${esc(d.name)}</h1><div class="min-contact">${contact}</div></div>${d.summary?`<p class="min-summary">${esc(d.summary)}</p>`:''}${skillsHtml?`<div class="min-section"><div class="min-section-title">Core Skills</div><div class="min-skills">${skillsHtml}</div></div>`:''}${expHtml?`<div class="min-section"><div class="min-section-title">Experience</div>${expHtml}</div>`:''}${eduHtml?`<div class="min-section"><div class="min-section-title">Education</div>${eduHtml}</div>`:''}${projectHtml?`<div class="min-section"><div class="min-section-title">Projects</div>${projectHtml}</div>`:''}${achievementHtml?`<div class="min-section"><div class="min-section-title">Achievements</div><ul>${achievementHtml}</ul></div>`:''}${langHtml?`<div class="min-section"><div class="min-section-title">Languages</div><div class="min-skills">${langHtml}</div></div>`:''}${(d.certifications||[]).length?`<div class="min-section"><div class="min-section-title">Certifications & Training</div><p>${(d.certifications||[]).map(esc).join(', ')}</p></div>`:''}${(d.interests||[]).length?`<div class="min-section"><div class="min-section-title">Professional Interests</div><p>${(d.interests||[]).map(esc).join(', ')}</p></div>`:''}${refereeHtml?`<div class="min-section"><div class="min-section-title">Referees</div>${refereeHtml}</div>`:''}</div>`;
 }
 
 function renderPortfolio(d) {

@@ -32,7 +32,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = _database_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Validate pooled connections before reuse and recycle periodically.
-    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300, "pool_timeout": 30}
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").strip().lower()
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
