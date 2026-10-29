@@ -1682,7 +1682,7 @@ async function sendMessage() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.resume } })
+      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.tool === 'portfolio' ? state.portfolio : state.resume } })
     });
     const json = await res.json();
     removeSpinner();
