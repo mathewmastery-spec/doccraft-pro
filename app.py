@@ -377,6 +377,8 @@ def create_app(test_config=None):
                 or os.getenv("GROK_API_KEY")
                 or os.getenv("XAI_API_KEY")
             )
+        elif ai_provider == "groq":
+            api_key = app.config.get("GROQ_API_KEY") or os.getenv("GROQ_API_KEY")
         else:
             return jsonify({"success": False, "error": "The AI provider is misconfigured."}), 503
         if not api_key:
@@ -529,6 +531,16 @@ def create_app(test_config=None):
                         or "grok-4.7"
                     )
                     client = OpenAI(api_key=api_key, base_url="https://api.x.ai/v1")
+                elif ai_provider == "groq":
+                    model_name = str(
+                        app.config.get("GROQ_MODEL")
+                        or os.getenv("GROQ_MODEL")
+                        or "llama-3.3-70b-versatile"
+                    )
+                    client = OpenAI(
+                        api_key=api_key,
+                        base_url="https://api.groq.com/openai/v1",
+                    )
                 else:
                     model_name = "gpt-4o-mini"
                     client = OpenAI(api_key=api_key)
