@@ -423,16 +423,42 @@ def create_app(test_config=None):
                 from google.genai import types
 
                 client = genai.Client(api_key=api_key)
-                response = client.models.generate_content(
-                    model=str(app.config.get("GEMINI_MODEL") or os.getenv("GEMINI_MODEL") or "gemini-3.8-flash"),
-                    contents=user_input.strip() + context,
-                    config=types.GenerateContentConfig(
-                        system_instruction=SYSTEM_PROMPTS[doc_type],
-                        temperature=0.7,
-                        max_output_tokens=2000,
-                        response_mime_type="application/json",
-                    ),
+                primary_model = str(
+                    app.config.get("GEMINI_MODEL")
+                    or os.getenv("GEMINI_MODEL")
+                    or "gemini-3.8-flash"
                 )
+                fallback_model = str(
+                    os.getenv("GEMINI_FALLBACK_MODEL") or "gemini-3.6-flash"
+                )
+
+                def generate_with_model(model_name):
+                    return client.models.generate_content(
+                        model=model_name,
+                        contents=user_input.strip() + context,
+                        config=types.GenerateContentConfig(
+                            system_instruction=SYSTEM_PROMPTS[doc_type],
+                            temperature=0.7,
+                            max_output_tokens=2000,
+                            response_mime_type="application/json",
+                        ),
+                    )
+
+                try:
+                    response = generate_with_model(primary_model)
+                except Exception as provider_error:
+                    # A temporary Gemini 503 can affect one model while another
+                    # stable Flash model remains available. Retry only that case.
+                    status_code = getattr(provider_error, "status_code", None)
+                    if status_code != 503 or not fallback_model or fallback_model == primary_model:
+                        raise
+                    app.logger.warning(
+                        "Gemini model %s returned 503; retrying once with fallback model %s",
+                        primary_model,
+                        fallback_model,
+                    )
+                    response = generate_with_model(fallback_model)
+
                 raw = (response.text or "").strip()
             else:
                 client = OpenAI(api_key=api_key)
