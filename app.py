@@ -544,22 +544,24 @@ def create_app(test_config=None):
                 else:
                     model_name = "gpt-4o-mini"
                     client = OpenAI(api_key=api_key)
-                # Groq's GPT-OSS models require temperature=1; sending 0.7
-                # causes provider-side 400 errors that surfaced as generation 502s.
-                generation_temperature = (
-                    1.0 if ai_provider == "groq" and model_name.startswith("openai/gpt-oss")
-                    else 0.7
-                )
-                response = client.chat.completions.create(
-                    model=model_name,
-                    messages=[
+                completion_args = {
+                    "model": model_name,
+                    "messages": [
                         {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD},
                         {"role": "user", "content": user_input.strip() + context},
                     ],
-                    temperature=generation_temperature,
-                    max_tokens=2000,
-                    response_format={"type": "json_object"},
-                )
+                    "response_format": {"type": "json_object"},
+                }
+                if ai_provider == "groq" and model_name.startswith("openai/gpt-oss"):
+                    # GPT-OSS on Groq uses max_completion_tokens; max_tokens can
+                    # be rejected with HTTP 400 by the provider.
+                    completion_args["max_completion_tokens"] = 2000
+                    completion_args["reasoning_effort"] = "low"
+                    completion_args["temperature"] = 1
+                else:
+                    completion_args["max_tokens"] = 2000
+                    completion_args["temperature"] = 0.7
+                response = client.chat.completions.create(**completion_args)
                 raw = (response.choices[0].message.content or "").strip()
             if raw.startswith("```"):
                 raw = raw.split("\n", 1)[-1]
