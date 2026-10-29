@@ -1473,9 +1473,9 @@ function loadForm(tool) {
       <div class="form-group"><label>Skills <span class="form-hint">(comma-separated)</span></label><input id="f_skills" placeholder="Python, React, SQL, Communication"></div>
       <div class="form-group"><label>Languages</label><input id="f_languages" placeholder="English (Fluent), French (B2)"></div>
       <div class="section-sep">Experience</div>
-      <div class="form-group"><label>Experience <span class="form-hint">Title | Company | Period | Description (one per line)</span></label><textarea id="f_experience" rows="4" placeholder="Software Engineer | Google | 2022–2023 | Built ML pipelines reducing latency by 40%"></textarea></div>
+      <div class="form-group"><label>Experience <span class="form-hint">Title | Employer | Period | Location (optional) | Responsibilities (separate bullets with ;, one role per line)</span></label><textarea id="f_experience" rows="4" placeholder="Network Technician | Example Ltd | 2023–2025 | Thika, Kenya | Installed fibre links; resolved network faults; documented maintenance"></textarea></div>
       <div class="section-sep">Education</div>
-      <div class="form-group"><label>Education <span class="form-hint">Degree | Institution | Year (one per line)</span></label><textarea id="f_education" rows="3" placeholder="BSc Computer Science | UCL | 2024"></textarea></div>
+      <div class="form-group"><label>Education <span class="form-hint">Qualification | Institution | Year | Grade (optional), one per line</span></label><textarea id="f_education" rows="3" placeholder="Diploma in Telecommunications | Thika Technical Training Institute | 2026 | Credit"></textarea></div>
       <div class="section-sep">Extra</div>
       <div class="form-group"><label>Certifications</label><input id="f_certs" placeholder="AWS Certified, Google Analytics"></div>
       <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | Python, Flask"></textarea></div>
@@ -1747,13 +1747,16 @@ async function buildFromForm() {
   const skills = v('f_skills').split(',').map(s => s.trim()).filter(Boolean);
   const langs = v('f_languages').split(',').map(s => s.trim()).filter(Boolean);
   const certs = v('f_certs').split(',').map(s => s.trim()).filter(Boolean);
-  const experience = v('f_experience').split('\n').filter(Boolean).map(line => {
+  const experience = v('f_experience').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
-    return { title: parts[0]||'', company: parts[1]||'', period: parts[2]||'', bullets: parts[3] ? [parts[3]] : [] };
+    const hasLocationColumn = parts.length >= 5;
+    const detailText = hasLocationColumn ? parts.slice(4).join(' | ') : parts.slice(3).join(' | ');
+    const bullets = detailText.split(/;|•/).map(item => item.trim()).filter(Boolean);
+    return { title: parts[0]||'', company: parts[1]||'', period: parts[2]||'', location: hasLocationColumn ? (parts[3]||'') : '', bullets };
   });
-  const education = v('f_education').split('\n').filter(Boolean).map(line => {
+  const education = v('f_education').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
-    return { degree: parts[0]||'', institution: parts[1]||'', year: parts[2]||'' };
+    return { degree: parts[0]||'', institution: parts[1]||'', year: parts[2]||'', grade: parts[3]||'' };
   });
   const projects = v('f_projects').split('\n').filter(Boolean).map(line => {
     const parts = line.split('|').map(s => s.trim());
