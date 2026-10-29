@@ -504,11 +504,12 @@ def create_app(test_config=None):
                     # A temporary overload (503) or provider-side deadline (504)
                     # can affect one model while the fallback remains available.
                     status_code = getattr(provider_error, "status_code", None)
-                    if status_code not in (503, 504) or not fallback_model or fallback_model == primary_model:
+                    if status_code not in (429, 503, 504) or not fallback_model or fallback_model == primary_model:
                         raise
                     app.logger.warning(
-                        "Gemini model %s returned 503; retrying once with fallback model %s",
+                        "Gemini model %s returned %s; retrying once with fallback model %s",
                         primary_model,
+                        status_code,
                         fallback_model,
                     )
                     response = generate_with_model(fallback_model)
