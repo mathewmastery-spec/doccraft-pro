@@ -49,6 +49,28 @@ REPLY_MESSAGES = {
 
 
 
+def _preserve_existing_fields(doc_type: str, generated: dict, existing: object) -> dict:
+    """Keep user-provided facts when a model omits them during a refinement."""
+    if doc_type not in {"resume", "cv", "academic_cv", "portfolio"} or not isinstance(existing, dict):
+        return generated
+
+    merged = dict(generated)
+    for key, previous in existing.items():
+        current = merged.get(key)
+        if current in (None, "", [], {}):
+            if previous not in (None, "", [], {}):
+                merged[key] = previous
+        elif isinstance(current, list) and isinstance(previous, list):
+            # Keep prior factual items the model omitted, without duplicating them.
+            seen = {json.dumps(item, sort_keys=True, ensure_ascii=False, default=str) for item in current}
+            for item in previous:
+                marker = json.dumps(item, sort_keys=True, ensure_ascii=False, default=str)
+                if marker not in seen:
+                    current.append(item)
+                    seen.add(marker)
+    return merged
+
+
 def _request_fingerprint(doc_type: str, user_input: str, extra: object) -> str:
     """Stable fingerprint used to reject reuse of a key for different content."""
     canonical = json.dumps(
@@ -496,6 +518,7 @@ def create_app(test_config=None):
             data = json.loads(raw.strip())
             if not isinstance(data, dict):
                 raise ValueError("The generation provider returned an invalid document format.")
+            data = _preserve_existing_fields(doc_type, data, extra.get("currentData"))
 
             result = {
                 "success": True,
