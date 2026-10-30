@@ -1032,6 +1032,68 @@ body{font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse at 12% 
   #pane-chat .msg-bubble{max-width:calc(100vw - 88px);font-size:13px}
 }
 
+
+/* ChatGPT-inspired neutral workspace: restrained surfaces, crisp ink, subtle dividers. */
+@media screen{
+ :root{--bg:#f9f9f9;--surface:#fff;--surface2:#f7f7f7;--border:rgba(0,0,0,.10);--text:#0d0d0d;--text2:#5d5d5d;--text3:#8f8f8f;--accent:#0d0d0d;--accent2:#5d5d5d}
+ body{background:#fff;color:#0d0d0d;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+ .navbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.08);box-shadow:none;color:#0d0d0d}
+ .nav-logo,.nav-tool{color:#0d0d0d}
+ .nav-tool:hover,.nav-tool.active{background:#f1f1f1;color:#0d0d0d}
+ .nav-menu-btn span{background:#0d0d0d}
+ #appScreen,.app-layout{background:#fff}
+ .left-panel{background:#f9f9f9;border-right:1px solid rgba(0,0,0,.10);box-shadow:none}
+ .panel-top{background:#f9f9f9;border-color:rgba(0,0,0,.08)}
+ .panel-title{color:#0d0d0d}
+ .back-btn{background:transparent;color:#5d5d5d;border-color:rgba(0,0,0,.14)}
+ .back-btn:hover{background:#ededed;color:#0d0d0d}
+ .dt-btn,.lt-btn{background:#fff;color:#5d5d5d;border-color:rgba(0,0,0,.12)}
+ .dt-btn.active,.dt-btn:hover{background:#0d0d0d;color:#fff;border-color:#0d0d0d}
+ .tabs{background:#f9f9f9;border-color:rgba(0,0,0,.08)}
+ .tab-btn{background:transparent;border:1px solid transparent;color:#5d5d5d;box-shadow:none}
+ .tab-btn:hover{background:#f0f0f0;color:#0d0d0d}
+ .tab-btn.active{background:#ededed;border-color:rgba(0,0,0,.08);color:#0d0d0d;box-shadow:none}
+ .tab-btn.active .tab-title{color:#0d0d0d}
+ .tab-pane,#pane-chat .messages,#pane-form .form-scroll{background:#fff}
+ #pane-chat .msg-bubble{background:#f7f7f7;border:1px solid rgba(0,0,0,.06);color:#0d0d0d;box-shadow:none}
+ #pane-chat .user-msg .msg-bubble{background:#ededed;border-color:rgba(0,0,0,.07);color:#0d0d0d}
+ #pane-chat .msg-avatar{background:#e8e8e8;color:#0d0d0d}
+ #pane-chat .user-msg .msg-avatar{background:#dcdcdc;color:#0d0d0d}
+ #pane-chat .chat-input-area{background:#fff;border-top:1px solid rgba(0,0,0,.10);box-shadow:none}
+ #pane-chat .chat-input-area textarea{background:#fff;color:#0d0d0d;border:1px solid rgba(0,0,0,.18);border-radius:16px;font-family:inherit}
+ #pane-chat .chat-input-area textarea::placeholder{color:#8f8f8f;opacity:1}
+ #pane-chat .chat-input-area textarea:focus{border-color:#777;box-shadow:0 0 0 2px rgba(0,0,0,.07)}
+ .send-btn,.full-btn{background:#0d0d0d!important;color:#fff!important;border:1px solid #0d0d0d!important;box-shadow:none!important}
+ .send-btn:hover,.full-btn:hover{background:#333!important}
+ #pane-form .form-group label{color:#333}
+ #pane-form .form-group input,#pane-form .form-group textarea,#pane-form .form-group select{background:#fff;color:#0d0d0d;border:1px solid rgba(0,0,0,.18);border-radius:9px}
+ #pane-form .form-group input::placeholder,#pane-form .form-group textarea::placeholder{color:#8f8f8f;opacity:1}
+ #pane-form .form-group input:focus,#pane-form .form-group textarea:focus,#pane-form .form-group select:focus{border-color:#777;box-shadow:0 0 0 2px rgba(0,0,0,.07)}
+ #pane-form .form-hint{color:#777}
+ #pane-form .section-sep{color:#555;border-color:rgba(0,0,0,.10)}
+ #pane-form .form-guidance{background:#f7f7f7;border:1px solid rgba(0,0,0,.08);color:#5d5d5d}
+ #pane-form .form-guidance strong{color:#0d0d0d}
+ .right-panel,.preview-body{background:#f1f1f1}
+ .preview-bar{background:#fff;border-color:rgba(0,0,0,.10)}
+ .preview-label,.template-picker-label{color:#5d5d5d}
+ .template-picker{background:#fff;color:#0d0d0d;border-color:rgba(0,0,0,.16)}
+ .tpl-pill{background:#fff;color:#5d5d5d;border-color:rgba(0,0,0,.14)}
+ .tpl-pill.active,.tpl-pill:hover{background:#0d0d0d;color:#fff;border-color:#0d0d0d}
+ .btn-outline{background:#fff;color:#0d0d0d;border-color:rgba(0,0,0,.18)}
+ .btn-outline:hover{background:#f0f0f0;color:#0d0d0d}
+ .wallet-palette{background:#fff!important;color:#0d0d0d!important;border:1px solid rgba(0,0,0,.14)!important;box-shadow:0 12px 40px rgba(0,0,0,.16)!important}
+ .wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div{color:#0d0d0d!important}
+ .wallet-palette input{background:#fff!important;color:#0d0d0d!important;border:1px solid rgba(0,0,0,.18)!important}
+ .wallet-palette input::placeholder{color:#8f8f8f!important}
+}
+@media screen and (max-width:768px){
+ .left-panel{background:#f9f9f9}
+ .panel-top,.tabs{background:#f9f9f9}
+ #pane-chat .chat-input-area{background:#fff}
+ #pane-chat .chat-input-area textarea{font-size:16px}
+ .right-panel{background:#f1f1f1}
+}
+
 </style>
 
 </head>
