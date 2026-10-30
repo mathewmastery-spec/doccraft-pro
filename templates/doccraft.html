@@ -1220,6 +1220,8 @@ body{color:var(--dc-ink)}
 @media(max-width:700px){.hero-visual{padding-top:40px}.hero-cheer{font-size:10px;padding:8px 11px}.hero-title{min-height:0}}
 @media(prefers-reduced-motion:reduce){.hero-word,.hero-caret,.hero-cheer,.doc-float{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}.doc-float{translate:none!important}}
 
+
+.document-type-kicker{font-size:9px;letter-spacing:.18em;font-weight:800;color:#7353a7;text-transform:uppercase;margin-bottom:7px}
 </style>
 
 </head>
@@ -1723,7 +1725,9 @@ function openTool(tool) {
   if (tools[map[tool]]) tools[map[tool]].classList.add('active');
 
   const welcomes = {
-    resume: "Tell me about yourself — your name, skills, experience and education. I'll build your resume instantly!",
+    resume: "Resume · A concise, targeted document highlighting your strongest relevant skills and achievements.",
+    cv: "Professional CV · A fuller record of your career history, employment, education, training and service.",
+    academic_cv: "Academic CV · A scholarly record prioritising education, research, publications, teaching and academic activity.",
     cover_letter: "I'll generate a cover letter. Fill in the form on the left.",
     portfolio: "Tell me about yourself, your projects, and your skills. I'll create your professional portfolio!",
     org_letter: "Fill in the form and I'll generate your formal letter."
@@ -1788,6 +1792,15 @@ function setSubType(sub, btn) {
   state.subType = sub;
   document.querySelectorAll('#docTypePills .dt-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  const variants = {
+    resume: "Resume · Targeted, concise and achievement-focused for a specific opportunity.",
+    cv: "Professional CV · A fuller record of your career, roles, education, training and service.",
+    academic_cv: "Academic CV · Education, research, publications, teaching, conferences and scholarly activity."
+  };
+  const messages = document.getElementById('messages');
+  if (messages) messages.innerHTML = '<div class="msg ai-msg"><div class="msg-avatar">AI</div><div class="msg-bubble">' + variants[sub] + '</div></div>';
+  loadForm('resume');
+  document.getElementById('docSheet').innerHTML = getPlaceholder('resume');
 }
 function setCLType(type, btn) {
   state.clType = type;
@@ -1856,6 +1869,14 @@ function loadForm(tool) {
       <div class="form-group"><label>Certifications</label><input id="f_certs" placeholder="AWS Certified, Google Analytics"></div>
       <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | Python, Flask"></textarea></div>
       <div class="form-group"><label>Achievements <span class="form-hint">(one per line; include evidence where possible)</span></label><textarea id="f_achievements" rows="2" placeholder="Award, measurable result, leadership or contribution"></textarea></div>
+      <div id="professionalCvFields" style="display:none">
+        <div class="section-sep">Professional CV Record</div>
+        <div class="form-group"><label>Volunteering & Community Service <span class="form-hint">(role | organisation | dates | contribution, one per line)</span></label><textarea id="f_volunteering" rows="2" placeholder="Volunteer | Organisation | 2024–2025 | Supported community training sessions"></textarea></div>
+        <div class="form-group"><label>Professional Memberships <span class="form-hint">(professional body | membership grade, one per line)</span></label><textarea id="f_prof_memberships" rows="2" placeholder="Professional body | Membership grade"></textarea></div>
+        <div class="form-group"><label>Professional Development & Training <span class="form-hint">(course | provider | year, one per line)</span></label><textarea id="f_prof_development" rows="2" placeholder="Fibre Optics Training | Provider | 2025"></textarea></div>
+        <div class="form-group"><label>Publications & Presentations <span class="form-hint">(only verified work; one item per line)</span></label><textarea id="f_cv_publications" rows="2" placeholder="Title | publisher or event | date"></textarea></div>
+        <p class="form-hint">A professional CV records your broader career history. Include relevant roles, placements, volunteering and training; leave sections blank when not applicable.</p>
+      </div>
       <div id="academicCvFields" style="display:none">
         <div class="section-sep">Academic & Research Record</div>
         <div class="form-group"><label>Research Interests / Experience <span class="form-hint">(one item per line)</span></label><textarea id="f_research" rows="2" placeholder="Research area, methods, or relevant experience"></textarea></div>
@@ -1871,7 +1892,9 @@ function loadForm(tool) {
       <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
     
-    const academicFields = document.getElementById('academicCvFields');
+    const professionalFields = document.getElementById('professionalCvFields');
+     if (professionalFields) professionalFields.style.display = state.subType === 'cv' ? 'block' : 'none';
+     const academicFields = document.getElementById('academicCvFields');
     if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';`;
   } else if (tool === 'cover_letter') {
     const clForms = {
@@ -2132,7 +2155,7 @@ async function buildFromForm() {
     document.getElementById('f_name')?.focus();
     return;
   }
-  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees','f_research','f_teaching','f_publications','f_presentations','f_grants_awards','f_memberships'].some(id => v(id));
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees','f_research','f_teaching','f_publications','f_presentations','f_grants_awards','f_memberships','f_volunteering','f_prof_memberships','f_prof_development','f_cv_publications'].some(id => v(id));
   if (!hasDetails) {
     showToast('Add at least one detail, such as your summary, skills, experience, or education.');
     document.getElementById('f_summary')?.focus();
@@ -2168,6 +2191,12 @@ async function buildFromForm() {
     linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'),
     skills, languages: langs, certifications: certs, experience, education, projects,
     achievements, interests, referees,
+    ...(state.subType === 'cv' ? {
+      volunteering: lines('f_volunteering'),
+      professional_memberships: lines('f_prof_memberships'),
+      professional_development: lines('f_prof_development'),
+      publications: lines('f_cv_publications')
+    } : {}),
     ...(state.subType === 'academic_cv' ? {
       research: lines('f_research'), teaching: lines('f_teaching'),
       publications: lines('f_publications'), presentations: lines('f_presentations'),
