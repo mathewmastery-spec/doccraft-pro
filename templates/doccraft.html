@@ -1032,14 +1032,34 @@ body{font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse at 12% 
   #pane-chat .msg-bubble{max-width:calc(100vw - 88px);font-size:13px}
 }
 
-/* DocCraft Care entry point: matches the existing neutral and lavender workspace. */
-.care-invite{display:flex;align-items:center;gap:11px;margin:0 14px 14px;padding:13px 14px;border:1px solid #e1d9f0;border-radius:13px;background:linear-gradient(110deg,#f5f1fc,#fff);color:#25212e;text-decoration:none;box-shadow:0 5px 16px rgba(75,50,141,.055);transition:border-color .18s,transform .18s}
+/* DocCraft Care popup: desktop floating panel, mobile bottom sheet. */
+.care-invite{width:calc(100% - 28px);display:flex;align-items:center;gap:11px;margin:0 14px 14px;padding:13px 14px;border:1px solid #e1d9f0;border-radius:13px;background:linear-gradient(110deg,#f5f1fc,#fff);color:#25212e;text-align:left;font:inherit;cursor:pointer;box-shadow:0 5px 16px rgba(75,50,141,.055)}
 .care-invite:hover{border-color:#b8a6dc;transform:translateY(-1px)}
 .care-invite-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#eee9fa;color:#4b328d;font-weight:900;flex:0 0 32px}
 .care-invite strong,.care-invite small{display:block}.care-invite strong{font-size:12px;font-weight:800;color:#35275d}.care-invite small{font-size:11px;line-height:1.4;color:#6d6876;margin-top:2px}.care-invite-arrow{margin-left:auto;color:#7251b8;font-size:18px}
-@media(max-width:768px){.care-invite{margin:0 8px 9px;padding:10px;gap:8px}.care-invite small{font-size:10px}}
-@media(prefers-reduced-motion:reduce){.care-invite{transition:none}}
-
+.care-popup-backdrop{position:fixed;inset:0;z-index:10000;background:rgba(31,28,39,.4);backdrop-filter:blur(3px);display:flex;align-items:flex-end;justify-content:flex-end;padding:22px}
+.care-popup-backdrop[hidden]{display:none!important}
+.care-popup{width:min(470px,calc(100vw - 44px));height:min(680px,calc(100dvh - 44px));display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(91,77,125,.2);border-radius:20px;background:#fffefa;color:#302b40;box-shadow:0 24px 80px rgba(24,20,36,.28);animation:carePopupIn .2s ease-out}
+@keyframes carePopupIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+.care-popup-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;background:linear-gradient(100deg,#f5f1fc,#f0f5ef);border-bottom:1px solid #e8e2ef}
+.care-popup-brand{display:flex;align-items:center;gap:10px}.care-popup-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:11px;background:#eee9fa;color:#4b328d;font-weight:900}
+.care-popup-title{font-size:14px;font-weight:800;color:#35275d}.care-popup-subtitle{font-size:10px;color:#716d7d;margin-top:2px}
+.care-popup-actions{display:flex;gap:6px}.care-popup-actions button{width:33px;height:33px;border:1px solid #e2dbea;border-radius:9px;background:#fff;color:#625879;font-size:17px;cursor:pointer}
+.care-popup-messages{flex:1;min-height:100px;overflow-y:auto;padding:18px 15px;display:flex;flex-direction:column;gap:12px}
+.care-popup-message{display:flex;align-items:flex-start;gap:8px;max-width:96%}.care-popup-message.user{align-self:flex-end;flex-direction:row-reverse}
+.care-popup-avatar{flex:0 0 27px;width:27px;height:27px;display:grid;place-items:center;border-radius:9px;background:#eee9fa;color:#5d4a8e;font-size:9px;font-weight:800}
+.care-popup-message.user .care-popup-avatar{background:#e9efe7;color:#49644d}
+.care-popup-bubble{padding:10px 12px;border:1px solid #ebe6f0;border-radius:5px 13px 13px 13px;background:#f7f5fa;color:#3b3748;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere}
+.care-popup-message.user .care-popup-bubble{background:#eef2eb;border-color:#e0e9dd;border-radius:13px 5px 13px 13px}
+.care-popup-quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 11px}.care-popup-quick button{border:1px solid #e6dfef;border-radius:99px;background:#fff;padding:7px 10px;color:#625d70;font-size:10px;font-weight:600;cursor:pointer}
+.care-popup-composer{padding:12px 14px;border-top:1px solid #e8e2ef;background:#fff}.care-popup-composer textarea{display:block;width:100%;min-height:72px;max-height:160px;resize:vertical;border:1px solid #ddd5e9;border-radius:11px;padding:10px 11px;background:#fff;color:#302b40;font:13px/1.5 inherit;outline:none}
+.care-popup-composer textarea:focus{border-color:#a293c4;box-shadow:0 0 0 3px rgba(129,108,174,.12)}
+.care-popup-compose-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}.care-popup-compose-row span{font-size:10px;color:#777184}
+.care-popup-compose-row button{border:0;border-radius:9px;padding:9px 15px;background:linear-gradient(135deg,#7561a5,#8b78b5);color:#fff;font-size:11px;font-weight:800;cursor:pointer}.care-popup-compose-row button:disabled{opacity:.6}
+.care-popup-note{font-size:9px;line-height:1.4;color:#85808e;margin-top:7px}
+.care-popup-backdrop.is-minimized{background:transparent;backdrop-filter:none;pointer-events:none;padding:22px}.care-popup-backdrop.is-minimized .care-popup{height:auto;max-height:64px;pointer-events:auto;border-radius:15px}.care-popup-backdrop.is-minimized .care-popup-messages,.care-popup-backdrop.is-minimized .care-popup-quick,.care-popup-backdrop.is-minimized .care-popup-composer{display:none}
+@media(max-width:640px){.care-invite{width:calc(100% - 16px);margin:0 8px 9px;padding:10px;gap:8px}.care-invite small{font-size:10px}.care-popup-backdrop{padding:0;align-items:flex-end;justify-content:center;background:rgba(31,28,39,.43)}.care-popup{width:100%;height:min(82dvh,760px);max-height:calc(100dvh - 12px);border-radius:20px 20px 0 0;border-bottom:0;animation:careSheetIn .22s ease-out}@keyframes careSheetIn{from{transform:translateY(24px);opacity:.8}to{transform:translateY(0);opacity:1}}.care-popup-backdrop.is-minimized{padding:0 10px 10px;align-items:flex-end;justify-content:center}.care-popup-backdrop.is-minimized .care-popup{width:100%;height:auto;max-height:64px;border-radius:15px}.care-popup-head{padding:12px 13px}.care-popup-messages{padding:14px 12px}.care-popup-composer{padding:10px 12px}}
+@media(prefers-reduced-motion:reduce){.care-popup{animation:none!important}}
 /* ChatGPT-inspired neutral workspace: restrained surfaces, crisp ink, subtle dividers. */
 @media screen{
  :root{--bg:#f9f9f9;--surface:#fff;--surface2:#f7f7f7;--border:rgba(0,0,0,.10);--text:#0d0d0d;--text2:#5d5d5d;--text3:#8f8f8f;--accent:#0d0d0d;--accent2:#5d5d5d}
@@ -1251,7 +1271,6 @@ body{color:var(--dc-ink)}
     <button class="nav-tool" onclick="openTool('cover_letter')">Cover Letter</button>
     <button class="nav-tool" onclick="openTool('portfolio')">Portfolio</button>
     <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
-    <a class="nav-tool" href="/care" style="text-decoration:none">DocCraft Care</a>
   </div>
 
   <div class="nav-right">
@@ -1402,8 +1421,17 @@ body{color:var(--dc-ink)}
       <div class="tab-pane" id="pane-form">
         <div class="form-scroll" id="formContent"></div>
       </div>
-      <a class="care-invite" href="/care"><span class="care-invite-icon">✦</span><span><strong>Need more help?</strong><small>Have an extra requirement? Talk with DocCraft Care.</small></span><span class="care-invite-arrow">→</span></a>
+      <button class="care-invite" id="careOpen" type="button" aria-haspopup="dialog" aria-controls="carePopup"><span class="care-invite-icon">✦</span><span><strong>Need more help?</strong><small>Open helpful AI assistance without leaving your document.</small></span><span class="care-invite-arrow">↗</span></button>
 
+    </div>
+
+    <div class="care-popup-backdrop" id="carePopupBackdrop" hidden>
+      <section class="care-popup" id="carePopup" role="dialog" aria-modal="true" aria-labelledby="carePopupTitle">
+        <header class="care-popup-head"><div class="care-popup-brand"><span class="care-popup-mark">✦</span><div><div class="care-popup-title" id="carePopupTitle">Need a little more help?</div><div class="care-popup-subtitle">DocCraft Care · thoughtful, practical AI support</div></div></div><div class="care-popup-actions"><button type="button" id="careMinimize" aria-label="Minimize assistant">−</button><button type="button" id="careClose" aria-label="Close assistant">×</button></div></header>
+        <div class="care-popup-messages" id="carePopupMessages" aria-live="polite"><div class="care-popup-message assistant"><span class="care-popup-avatar">DC</span><div class="care-popup-bubble">Welcome. Tell me what you need help with, including anything that does not fit the document fields. I can help you think it through and find a useful next step.</div></div></div>
+        <div class="care-popup-quick"><button type="button" data-care-prompt="I have information that does not fit any of the document fields. Help me decide where it belongs.">Something doesn't fit</button><button type="button" data-care-prompt="I'm not sure which document type I need. Help me choose.">Choose a document</button><button type="button" data-care-prompt="I have an idea and want help developing it.">Explore an idea</button></div>
+        <form class="care-popup-composer" id="carePopupForm"><textarea id="carePopupInput" maxlength="5000" rows="3" aria-label="Message DocCraft Care" placeholder="What would you like help with?" required></textarea><div class="care-popup-compose-row"><span>No wallet charge for this chat</span><button type="submit" id="carePopupSend">Send</button></div><div class="care-popup-note">AI assistant; may make mistakes. Share only relevant details—never passwords, payment details, one-time codes or API keys.</div></form>
+      </section>
     </div>
 
     <!-- RIGHT PREVIEW -->
@@ -2603,6 +2631,20 @@ applyDocumentStyle();
 const initialTemplatePicker = document.getElementById('templateSelect');
 if (initialTemplatePicker) initialTemplatePicker.value = state.template;
 verifyReturnedPayment();
+</script>
+<script>
+(function(){
+ const opener=document.getElementById('careOpen'),backdrop=document.getElementById('carePopupBackdrop'),close=document.getElementById('careClose'),min=document.getElementById('careMinimize'),form=document.getElementById('carePopupForm'),input=document.getElementById('carePopupInput'),send=document.getElementById('carePopupSend'),messages=document.getElementById('carePopupMessages');
+ if(!opener||!backdrop||!close||!min||!form||!input||!send||!messages)return;
+ const history=[];let folded=false;
+ function show(){backdrop.hidden=false;backdrop.classList.remove('is-minimized');folded=false;min.textContent='−';input.focus();}
+ function hide(){backdrop.hidden=true;backdrop.classList.remove('is-minimized');opener.focus();}
+ function fold(){folded=!folded;backdrop.classList.toggle('is-minimized',folded);min.textContent=folded?'□':'−';min.setAttribute('aria-label',folded?'Expand assistant':'Minimize assistant');if(!folded)input.focus();}
+ opener.addEventListener('click',show);close.addEventListener('click',hide);min.addEventListener('click',fold);backdrop.addEventListener('click',e=>{if(e.target===backdrop)hide();});document.addEventListener('keydown',e=>{if(!backdrop.hidden&&e.key==='Escape')hide();});
+ function add(role,text){const row=document.createElement('div');row.className='care-popup-message '+(role==='user'?'user':'assistant');const av=document.createElement('span');av.className='care-popup-avatar';av.textContent=role==='user'?'You':'DC';const bubble=document.createElement('div');bubble.className='care-popup-bubble';bubble.textContent=text;row.append(av,bubble);messages.appendChild(row);messages.scrollTop=messages.scrollHeight;}
+ async function submit(raw){const message=String(raw||'').trim();if(!message||send.disabled)return;add('user',message);history.push({role:'user',content:message});input.value='';send.disabled=true;send.textContent='Thinking…';try{const response=await fetch('/api/care/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(0,-1).slice(-10),context:{}})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.error||'DocCraft Care is temporarily unavailable. Please try again.');const reply=String(data.reply||'I could not prepare a reply. Please try again.');add('assistant',reply);history.push({role:'assistant',content:reply});}catch(err){add('assistant',err.message||'I could not connect just now. Please try again.');}finally{send.disabled=false;send.textContent='Send';input.focus();}}
+ form.addEventListener('submit',e=>{e.preventDefault();submit(input.value);});backdrop.querySelectorAll('[data-care-prompt]').forEach(btn=>btn.addEventListener('click',()=>{input.value=btn.dataset.carePrompt;input.focus();}));
+})();
 </script>
 </body>
 </html>
