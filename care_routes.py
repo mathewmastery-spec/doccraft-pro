@@ -4,7 +4,7 @@ import os
 import time
 from collections import defaultdict, deque
 
-from flask import Blueprint, current_app, jsonify, render_template, request
+from flask import Blueprint, current_app, jsonify, request
 from openai import OpenAI
 
 care_bp = Blueprint("care_bp", __name__)
@@ -70,14 +70,6 @@ def _provider_config():
     else:
         raise ValueError("The configured AI provider is not supported.")
     return provider, key, model
-
-
-@care_bp.get("/care")
-def care_page():
-    response = current_app.make_response(render_template("doccraft_care.html"))
-    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    return response
 
 
 @care_bp.post("/api/care/chat")
