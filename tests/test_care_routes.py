@@ -1,8 +1,15 @@
-def test_care_page_is_available(client):
-    response = client.get("/care")
+def test_care_is_embedded_in_main_workspace(client):
+    response = client.get("/")
     assert response.status_code == 200
-    assert b"DocCraft Care" in response.data
-    assert b"What's on your mind?" in response.data
+    assert b"Need more help?" in response.data
+    assert b'id="carePopupBackdrop"' in response.data
+    assert b'id="careOpen"' in response.data
+    assert b'role="dialog"' in response.data
+
+
+def test_care_has_no_standalone_page(client):
+    response = client.get("/care")
+    assert response.status_code == 404
 
 
 def test_care_rejects_empty_message(client):
