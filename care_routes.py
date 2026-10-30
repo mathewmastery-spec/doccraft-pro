@@ -1,11 +1,18 @@
 from __future__ import annotations
 
 import os
+import time
+from collections import defaultdict, deque
 
 from flask import Blueprint, current_app, jsonify, render_template, request
 from openai import OpenAI
 
 care_bp = Blueprint("care_bp", __name__)
+
+
+_CARE_RATE_WINDOW_SECONDS = 60
+_CARE_RATE_LIMIT = 8
+_CARE_REQUESTS = defaultdict(deque)
 
 
 CARE_SYSTEM_PROMPT = """
@@ -58,6 +65,15 @@ def care_page():
 
 @care_bp.post("/api/care/chat")
 def care_chat():
+    client_key = request.remote_addr or "unknown"
+    now = time.monotonic()
+    recent = _CARE_REQUESTS[client_key]
+    while recent and now - recent[0] > _CARE_RATE_WINDOW_SECONDS:
+        recent.popleft()
+    if len(recent) >= _CARE_RATE_LIMIT:
+        return jsonify({"success": False, "error": "You have sent several messages in a short time. Please wait a minute and try again."}), 429
+    recent.append(now)
+
     payload = request.get_json(silent=True) or {}
     if not isinstance(payload, dict):
         return jsonify({"success": False, "error": "Please send a valid message."}), 400
