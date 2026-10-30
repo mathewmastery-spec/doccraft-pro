@@ -71,7 +71,7 @@
         <label for="displayName" style="display:block;font-size:12px;font-weight:800;margin:0 0 7px">What should we call you? <span style="font-weight:400;color:#777">(optional)</span></label><input id="displayName" maxlength="80" autocomplete="given-name" placeholder="Your preferred name" style="width:100%;margin-bottom:12px;padding:11px 12px;border:1px solid rgba(0,0,0,.16);border-radius:10px;font:inherit"><label for="message" style="display:block;font-size:12px;font-weight:800;margin:0 0 7px">Your message</label>
         <textarea id="message" maxlength="5000" placeholder="Tell us what you need help with..." required></textarea>
         <div class="compose-row">
-          <div class="privacy">Please don't share passwords, payment-card details, one-time codes or API keys. This chat is not a human emergency or account-verification service.</div>
+          <div class="privacy">Your messages are sent to DocCraft's configured AI provider to generate replies. Don't share passwords, payment-card details, one-time codes or API keys.</div>
           <button class="send" id="send" type="submit">Send message</button>
         </div>
         <div style="display:flex;justify-content:flex-end"><button class="clear" id="clear" type="button">Clear this conversation</button></div>
@@ -83,6 +83,18 @@
     const messagesEl=document.getElementById('messages');
     const form=document.getElementById('careForm');
     const input=document.getElementById('message');
+
+    const displayName=document.getElementById('displayName');
+    displayName.addEventListener('input',()=>{
+      const firstBubble=messagesEl.querySelector('.msg .bubble');
+      if(firstBubble){
+        const name=displayName.value.trim();
+        firstBubble.textContent=name
+          ? 'Welcome, '+name+'. You do not have to fit your request into a preset field. Tell me what you are working on or what is getting in your way, and we will take it one step at a time.'
+          : 'Welcome to DocCraft Care. You do not have to fit your request into a preset field. Tell me what you are working on or what is getting in your way, and we will take it one step at a time.';
+      }
+    });
+
     const send=document.getElementById('send');
     const history=[];
     function addMessage(role,content){
@@ -96,7 +108,7 @@
       addMessage('user',message);history.push({role:'user',content:message});
       input.value='';send.disabled=true;send.textContent='Thinking…';
       try{
-        const response=await fetch('/api/care/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(0,-1).slice(-10),context:{display_name:document.getElementById("displayName").value.trim()}})});
+        const response=await fetch('/api/care/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message,history:history.slice(0,-1).slice(-10),context:{}})});
         const data=await response.json();
         if(!response.ok||!data.success)throw new Error(data.error||'DocCraft Care is temporarily unavailable.');
         const reply=String(data.reply||'I could not prepare a reply. Please try again.');
