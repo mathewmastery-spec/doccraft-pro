@@ -2425,6 +2425,99 @@ verifyReturnedPayment();
 </body>
 </html>
 
+
+/* Targeted readability correction: override earlier dark glass rules that used !important. */
+@media screen {
+  .navbar {
+    background:#ffffff !important;
+    color:#171717 !important;
+    border-bottom:1px solid #dedede !important;
+    box-shadow:0 1px 3px rgba(0,0,0,.04) !important;
+  }
+  .nav-logo,.nav-tool,.nav-tool:hover,.nav-tool.active {
+    color:#171717 !important;
+  }
+  .nav-tool:hover,.nav-tool.active { background:#f0f0f0 !important; }
+  .left-panel,.panel-top,.tabs,.tab-pane,#pane-chat .messages,#pane-form .form-scroll {
+    background:#f8f9fb !important;
+    color:#171717 !important;
+  }
+  .panel-title,.form-group label,#pane-form label,
+  #pane-form .form-group label,.form-hint,#pane-form .form-hint,
+  #pane-form .section-sep {
+    color:#242424 !important;
+    opacity:1 !important;
+  }
+  #pane-form .form-group {
+    background:#ffffff !important;
+    border:1px solid #e1e4e8 !important;
+    box-shadow:none !important;
+  }
+  #pane-form input:not([type="checkbox"]):not([type="radio"]),
+  #pane-form textarea,
+  #pane-form select,
+  #pane-form .form-group input,
+  #pane-form .form-group textarea,
+  #pane-form .form-group select {
+    background:#ffffff !important;
+    color:#171717 !important;
+    -webkit-text-fill-color:#171717 !important;
+    border:1px solid #b9c0ca !important;
+    box-shadow:none !important;
+    opacity:1 !important;
+  }
+  #pane-form input::placeholder,#pane-form textarea::placeholder,
+  #pane-form .form-group input::placeholder,
+  #pane-form .form-group textarea::placeholder {
+    color:#687385 !important;
+    -webkit-text-fill-color:#687385 !important;
+    opacity:1 !important;
+  }
+  #pane-form input:focus,#pane-form textarea:focus,#pane-form select:focus,
+  #pane-form .form-group input:focus,#pane-form .form-group textarea:focus,
+  #pane-form .form-group select:focus {
+    border-color:#6650a4 !important;
+    box-shadow:0 0 0 3px rgba(102,80,164,.14) !important;
+    outline:none !important;
+  }
+  .tab-btn:not(.active) {
+    background:#ffffff !important;
+    color:#30343b !important;
+    border:1px solid #cbd0d8 !important;
+    box-shadow:none !important;
+  }
+  .tab-btn:not(.active) .tab-title,.tab-btn:not(.active) .tab-icon {
+    color:#30343b !important;
+  }
+  .tab-btn.active {
+    color:#ffffff !important;
+  }
+  .tab-btn.active .tab-title,.tab-btn.active .tab-icon {
+    color:#ffffff !important;
+  }
+  #pane-chat .msg-bubble {
+    background:#ffffff !important;
+    color:#20242b !important;
+    border:1px solid #dfe3e8 !important;
+  }
+  #pane-chat .chat-input-area {
+    background:#ffffff !important;
+    border-top:1px solid #dfe3e8 !important;
+  }
+  #pane-chat .chat-input-area textarea {
+    background:#ffffff !important;
+    color:#171717 !important;
+    -webkit-text-fill-color:#171717 !important;
+    border:1px solid #b9c0ca !important;
+  }
+  #pane-chat .chat-input-area textarea::placeholder {
+    color:#687385 !important;
+    opacity:1 !important;
+  }
+  .placeholder p { color:#555f6d !important; }
+  .preview-label,.template-picker-label { color:#343a43 !important; }
+}
+
 </style>
 
 </head>
