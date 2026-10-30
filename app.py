@@ -10,6 +10,7 @@ from openai import OpenAI
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from billing_routes import billing_bp
+from care_routes import care_bp
 from config import config
 from extensions import db, migrate
 
@@ -100,6 +101,7 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     app.register_blueprint(billing_bp)
+    app.register_blueprint(care_bp)
 
     # One-time safe bootstrap for a newly provisioned database. SQLAlchemy's
     # create_all() creates missing tables without dropping existing tables.
