@@ -1032,6 +1032,14 @@ body{font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse at 12% 
   #pane-chat .msg-bubble{max-width:calc(100vw - 88px);font-size:13px}
 }
 
+/* DocCraft Care entry point: matches the existing neutral and lavender workspace. */
+.care-invite{display:flex;align-items:center;gap:11px;margin:0 14px 14px;padding:13px 14px;border:1px solid #e1d9f0;border-radius:13px;background:linear-gradient(110deg,#f5f1fc,#fff);color:#25212e;text-decoration:none;box-shadow:0 5px 16px rgba(75,50,141,.055);transition:border-color .18s,transform .18s}
+.care-invite:hover{border-color:#b8a6dc;transform:translateY(-1px)}
+.care-invite-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#eee9fa;color:#4b328d;font-weight:900;flex:0 0 32px}
+.care-invite strong,.care-invite small{display:block}.care-invite strong{font-size:12px;font-weight:800;color:#35275d}.care-invite small{font-size:11px;line-height:1.4;color:#6d6876;margin-top:2px}.care-invite-arrow{margin-left:auto;color:#7251b8;font-size:18px}
+@media(max-width:768px){.care-invite{margin:0 8px 9px;padding:10px;gap:8px}.care-invite small{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.care-invite{transition:none}}
+
 /* ChatGPT-inspired neutral workspace: restrained surfaces, crisp ink, subtle dividers. */
 @media screen{
  :root{--bg:#f9f9f9;--surface:#fff;--surface2:#f7f7f7;--border:rgba(0,0,0,.10);--text:#0d0d0d;--text2:#5d5d5d;--text3:#8f8f8f;--accent:#0d0d0d;--accent2:#5d5d5d}
@@ -1243,6 +1251,7 @@ body{color:var(--dc-ink)}
     <button class="nav-tool" onclick="openTool('cover_letter')">Cover Letter</button>
     <button class="nav-tool" onclick="openTool('portfolio')">Portfolio</button>
     <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
+    <a class="nav-tool" href="/care" style="text-decoration:none">DocCraft Care</a>
   </div>
 
   <div class="nav-right">
@@ -1393,6 +1402,7 @@ body{color:var(--dc-ink)}
       <div class="tab-pane" id="pane-form">
         <div class="form-scroll" id="formContent"></div>
       </div>
+      <a class="care-invite" href="/care"><span class="care-invite-icon">✦</span><span><strong>Need more help?</strong><small>Have an extra requirement? Talk with DocCraft Care.</small></span><span class="care-invite-arrow">→</span></a>
 
     </div>
 
