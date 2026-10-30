@@ -1222,6 +1222,8 @@ body{color:var(--dc-ink)}
 
 
 .document-type-kicker{font-size:9px;letter-spacing:.18em;font-weight:800;color:#7353a7;text-transform:uppercase;margin-bottom:7px}
+
+.document-type-kicker{font-size:9px;letter-spacing:.18em;font-weight:800;color:#7353a7;text-transform:uppercase;margin-bottom:7px}
 </style>
 
 </head>
@@ -2322,7 +2324,8 @@ function escapeHtml(s) { return esc(s); }
 function renderResume(d) {
   if (!d || !d.name) return;
   applyDocumentStyle();
-  const layout = state.template === 'modern' || state.template === 'sidebar' ? 'modern'
+  const layout = state.subType !== 'resume' ? 'classic'
+    : state.template === 'modern' || state.template === 'sidebar' ? 'modern'
     : state.template === 'minimal' || state.template === 'monochrome' ? 'minimal'
     : 'classic';
   if (layout === 'classic') renderClassic(d);
@@ -2354,8 +2357,10 @@ function renderClassic(d) {
     }).join('');
     return rows ? `<div class="classic-section"><h2>${esc(title)}</h2><ul>${rows}</ul></div>` : '';
   };
-  const academicHtml = academicSection('Research', d.research) + academicSection('Teaching Experience', d.teaching) + academicSection('Publications', d.publications) + academicSection('Presentations', d.presentations) + academicSection('Grants & Awards', d.grants_awards) + academicSection('Professional Memberships', d.professional_memberships);
-  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}${academicHtml}</div>`;
+  const academicHtml = state.subType === 'academic_cv'
+    ? academicSection('Research Interests & Experience', d.research) + academicSection('Teaching, Supervision & Academic Service', d.teaching) + academicSection('Publications', d.publications) + academicSection('Conference Papers & Presentations', d.presentations) + academicSection('Grants, Fellowships & Awards', d.grants_awards) + academicSection('Academic & Professional Memberships', d.professional_memberships)
+    : academicSection('Volunteering & Community Service', d.volunteering) + academicSection('Professional Development & Training', d.professional_development) + academicSection('Professional Memberships', d.professional_memberships) + academicSection('Publications & Presentations', d.publications);
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><div class="document-type-kicker">${state.subType === 'academic_cv' ? 'ACADEMIC CURRICULUM VITAE' : state.subType === 'cv' ? 'PROFESSIONAL CURRICULUM VITAE' : 'TARGETED PROFESSIONAL RESUME'}</div><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}${academicHtml}</div>`;
 }
 
 function renderModern(d) {
