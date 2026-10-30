@@ -1032,6 +1032,1399 @@ body{font-family:'DM Sans',sans-serif;background:radial-gradient(ellipse at 12% 
   #pane-chat .msg-bubble{max-width:calc(100vw - 88px);font-size:13px}
 }
 
+/* ChatGPT-inspired neutral workspace: restrained surfaces, crisp ink, subtle dividers. */
+@media screen{
+ :root{--bg:#f9f9f9;--surface:#fff;--surface2:#f7f7f7;--border:rgba(0,0,0,.10);--text:#0d0d0d;--text2:#5d5d5d;--text3:#8f8f8f;--accent:#0d0d0d;--accent2:#5d5d5d}
+ body{background:#fff;color:#0d0d0d;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+ .navbar{background:#fff;border-bottom:1px solid rgba(0,0,0,.08);box-shadow:none;color:#0d0d0d}
+ .nav-logo,.nav-tool{color:#0d0d0d}
+ .nav-tool:hover,.nav-tool.active{background:#f1f1f1;color:#0d0d0d}
+ .nav-menu-btn span{background:#0d0d0d}
+ #appScreen,.app-layout{background:#fff}
+ .left-panel{background:#f9f9f9;border-right:1px solid rgba(0,0,0,.10);box-shadow:none}
+ .panel-top{background:#f9f9f9;border-color:rgba(0,0,0,.08)}
+ .panel-title{color:#0d0d0d}
+ .back-btn{background:transparent;color:#5d5d5d;border-color:rgba(0,0,0,.14)}
+ .back-btn:hover{background:#ededed;color:#0d0d0d}
+ .dt-btn,.lt-btn{background:#fff;color:#5d5d5d;border-color:rgba(0,0,0,.12)}
+ .dt-btn.active,.dt-btn:hover{background:#0d0d0d;color:#fff;border-color:#0d0d0d}
+ .tabs{background:#f9f9f9;border-color:rgba(0,0,0,.08)}
+ .tab-btn{background:transparent;border:1px solid transparent;color:#5d5d5d;box-shadow:none}
+ .tab-btn:hover{background:#f0f0f0;color:#0d0d0d}
+ .tab-btn.active{background:#ededed;border-color:rgba(0,0,0,.08);color:#0d0d0d;box-shadow:none}
+ .tab-btn.active .tab-title{color:#0d0d0d}
+ .tab-pane,#pane-chat .messages,#pane-form .form-scroll{background:#fff}
+ #pane-chat .msg-bubble{background:#f7f7f7;border:1px solid rgba(0,0,0,.06);color:#0d0d0d;box-shadow:none}
+ #pane-chat .user-msg .msg-bubble{background:#ededed;border-color:rgba(0,0,0,.07);color:#0d0d0d}
+ #pane-chat .msg-avatar{background:#e8e8e8;color:#0d0d0d}
+ #pane-chat .user-msg .msg-avatar{background:#dcdcdc;color:#0d0d0d}
+ #pane-chat .chat-input-area{background:#fff;border-top:1px solid rgba(0,0,0,.10);box-shadow:none}
+ #pane-chat .chat-input-area textarea{background:#fff;color:#0d0d0d;border:1px solid rgba(0,0,0,.18);border-radius:16px;font-family:inherit}
+ #pane-chat .chat-input-area textarea::placeholder{color:#8f8f8f;opacity:1}
+ #pane-chat .chat-input-area textarea:focus{border-color:#777;box-shadow:0 0 0 2px rgba(0,0,0,.07)}
+ .send-btn,.full-btn{background:#0d0d0d!important;color:#fff!important;border:1px solid #0d0d0d!important;box-shadow:none!important}
+ .send-btn:hover,.full-btn:hover{background:#333!important}
+ #pane-form .form-group label{color:#333}
+ #pane-form .form-group input,#pane-form .form-group textarea,#pane-form .form-group select{background:#fff;color:#0d0d0d;border:1px solid rgba(0,0,0,.18);border-radius:9px}
+ #pane-form .form-group input::placeholder,#pane-form .form-group textarea::placeholder{color:#8f8f8f;opacity:1}
+ #pane-form .form-group input:focus,#pane-form .form-group textarea:focus,#pane-form .form-group select:focus{border-color:#777;box-shadow:0 0 0 2px rgba(0,0,0,.07)}
+ #pane-form .form-hint{color:#777}
+ #pane-form .section-sep{color:#555;border-color:rgba(0,0,0,.10)}
+ #pane-form .form-guidance{background:#f7f7f7;border:1px solid rgba(0,0,0,.08);color:#5d5d5d}
+ #pane-form .form-guidance strong{color:#0d0d0d}
+ .right-panel,.preview-body{background:#f1f1f1}
+ .preview-bar{background:#fff;border-color:rgba(0,0,0,.10)}
+ .preview-label,.template-picker-label{color:#5d5d5d}
+ .template-picker{background:#fff;color:#0d0d0d;border-color:rgba(0,0,0,.16)}
+ .tpl-pill{background:#fff;color:#5d5d5d;border-color:rgba(0,0,0,.14)}
+ .tpl-pill.active,.tpl-pill:hover{background:#0d0d0d;color:#fff;border-color:#0d0d0d}
+ .btn-outline{background:#fff;color:#0d0d0d;border-color:rgba(0,0,0,.18)}
+ .btn-outline:hover{background:#f0f0f0;color:#0d0d0d}
+ .wallet-palette{background:#fff!important;color:#0d0d0d!important;border:1px solid rgba(0,0,0,.14)!important;box-shadow:0 12px 40px rgba(0,0,0,.16)!important}
+ .wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div{color:#0d0d0d!important}
+ .wallet-palette input{background:#fff!important;color:#0d0d0d!important;border:1px solid rgba(0,0,0,.18)!important}
+ .wallet-palette input::placeholder{color:#8f8f8f!important}
+}
+@media screen and (max-width:768px){
+ .left-panel{background:#f9f9f9}
+ .panel-top,.tabs{background:#f9f9f9}
+ #pane-chat .chat-input-area{background:#fff}
+ #pane-chat .chat-input-area textarea{font-size:16px}
+ .right-panel{background:#f1f1f1}
+}
+
+</style>
+
+</head>
+<body>
+
+<!-- ── NAVBAR ─────────────────────────────────────── -->
+<nav class="navbar">
+  <a href="#" class="nav-logo" onclick="showHome()">
+    <span class="logo-hex">⬡</span>
+    <span>DocCraft <span class="logo-pro">Pro</span></span>
+  </a>
+
+  <div class="nav-tools" id="navTools">
+    <button class="nav-tool" onclick="openTool('resume')">Resume / CV</button>
+    <button class="nav-tool" onclick="openTool('cover_letter')">Cover Letter</button>
+    <button class="nav-tool" onclick="openTool('portfolio')">Portfolio</button>
+    <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
+  </div>
+
+  <div class="nav-right">
+    <button class="btn btn-ghost" id="installAppBtn" type="button" hidden style="padding:7px 12px;font-size:12px;margin-right:8px" onclick="installDocCraftApp()">Install App</button>
+    <button class="nav-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ── HOME SCREEN ────────────────────────────────── -->
+<div id="homeScreen">
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge">International Student Edition</div>
+      <h1 class="hero-title">Your Documents,<br><span class="grad">Professionally Crafted</span></h1>
+      <p class="hero-sub">AI-powered tools to build resumes, CVs, cover letters, portfolios and formal letters — ready for the global job market.</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="openTool('resume')">Start Building →</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('tools').scrollIntoView({behavior:'smooth'})">Explore Tools</button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">6+</span><span class="stat-label">Document Types</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">AI</span><span class="stat-label">Powered</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num">🌍</span><span class="stat-label">International</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="doc-float">
+        <div class="df-line w100"></div><div class="df-line w70"></div><div class="df-line w50"></div>
+        <div class="df-chip">Resume</div>
+      </div>
+      <div class="doc-float">
+        <div class="df-line w70"></div><div class="df-line w100"></div><div class="df-line w50"></div>
+        <div class="df-chip g">Cover Letter</div>
+      </div>
+      <div class="doc-float">
+        <div class="df-line w50"></div><div class="df-line w70"></div><div class="df-line w100"></div>
+        <div class="df-chip p">Portfolio</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="tools-section" id="tools">
+    <div class="section-label">All Tools</div>
+    <div class="section-title">Everything You Need to Succeed</div>
+    <div class="tools-grid">
+      <div class="tool-card tc-blue" onclick="openTool('resume')">
+        <div class="tool-icon">📄</div>
+        <div class="tool-name">Resume & CV Builder</div>
+        <div class="tool-desc">ATS-friendly resumes and full CVs for the international job market. Multiple professional templates.</div>
+        <div class="tool-tags"><span class="tag">Resume</span><span class="tag">CV</span><span class="tag">Academic CV</span></div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card tc-green" onclick="openTool('cover_letter')">
+        <div class="tool-icon">✉️</div>
+        <div class="tool-name">Cover Letter</div>
+        <div class="tool-desc">Compelling cover letters for job applications, internships and scholarship programmes worldwide.</div>
+        <div class="tool-tags"><span class="tag">Job Application</span><span class="tag">Internship</span><span class="tag">Scholarship</span></div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card tc-purple" onclick="openTool('portfolio')">
+        <div class="tool-icon">🌐</div>
+        <div class="tool-name">Portfolio Builder</div>
+        <div class="tool-desc">Showcase projects, skills and achievements in a stunning professional portfolio document.</div>
+        <div class="tool-tags"><span class="tag">Projects</span><span class="tag">Skills</span><span class="tag">Showcase</span></div>
+        <div class="tool-arrow">→</div>
+      </div>
+      <div class="tool-card tc-orange" onclick="openTool('org_letter')">
+        <div class="tool-icon">🏛️</div>
+        <div class="tool-name">Organisation Letters</div>
+        <div class="tool-desc">Formal letters for every occasion — job applications, permissions, references, leave requests and more.</div>
+        <div class="tool-tags"><span class="tag">Permission</span><span class="tag">Reference</span><span class="tag">Leave</span><span class="tag">Complaint</span></div>
+        <div class="tool-arrow">→</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ── APP SCREEN ─────────────────────────────────── -->
+<div id="appScreen">
+  <div class="app-layout" data-mobile-view="edit">
+
+    <div class="mobile-workspace-switch" role="tablist" aria-label="Workspace view">
+      <button type="button" role="tab" data-view="edit" aria-pressed="true" onclick="setMobileWorkspace(\'edit\')">✎ Edit / Form</button>
+      <button type="button" role="tab" data-view="preview" aria-pressed="false" onclick="setMobileWorkspace(\'preview\')">▣ Preview &amp; Export</button>
+    </div>
+
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="panel-top">
+        <div class="panel-top-row">
+          <div class="panel-title" id="panelTitle">Resume Builder</div>
+          <button class="back-btn" onclick="showHome()">← Home</button>
+        </div>
+
+        <div id="docTypePills" class="doc-type-row">
+          <button class="dt-btn active" data-sub="resume" onclick="setSubType('resume',this)">Resume</button>
+          <button class="dt-btn" data-sub="cv" onclick="setSubType('cv',this)">CV</button>
+          <button class="dt-btn" data-sub="academic_cv" onclick="setSubType('academic_cv',this)">Academic CV</button>
+        </div>
+
+        <div id="clTypePills" class="doc-type-row" style="display:none">
+          <button class="dt-btn active" data-sub="job" onclick="setCLType('job',this)">Job Application</button>
+          <button class="dt-btn" data-sub="internship" onclick="setCLType('internship',this)">Internship</button>
+          <button class="dt-btn" data-sub="scholarship" onclick="setCLType('scholarship',this)">Scholarship</button>
+        </div>
+
+        <div id="orgTypeGrid" class="lt-grid" style="display:none; padding:0; border:none; gap:6px;">
+          <button class="lt-btn active" onclick="setOrgType('job_application',this)"><span>💼</span>Job Application</button>
+          <button class="lt-btn" onclick="setOrgType('permission_request',this)"><span>🔓</span>Permission</button>
+          <button class="lt-btn" onclick="setOrgType('reference_request',this)"><span>📋</span>Reference</button>
+          <button class="lt-btn" onclick="setOrgType('leave_request',this)"><span>🗓️</span>Leave Request</button>
+          <button class="lt-btn" onclick="setOrgType('complaint_letter',this)"><span>⚠️</span>Complaint</button>
+          <button class="lt-btn" onclick="setOrgType('introduction_letter',this)"><span>👋</span>Introduction</button>
+        </div>
+      </div>
+
+
+
+      <div class="tabs" id="mainTabs" aria-label="Choose how to create your document">
+        <button type="button" class="tab-btn active" onclick="switchTab('chat',this)" aria-controls="pane-chat" aria-pressed="true">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">✦</span>AI Chat</span>
+          
+        </button>
+        <button type="button" class="tab-btn" onclick="switchTab('form',this)" aria-controls="pane-form" aria-pressed="false">
+          <span class="tab-title"><span class="tab-icon" aria-hidden="true">☷</span>Fill a Form</span>
+          
+        </button>
+      </div>
+
+      <div class="tab-pane active" id="pane-chat">
+        <div class="messages" id="messages">
+          <div class="msg ai-msg">
+            <div class="msg-avatar">AI</div>
+            <div class="msg-bubble" id="welcomeMsg">Tell me about yourself — your name, skills, experience and education, and I'll build your document instantly.</div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <textarea id="userInput" aria-label="Describe the document you want to create" placeholder="Example: I’m a recent graduate with customer service experience and strong computer skills…" rows="2"></textarea>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+
+      <div class="tab-pane" id="pane-form">
+        <div class="form-scroll" id="formContent"></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PREVIEW -->
+    <div class="right-panel">
+      <div class="preview-bar">
+        <div class="preview-bar-left">
+          <span class="preview-label">Preview</span>
+          <label class="template-picker-label" for="templateSelect">Style</label>
+          <select id="templateSelect" class="template-picker" aria-label="Document style" onchange="setTemplate(this.value,this)">
+            <optgroup label="Original styles">
+              <option value="classic">Classic</option>
+              <option value="modern">Modern</option>
+              <option value="minimal">Basic / Minimal</option>
+            </optgroup>
+            <optgroup label="Professional styles">
+              <option value="academic">Academic Scholar</option>
+              <option value="slate">Professional Slate</option>
+              <option value="editorial">Elegant Editorial</option>
+              <option value="technical">Technical Grid</option>
+              <option value="sidebar">Contemporary Sidebar</option>
+              <option value="correspondence">Formal Correspondence</option>
+              <option value="institutional">Institutional</option>
+              <option value="creative">Creative Portfolio</option>
+              <option value="monochrome">Clean Monochrome</option>
+              <option value="emerald">Emerald Professional</option>
+              <option value="burgundy">Burgundy Formal</option>
+              <option value="bluebook">Bluebook Executive</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="preview-actions">
+          <button id="copyDocumentBtn" class="btn btn-sm btn-outline" onclick="copyDocument()">Copy</button>
+          <button class="btn btn-sm btn-primary" id="downloadDocumentBtn" onclick="downloadDocument()">Download PDF</button>
+        </div>
+      </div>
+      <div class="preview-body">
+        <div class="doc-sheet" id="docSheet">
+          <div class="placeholder">
+            <div class="placeholder-icon">✦</div>
+            <p>Your document preview will appear here. Start with AI Chat or Fill a Form, then review the result before copying or downloading it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<button type="button" id="walletLauncher" class="wallet-launcher" aria-label="Open wallet" title="Wallet" aria-controls="billingPanel" aria-expanded="false" onclick="toggleWalletPalette()">💵</button>
+<button type="button" id="walletNudge" class="wallet-nudge" hidden onclick="openWalletPalette()" aria-label="Open wallet to unlock clean document">
+  <strong>Unlock your clean document</strong>
+  <span>Get credits for copy and PDF export →</span>
+</button>
+      <section id="billingPanel" class="wallet-palette" hidden aria-labelledby="walletTitle">
+        <div aria-hidden="true" style="position:absolute;right:-30px;top:-44px;width:140px;height:140px;border-radius:50%;background:rgba(96,165,250,.13);pointer-events:none"></div>
+        <div data-billing-heading style="position:relative;display:flex;align-items:center;gap:11px;margin-bottom:15px">
+          <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;flex:0 0 40px;height:40px;border:1px solid rgba(147,197,253,.35);border-radius:13px;background:linear-gradient(145deg,rgba(59,130,246,.45),rgba(14,165,233,.22));color:#dbeafe;font-size:21px;box-shadow:0 5px 18px rgba(37,99,235,.18)">✦</span>
+          <div style="min-width:0;flex:1">
+            <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Wallet</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:3px">Credits for your next document</div>
+          </div>
+          <button type="button" class="wallet-close" aria-label="Close wallet" title="Close wallet (Esc)" onclick="closeWalletPalette()">×</button>
+        </div>
+        <form id="walletLookupForm" style="position:relative;display:flex;gap:9px;align-items:stretch;flex-wrap:wrap">
+          <label for="billingEmail" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Account email</label>
+          <input id="billingEmail" type="email" autocomplete="email" placeholder="Enter your account email" aria-describedby="billingStatus" required style="flex:1;min-width:190px;padding:12px 13px;border-radius:11px;border:1px solid rgba(147,197,253,.4);background:rgba(8,18,38,.72);color:#eff6ff;font:inherit;font-size:13px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)">
+          <button id="checkBalanceBtn" type="submit" class="btn btn-sm btn-primary" style="border-radius:11px;padding:11px 15px;white-space:nowrap;background:linear-gradient(110deg,#2563eb,#0891b2);border:1px solid rgba(191,219,254,.3);box-shadow:0 5px 16px rgba(37,99,235,.25);font-weight:750">Check my balance <span aria-hidden="true">→</span></button>
+        </form>
+        <div id="creditBalance" role="status" aria-live="polite" style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:14px 15px;border:1px solid rgba(147,197,253,.27);border-radius:13px;background:linear-gradient(110deg,rgba(15,23,42,.78),rgba(30,58,138,.24));">
+          <div style="display:flex;align-items:center;gap:11px;min-width:0">
+            <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;width:37px;height:37px;flex:0 0 37px;border-radius:11px;background:rgba(59,130,246,.18);color:#93c5fd;font-size:20px">◉</span>
+            <div>
+              <div style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:#93c5fd">AVAILABLE CREDITS</div>
+              <div id="creditBalanceValue" style="font-size:20px;font-weight:850;line-height:1.25;margin-top:4px;color:#f8fafc">— credits</div>
+            </div>
+          </div>
+          <span aria-hidden="true" style="font-size:11px;color:#bfdbfe;border:1px solid rgba(147,197,253,.22);border-radius:99px;padding:5px 8px;white-space:nowrap">WALLET</span>
+        </div>
+        <div id="billingStatus" role="status" aria-live="polite" style="position:relative;font-size:12px;line-height:1.5;margin-top:9px;color:var(--text2)">Enter your email, then select “Check my balance”.</div>
+        <div style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px;padding-top:11px;border-top:1px solid rgba(147,197,253,.18)">
+          <span style="font-size:12px;color:var(--text2)">Ready for more documents?</span>
+          <button type="button" class="btn btn-sm btn-outline" onclick="loadCreditPackages()" style="border-radius:9px;border-color:rgba(96,165,250,.42);color:#93c5fd">View credit packages</button>
+        </div>
+        <div id="creditPackages" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"></div>
+      </section>
+</div>
+<button class="mobile-preview-toggle" id="mobilePreviewBtn" onclick="toggleMobilePreview()" title="Toggle Preview">👁</button>
+<div class="toast" id="toast"></div>
+
+<script>
+const state = {
+  tool: 'resume', subType: 'resume', clType: 'job', orgType: 'job_application',
+  template: 'classic', resume: {}, portfolio: {}, letter: '', orgLetter: ''
+};
+
+function openWalletPalette() {
+  const panel = document.getElementById('billingPanel');
+  const launcher = document.getElementById('walletLauncher');
+  if (!panel || !launcher) return;
+  panel.hidden = false;
+  launcher.setAttribute('aria-expanded', 'true');
+  const nudge = document.getElementById('walletNudge');
+  if (nudge) nudge.hidden = true;
+  document.getElementById('billingEmail')?.focus({ preventScroll: true });
+}
+function closeWalletPalette() {
+  const panel = document.getElementById('billingPanel');
+  const launcher = document.getElementById('walletLauncher');
+  if (panel) panel.hidden = true;
+  const nudge = document.getElementById('walletNudge');
+  if (nudge) nudge.hidden = !previewOnly;
+  if (launcher) {
+    launcher.setAttribute('aria-expanded', 'false');
+    launcher.focus({ preventScroll: true });
+  }
+}
+function toggleWalletPalette() {
+  const panel = document.getElementById('billingPanel');
+  if (panel?.hidden) openWalletPalette();
+  else closeWalletPalette();
+}
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && document.getElementById('billingPanel') && !document.getElementById('billingPanel').hidden) closeWalletPalette();
+});
+
+function billingEmailValue() {
+  return (document.getElementById('billingEmail')?.value || '').trim().toLowerCase();
+}
+
+function rememberBillingEmail() {
+  try {
+    const email = billingEmailValue();
+    if (email) sessionStorage.setItem('doccraftBillingEmail', email);
+  } catch (_) {}
+}
+
+function restoreBillingEmail() {
+  try {
+    const input = document.getElementById('billingEmail');
+    const saved = sessionStorage.getItem('doccraftBillingEmail');
+    if (input && !input.value && saved) input.value = saved;
+  } catch (_) {}
+}
+
+restoreBillingEmail();
+
+let walletBalanceTimer = null;
+let walletBalanceRequest = 0;
+
+async function refreshCreditBalance() {
+  const email = billingEmailValue();
+  const display = document.getElementById('creditBalance');
+  const value = document.getElementById('creditBalanceValue');
+  const button = document.getElementById('checkBalanceBtn');
+  const status = document.getElementById('billingStatus');
+  if (!display || !value || !button || !status) return;
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = 'Please enter a valid email address to check your wallet.';
+    status.style.color = '#fbbf24';
+    document.getElementById('billingEmail')?.focus();
+    return;
+  }
+
+  rememberBillingEmail();
+  const requestNumber = ++walletBalanceRequest;
+  button.disabled = true;
+  button.textContent = 'Checking…';
+  value.textContent = 'Checking balance…';
+  status.textContent = 'Securely checking your wallet. This will not start a payment.';
+  status.style.color = 'var(--text2)';
+  try {
+    const response = await fetch('/api/wallet/balance', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await response.json();
+    if (requestNumber !== walletBalanceRequest) return;
+    if (!response.ok || !data.success) throw new Error(data.error || 'Balance is temporarily unavailable.');
+    const credits = Number(data.credits_balance || 0);
+    value.textContent = credits + (credits === 1 ? ' credit' : ' credits');
+    display.dataset.balance = String(credits);
+    status.textContent = credits > 0
+      ? 'Wallet confirmed. Your available credits are ready to use.'
+      : 'No credits found for this email yet. You can view the packages below whenever you are ready.';
+    status.style.color = credits > 0 ? '#6ee7b7' : 'var(--text2)';
+  } catch (error) {
+    if (requestNumber === walletBalanceRequest) {
+      value.textContent = 'Balance unavailable';
+      status.textContent = error.message || 'Could not check your balance. Please try again.';
+      status.style.color = '#fbbf24';
+    }
+  } finally {
+    if (requestNumber === walletBalanceRequest) {
+      button.disabled = false;
+      button.innerHTML = 'Check my balance <span aria-hidden="true">→</span>';
+    }
+  }
+}
+
+const walletLookupForm = document.getElementById('walletLookupForm');
+if (walletLookupForm) {
+  walletLookupForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    refreshCreditBalance();
+  });
+}
+
+async function loadCreditPackages() {
+  const email = billingEmailValue();
+  const status = document.getElementById('billingStatus');
+  const container = document.getElementById('creditPackages');
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    status.textContent = 'Enter a valid email address first.';
+    document.getElementById('billingEmail')?.focus();
+    return;
+  }
+  rememberBillingEmail();
+  status.textContent = 'Loading credit packages…';
+  try {
+    const response = await fetch('/api/payments/packages');
+    const data = await response.json();
+    if (!response.ok || !data.success || !Array.isArray(data.packages)) throw new Error(data.error || 'Packages are unavailable.');
+    container.innerHTML = '';
+    data.packages.forEach(pkg => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'btn btn-sm btn-outline';
+      button.textContent = pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')';
+      button.addEventListener('click', () => startCreditCheckout(pkg.code, button));
+      container.appendChild(button);
+    });
+    status.textContent = 'Choose a package to continue to secure checkout.';
+    refreshCreditBalance();
+  } catch (error) {
+    status.textContent = error.message || 'Could not load packages. Please retry.';
+  }
+}
+
+async function startCreditCheckout(packageCode, button) {
+  const email = billingEmailValue();
+  const status = document.getElementById('billingStatus');
+  rememberBillingEmail();
+  button.disabled = true;
+  status.textContent = 'Preparing secure checkout…';
+  try {
+    const response = await fetch('/api/payments/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, package_code: packageCode })
+    });
+    const data = await response.json();
+    if (!response.ok || !data.success || !data.checkout?.url) throw new Error(data.error || 'Checkout could not be started.');
+    window.location.assign(data.checkout.url);
+  } catch (error) {
+    status.textContent = error.message || 'Checkout failed. Please retry.';
+    button.disabled = false;
+  }
+}
+
+async function verifyReturnedPayment() {
+  restoreBillingEmail();
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('payment') === 'cancelled') {
+    document.getElementById('billingStatus').textContent = 'Checkout was cancelled. No payment has been assumed successful; you can try again whenever you are ready.';
+    params.delete('payment');
+    const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+    window.history.replaceState({}, '', clean);
+    return;
+  }
+  const reference = params.get('reference') || params.get('session_id');
+  if (!reference) return;
+  const status = document.getElementById('billingStatus');
+  status.textContent = 'Checking payment status…';
+  try {
+    const response = await fetch('/api/payments/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reference })
+    });
+    const data = await response.json();
+    status.textContent = response.ok && data.success
+      ? 'Payment confirmed. Credit balance: ' + (data.credits_balance ?? 'updated') + '.'
+      : (data.error || 'Payment is not confirmed yet. Please retry verification later.');
+    if (response.ok && data.success) {
+      refreshCreditBalance();
+      params.delete('reference'); params.delete('session_id');
+      const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+      window.history.replaceState({}, '', clean);
+    }
+  } catch (_) {
+    status.textContent = 'Could not verify payment right now. Your payment has not been assumed successful.';
+  }
+}
+
+function showHome() {
+  document.getElementById('homeScreen').style.display = '';
+  document.getElementById('appScreen').style.display = 'none';
+  document.querySelectorAll('.nav-tool').forEach(b => b.classList.remove('active'));
+}
+
+function openTool(tool) {
+  state.tool = tool;
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  setMobileWorkspace('edit');
+
+  const titles = { resume:'Resume & CV Builder', cover_letter:'Cover Letter Generator', portfolio:'Portfolio Builder', org_letter:'Organisation Letters' };
+  const panelTitleEl = document.getElementById('panelTitle');
+  if (panelTitleEl) panelTitleEl.textContent = titles[tool] || tool;
+
+  const docTypePills = document.getElementById('docTypePills');
+  const clTypePills  = document.getElementById('clTypePills');
+  const orgTypeGrid  = document.getElementById('orgTypeGrid');
+  const mainTabs     = document.getElementById('mainTabs');
+  const tplPills     = document.getElementById('tplPills');
+  const paneChat     = document.querySelector('#pane-chat');
+  const paneForm     = document.querySelector('#pane-form');
+
+  if (docTypePills) docTypePills.style.display = tool === 'resume' ? '' : 'none';
+  if (clTypePills)  clTypePills.style.display  = tool === 'cover_letter' ? '' : 'none';
+  if (orgTypeGrid)  orgTypeGrid.style.display  = tool === 'org_letter' ? '' : 'none';
+  if (mainTabs)     mainTabs.style.display     = (tool === 'org_letter' || tool === 'cover_letter') ? 'none' : '';
+  if (paneChat)     paneChat.classList.toggle('active', tool !== 'org_letter' && tool !== 'cover_letter');
+  if (paneForm)     paneForm.classList.toggle('active', tool === 'org_letter' || tool === 'cover_letter');
+  if (tplPills)     tplPills.style.display     = (tool === 'resume') ? '' : 'none';
+
+  document.querySelectorAll('.nav-tool').forEach(b => b.classList.remove('active'));
+  const map = { resume:0, cover_letter:1, portfolio:2, org_letter:3 };
+  const tools = document.querySelectorAll('.nav-tool');
+  if (tools[map[tool]]) tools[map[tool]].classList.add('active');
+
+  const welcomes = {
+    resume: "Tell me about yourself — your name, skills, experience and education. I'll build your resume instantly!",
+    cover_letter: "I'll generate a cover letter. Fill in the form on the left.",
+    portfolio: "Tell me about yourself, your projects, and your skills. I'll create your professional portfolio!",
+    org_letter: "Fill in the form and I'll generate your formal letter."
+  };
+  const welcomeMsg = document.getElementById('welcomeMsg');
+  if (welcomeMsg) welcomeMsg.textContent = welcomes[tool] || 'Let’s create your document.';
+  const messages = document.getElementById('messages');
+  if (messages) messages.innerHTML = `
+    <div class="msg ai-msg">
+      <div class="msg-avatar">AI</div>
+      <div class="msg-bubble">${welcomes[tool] || 'Let’s create your document.'}</div>
+    </div>`;
+
+  document.getElementById('docSheet').innerHTML = getPlaceholder(tool);
+  const guideTitles = {
+    resume: '',
+    cover_letter: 'Create a targeted cover letter',
+    portfolio: 'Showcase your work',
+    org_letter: 'Write a formal organisation letter'
+  };
+  const guideTexts = {
+    resume: 'Use AI Chat for guided help, or Fill a Form to enter details step by step. Choose a template and preview your document before downloading.',
+    cover_letter: 'Complete the details for the job, internship, or scholarship. Include the role and organisation so the letter can be tailored.',
+    portfolio: 'Add your skills, projects, and contact details. You can update the information and preview your portfolio before copying or printing.',
+    org_letter: 'Choose the letter type above, enter the details you know, and generate a formal draft to review before using.'
+  };
+  const guideTitle = document.getElementById('workspaceGuideTitle');
+  const guideText = document.getElementById('workspaceGuideText');
+  if (guideTitle) guideTitle.textContent = guideTitles[tool] || 'Create your document';
+  if (guideTitle) guideTitle.style.display = guideTitle.textContent ? '' : 'none';
+  if (guideText) guideText.textContent = guideTexts[tool] || 'Enter your details, review the preview, and download when ready.';
+  if (mainTabs) mainTabs.style.display = (tool === 'org_letter' || tool === 'cover_letter') ? 'none' : '';
+  const guide = document.getElementById('workspaceGuide');
+  if (guide) guide.style.display = '';
+  loadForm(tool);
+}
+
+function getPlaceholder(tool) {
+  const icons = { resume:'📄', cover_letter:'✉️', portfolio:'🌐', org_letter:'🏛️' };
+  const hints = {
+    resume: 'Chat with AI or fill the form to generate your resume.',
+    cover_letter: 'Fill in the details on the left and click Generate.',
+    portfolio: 'Chat with AI or fill the form to generate your portfolio.',
+    org_letter: 'Select a letter type, fill in the details, and click Generate.'
+  };
+  return `<div class="placeholder"><div class="placeholder-icon">${icons[tool]||'✦'}</div><p>${hints[tool]||''}</p></div>`;
+}
+
+function switchTab(pane, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed', 'false');
+  });
+  const activePane = document.getElementById('pane-' + pane);
+  if (activePane) activePane.classList.add('active');
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed', 'true');
+}
+
+function setSubType(sub, btn) {
+  state.subType = sub;
+  document.querySelectorAll('#docTypePills .dt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function setCLType(type, btn) {
+  state.clType = type;
+  document.querySelectorAll('#clTypePills .dt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadForm('cover_letter');
+}
+function setOrgType(type, btn) {
+  state.orgType = type;
+  document.querySelectorAll('#orgTypeGrid .lt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadForm('org_letter');
+}
+const DOCUMENT_STYLE_IDS = new Set([
+  'classic','modern','minimal','academic','slate','editorial','technical','sidebar',
+  'correspondence','institutional','creative','monochrome','emerald','burgundy','bluebook'
+]);
+function applyDocumentStyle() {
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.dataset.docStyle = DOCUMENT_STYLE_IDS.has(state.template) ? state.template : 'classic';
+}
+async function setTemplate(tpl, picker) {
+  if (!DOCUMENT_STYLE_IDS.has(tpl) || tpl === state.template) return;
+  const sheet = document.getElementById('docSheet');
+  const hasGeneratedDocument = Boolean(sheet && sheet.querySelector(
+    '.tpl-classic,.tpl-modern,.tpl-minimal,.portfolio-sheet,.letter-sheet'
+  ));
+  // Charge once through the existing action endpoint whenever a real document is restyled,
+  // regardless of whether it came from a form, AI chat, or which document family it is.
+  if (hasGeneratedDocument && !(await authorizeDocumentAction('template'))) {
+    if (picker && picker.tagName === 'SELECT') picker.value = state.template;
+    return;
+  }
+  state.template = tpl;
+  if (picker && picker.tagName === 'SELECT') picker.value = tpl;
+  applyDocumentStyle();
+  // Resume/CV families need layout selection; other document content stays in place.
+  if (sheet && sheet.querySelector('.tpl-classic,.tpl-modern,.tpl-minimal')) renderResume(state.resume);
+}
+
+function loadForm(tool) {
+  const fc = document.getElementById('formContent');
+  if (tool === 'resume') {
+    fc.innerHTML = `
+      <div class="section-sep">Personal Info</div>
+      <div class="form-group"><label>Full Name</label><input id="f_name" placeholder="Jane Smith"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input id="f_email" type="email" placeholder="jane@email.com"></div>
+        <div class="form-group"><label>Phone</label><input id="f_phone" placeholder="+44 7700 900000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Location</label><input id="f_location" placeholder="London, UK"></div>
+        <div class="form-group"><label>LinkedIn</label><input id="f_linkedin" placeholder="linkedin.com/in/..."></div>
+      </div>
+      <div class="form-group"><label>Website / Portfolio</label><input id="f_website" placeholder="yoursite.com"></div>
+      <div class="section-sep">Summary</div>
+      <div class="form-group"><label>Professional Summary</label><textarea id="f_summary" rows="3" placeholder="A results-driven professional with..."></textarea></div>
+      <div class="section-sep">Skills & Languages</div>
+      <div class="form-group"><label>Skills <span class="form-hint">(comma-separated)</span></label><input id="f_skills" placeholder="Python, React, SQL, Communication"></div>
+      <div class="form-group"><label>Languages</label><input id="f_languages" placeholder="English (Fluent), French (B2)"></div>
+      <div class="section-sep">Experience</div>
+      <div class="form-group"><label>Experience <span class="form-hint">Title | Employer | Period | Location (optional) | Responsibilities (separate bullets with ;, one role per line)</span></label><textarea id="f_experience" rows="4" placeholder="Network Technician | Example Ltd | 2023–2025 | Thika, Kenya | Installed fibre links; resolved network faults; documented maintenance"></textarea></div>
+      <div class="section-sep">Education</div>
+      <div class="form-group"><label>Education <span class="form-hint">Qualification | Institution | Year | Grade (optional), one per line</span></label><textarea id="f_education" rows="3" placeholder="Diploma in Telecommunications | Thika Technical Training Institute | 2026 | Credit"></textarea></div>
+      <div class="section-sep">Extra</div>
+      <div class="form-group"><label>Certifications</label><input id="f_certs" placeholder="AWS Certified, Google Analytics"></div>
+      <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="f_projects" rows="3" placeholder="DocCraft App | AI document builder | Python, Flask"></textarea></div>
+      <div class="form-group"><label>Achievements <span class="form-hint">(one per line; include evidence where possible)</span></label><textarea id="f_achievements" rows="2" placeholder="Award, measurable result, leadership or contribution"></textarea></div>
+      <div id="academicCvFields" style="display:none">
+        <div class="section-sep">Academic & Research Record</div>
+        <div class="form-group"><label>Research Interests / Experience <span class="form-hint">(one item per line)</span></label><textarea id="f_research" rows="2" placeholder="Research area, methods, or relevant experience"></textarea></div>
+        <div class="form-group"><label>Teaching, Training & Academic Service <span class="form-hint">(one item per line)</span></label><textarea id="f_teaching" rows="2" placeholder="Teaching, tutoring, mentoring, laboratory or academic service"></textarea></div>
+        <div class="form-group"><label>Publications <span class="form-hint">(full citation, one per line)</span></label><textarea id="f_publications" rows="2" placeholder="Author(s), title, publication, year, DOI/URL if available"></textarea></div>
+        <div class="form-group"><label>Presentations <span class="form-hint">(one per line)</span></label><textarea id="f_presentations" rows="2" placeholder="Title, event, location, date"></textarea></div>
+        <div class="form-group"><label>Grants & Awards <span class="form-hint">(one per line)</span></label><textarea id="f_grants_awards" rows="2" placeholder="Award/grant, awarding body, year"></textarea></div>
+        <div class="form-group"><label>Professional Memberships <span class="form-hint">(one per line)</span></label><textarea id="f_memberships" rows="2" placeholder="Professional body and membership grade, if applicable"></textarea></div>
+        <p class="form-hint">Only include verified academic work. Leave fields blank if not applicable; do not invent publications or awards.</p>
+      </div>
+      <div class="form-group"><label>Professional Interests <span class="form-hint">(optional, comma-separated)</span></label><input id="f_interests" placeholder="Telecommunications, network automation"></div>
+      <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
+      <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
+      <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
+    
+    const academicFields = document.getElementById('academicCvFields');
+    if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';`;
+  } else if (tool === 'cover_letter') {
+    const clForms = {
+      job: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="cl_name" placeholder="Jane Smith"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input id="cl_email" placeholder="jane@email.com"></div>
+          <div class="form-group"><label>Phone</label><input id="cl_phone" placeholder="+44 7700 900000"></div>
+        </div>
+        <div class="section-sep">Job Details</div>
+        <div class="form-group"><label>Position Applied For</label><input id="cl_position" placeholder="Software Engineer"></div>
+        <div class="form-group"><label>Company / Organisation</label><input id="cl_company" placeholder="Google UK"></div>
+        <div class="form-group"><label>Company Address or Job Reference <span class="form-hint">(optional)</span></label><input id="cl_company_address" placeholder="Postal address or vacancy reference"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Hiring Manager</label><input id="cl_manager" placeholder="Ms. Johnson (optional)"></div>
+          <div class="form-group"><label>Years of Experience</label><input id="cl_exp" placeholder="3"></div>
+        </div>
+        <div class="form-group"><label>Your Field / Specialisation</label><input id="cl_field" placeholder="Software Engineering, AI"></div>
+        <div class="form-group"><label>Why this company?</label><textarea id="cl_why" rows="2" placeholder="What attracts you..."></textarea></div>
+        <div class="form-group"><label>Key Achievement</label><textarea id="cl_achievement" rows="2" placeholder="Your biggest win..."></textarea></div>`,
+      internship: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="cl_name" placeholder="Your Name"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input id="cl_email" placeholder="you@email.com"></div>
+          <div class="form-group"><label>Phone</label><input id="cl_phone" placeholder="+1 234 567 8900"></div>
+        </div>
+        <div class="section-sep">Internship Details</div>
+        <div class="form-group"><label>Position / Programme</label><input id="int_position" placeholder="Software Engineering Intern"></div>
+        <div class="form-group"><label>Company</label><input id="int_company" placeholder="Amazon"></div>
+        <div class="form-row">
+          <div class="form-group"><label>University</label><input id="int_university" placeholder="University of Manchester"></div>
+          <div class="form-group"><label>Course</label><input id="int_course" placeholder="BSc Computer Science"></div>
+        </div>
+        <div class="form-group"><label>Year of Study</label><input id="int_year" placeholder="2nd year / Final year"></div>
+        <div class="form-group"><label>Motivation</label><textarea id="int_motivation" rows="2" placeholder="What drives you to apply..."></textarea></div>`,
+      scholarship: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="cl_name" placeholder="Your Name"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input id="cl_email" placeholder="you@email.com"></div>
+          <div class="form-group"><label>Phone</label><input id="cl_phone" placeholder="+1 234 567 8900"></div>
+        </div>
+        <div class="section-sep">Scholarship Details</div>
+        <div class="form-group"><label>Scholarship Name</label><input id="sch_name" placeholder="Chevening Scholarship"></div>
+        <div class="form-group"><label>Institution</label><input id="sch_inst" placeholder="University of Oxford"></div>
+        <div class="form-group"><label>Programme</label><input id="sch_prog" placeholder="MSc Data Science"></div>
+        <div class="form-group"><label>Your Background</label><textarea id="sch_bg" rows="2" placeholder="Brief background..."></textarea></div>
+        <div class="form-group"><label>Your Goals</label><textarea id="sch_goals" rows="2" placeholder="What you aim to achieve..."></textarea></div>`
+    };
+    fc.innerHTML = (clForms[state.clType] || clForms.job) +
+      `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateCoverLetter()">Generate Cover Letter</button>`;
+  } else if (tool === 'portfolio') {
+    fc.innerHTML = `
+      <div class="section-sep">Personal Info</div>
+      <div class="form-group"><label>Full Name</label><input id="pf_name" placeholder="Alex Johnson"></div>
+      <div class="form-group"><label>Professional Title</label><input id="pf_title" placeholder="Full Stack Developer | UX Designer"></div>
+      <div class="form-group"><label>Professional Bio</label><textarea id="pf_bio" rows="3" placeholder="Passionate developer with 3 years of experience..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Email</label><input id="pf_email" placeholder="you@email.com"></div>
+        <div class="form-group"><label>GitHub</label><input id="pf_github" placeholder="github.com/you"></div>
+      </div>
+      <div class="form-group"><label>LinkedIn</label><input id="pf_linkedin" placeholder="linkedin.com/in/you"></div>
+      <div class="section-sep">Skills</div>
+      <div class="form-group"><label>Skills <span class="form-hint">(comma-separated)</span></label><input id="pf_skills" placeholder="React, Python, UI/UX, Figma"></div>
+      <div class="section-sep">Projects</div>
+      <div class="form-group"><label>Projects <span class="form-hint">Name | Description | Tech (one per line)</span></label><textarea id="pf_projects" rows="4" placeholder="Portfolio App | AI document builder | React, Flask&#10;ML Classifier | Image classifier | Python, TensorFlow"></textarea></div>
+      <div class="section-sep">Education & Achievements</div>
+      <div class="form-group"><label>Education</label><textarea id="pf_edu" rows="2" placeholder="BSc Computer Science | UCL | 2024"></textarea></div>
+      <div class="form-group"><label>Achievements <span class="form-hint">(one per line)</span></label><textarea id="pf_achievements" rows="2" placeholder="1st Place – University Hackathon 2024"></textarea></div>
+      <button class="btn btn-primary full-btn" onclick="buildPortfolioFromForm()">Generate Portfolio</button>
+    `;
+  } else if (tool === 'org_letter') {
+    const orgForms = {
+      job_application: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Full Name"></div>
+        <div class="form-group"><label>Address</label><input id="og_saddr" placeholder="123 Street, City, Country"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input id="og_semail" placeholder="you@email.com"></div>
+          <div class="form-group"><label>Phone</label><input id="og_sphone" placeholder="+44 7700 900000"></div>
+        </div>
+        <div class="section-sep">Job Details</div>
+        <div class="form-group"><label>Position Applied For</label><input id="og_position" placeholder="Marketing Manager"></div>
+        <div class="form-group"><label>Company / Organisation</label><input id="og_company" placeholder="ABC Corporation"></div>
+        <div class="form-group"><label>Company Address</label><input id="og_caddr" placeholder="456 Business Park, London, UK"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Recipient Name</label><input id="og_rname" placeholder="Hiring Manager"></div>
+          <div class="form-group"><label>Years Experience</label><input id="og_exp" placeholder="3"></div>
+        </div>
+        <div class="form-group"><label>Field / Expertise</label><input id="og_field" placeholder="Marketing, Digital Media"></div>
+        <div class="form-group"><label>Where advertised</label><input id="og_advert" placeholder="on LinkedIn"></div>`,
+      permission_request: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Name"></div>
+        <div class="form-group"><label>Department / Address</label><input id="og_saddr" placeholder="Room 204, Block A"></div>
+        <div class="form-group"><label>Student/Staff ID</label><input id="og_sid" placeholder="STU2024001"></div>
+        <div class="section-sep">Permission Details</div>
+        <div class="form-group"><label>Recipient / Authority</label><input id="og_rname" placeholder="Head of Department"></div>
+        <div class="form-group"><label>Organisation</label><input id="og_org" placeholder="University / Company"></div>
+        <div class="form-group"><label>Permission Subject</label><input id="og_permsub" placeholder="Research Field Visit"></div>
+        <div class="form-group"><label>What you want to do</label><textarea id="og_permact" rows="2" placeholder="attend the external conference on 15th May..."></textarea></div>
+        <div class="form-group"><label>Reason / Justification</label><textarea id="og_reason" rows="2" placeholder="Why you need this permission..."></textarea></div>`,
+      reference_request: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Name"></div>
+        <div class="form-group"><label>Email</label><input id="og_semail" placeholder="you@email.com"></div>
+        <div class="section-sep">Referee Details</div>
+        <div class="form-row">
+          <div class="form-group"><label>Referee Name</label><input id="og_refname" placeholder="Dr. Sarah Williams"></div>
+          <div class="form-group"><label>Title</label><input id="og_reftitle" placeholder="Senior Lecturer"></div>
+        </div>
+        <div class="form-group"><label>Referee Organisation</label><input id="og_reforg" placeholder="University of Leeds"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Salutation</label><input id="og_refsal" placeholder="Dr. / Prof."></div>
+          <div class="form-group"><label>Referee Surname</label><input id="og_refsur" placeholder="Williams"></div>
+        </div>
+        <div class="form-group"><label>Applying For</label><input id="og_applyfor" placeholder="MSc Data Science at Imperial"></div>
+        <div class="form-group"><label>Context of Relationship</label><input id="og_context" placeholder="during my undergraduate studies"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Deadline</label><input id="og_deadline" placeholder="30 April 2026"></div>
+          <div class="form-group"><label>Submission Method</label><input id="og_submission" placeholder="via email to admissions@..."></div>
+        </div>`,
+      leave_request: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Name"></div>
+        <div class="form-group"><label>Department / Course</label><input id="og_dept" placeholder="BSc Accounting, Year 2"></div>
+        <div class="form-group"><label>Student/Staff ID</label><input id="og_sid" placeholder="STU2024001"></div>
+        <div class="section-sep">Leave Details</div>
+        <div class="form-group"><label>Recipient</label><input id="og_rname" placeholder="Head of Department"></div>
+        <div class="form-group"><label>Organisation</label><input id="og_org" placeholder="University of Leicester"></div>
+        <div class="form-group"><label>Type of Leave</label><input id="og_leavetype" placeholder="Sick Leave / Annual Leave"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Start Date</label><input id="og_startdate" placeholder="10 April 2026"></div>
+          <div class="form-group"><label>End Date</label><input id="og_enddate" placeholder="20 April 2026"></div>
+        </div>
+        <div class="form-group"><label>Reason</label><textarea id="og_reason" rows="2" placeholder="Medical appointment / Family emergency..."></textarea></div>`,
+      complaint_letter: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Name"></div>
+        <div class="form-group"><label>Address</label><input id="og_saddr" placeholder="Your Address"></div>
+        <div class="form-group"><label>Email</label><input id="og_semail" placeholder="you@email.com"></div>
+        <div class="section-sep">Complaint Details</div>
+        <div class="form-group"><label>Recipient</label><input id="og_rname" placeholder="Customer Relations Manager"></div>
+        <div class="form-group"><label>Organisation</label><input id="og_org" placeholder="ABC University / Company"></div>
+        <div class="form-group"><label>Subject of Complaint</label><input id="og_compsub" placeholder="Poor Service / Incorrect Billing"></div>
+        <div class="form-group"><label>Incident Date</label><input id="og_compdate" placeholder="15 March 2026"></div>
+        <div class="form-group"><label>What happened</label><textarea id="og_compdetail" rows="3" placeholder="Describe in detail..."></textarea></div>
+        <div class="form-group"><label>Desired Resolution</label><textarea id="og_compres" rows="2" placeholder="What you want them to do..."></textarea></div>`,
+      introduction_letter: `
+        <div class="section-sep">Your Details</div>
+        <div class="form-group"><label>Full Name</label><input id="og_sname" placeholder="Your Name"></div>
+        <div class="form-group"><label>Title / Position</label><input id="og_stitle" placeholder="Research Student / Graduate Engineer"></div>
+        <div class="form-group"><label>Organisation</label><input id="og_org" placeholder="University of Bristol"></div>
+        <div class="form-group"><label>Email</label><input id="og_semail" placeholder="you@email.com"></div>
+        <div class="section-sep">Recipient Details</div>
+        <div class="form-group"><label>Recipient Name</label><input id="og_rname" placeholder="Partnership Team / Research Director"></div>
+        <div class="form-group"><label>Recipient Organisation</label><input id="og_rorg" placeholder="Partner University / Company"></div>
+        <div class="form-group"><label>Purpose of Introduction</label><textarea id="og_purpose" rows="2" placeholder="To explore research collaboration opportunities..."></textarea></div>
+        <div class="form-group"><label>Your Background</label><textarea id="og_bg" rows="2" placeholder="Brief about your expertise..."></textarea></div>`
+    };
+    fc.innerHTML = (orgForms[state.orgType] || orgForms.job_application) +
+      `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
+  }
+  
+}
+
+function v(id) { const el = document.getElementById(id); return el ? el.value.trim() : ''; }
+
+function collectOrgData() {
+  const t = state.orgType;
+  const base = { sender_name: v('og_sname'), sender_address: v('og_saddr') || v('og_dept'), sender_email: v('og_semail'), sender_phone: v('og_sphone'), sender_id: v('og_sid'), recipient_name: v('og_rname'), organisation: v('og_org') || v('og_company') };
+  const extra = {
+    job_application: { position: v('og_position'), company: v('og_company'), company_address: v('og_caddr'), years_exp: v('og_exp'), field: v('og_field'), advert_source: v('og_advert') },
+    permission_request: { permission_subject: v('og_permsub'), permission_action: v('og_permact'), reason: v('og_reason') },
+    reference_request: { referee_name: v('og_refname'), referee_title: v('og_reftitle'), referee_organisation: v('og_reforg'), referee_salutation: v('og_refsal'), referee_surname: v('og_refsur'), applying_for: v('og_applyfor'), context: v('og_context'), deadline: v('og_deadline'), submission_method: v('og_submission') },
+    leave_request: { department: v('og_dept'), student_id: v('og_sid'), leave_type: v('og_leavetype'), start_date: v('og_startdate'), end_date: v('og_enddate'), reason: v('og_reason') },
+    complaint_letter: { complaint_subject: v('og_compsub'), incident_date: v('og_compdate'), complaint_detail: v('og_compdetail'), resolution: v('og_compres') },
+    introduction_letter: { sender_title: v('og_stitle'), recipient_organisation: v('og_rorg'), purpose: v('og_purpose'), background: v('og_bg') }
+  };
+  return { ...base, ...(extra[t] || {}) };
+}
+
+async function sendMessage() {
+  const input = document.getElementById('userInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  addMsg(msg, 'user');
+  input.value = '';
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+  const docTypeMap = { resume: state.subType, cover_letter: 'cover_letter', portfolio: 'portfolio', org_letter: 'org_letter' };
+  const docType = docTypeMap[state.tool] || state.tool;
+  addSpinner();
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc_type: docType, user_input: msg, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { currentData: state.tool === 'portfolio' ? state.portfolio : state.resume } })
+    });
+    const json = await res.json();
+    removeSpinner();
+    btn.disabled = false;
+    if (json.success) {
+      refreshCreditBalance();
+      setPreviewAccess(json.preview_only);
+      if (typeof json.wallet_balance === 'number') {
+        const balanceValue = document.getElementById('creditBalanceValue');
+        if (balanceValue) balanceValue.textContent = String(json.wallet_balance) + ' credits';
+      }
+      addMsg(json.preview_only ? 'Watermarked preview generated. Add wallet credits to unlock a clean document, copying, and PDF export.' : (json.reply || 'Document updated!'), 'ai');
+      showQualityNotes(json.data);
+      if (state.tool === 'resume') { state.resume = { ...state.resume, ...json.data }; renderResume(state.resume); }
+      else if (state.tool === 'portfolio') { state.portfolio = { ...state.portfolio, ...json.data }; renderPortfolio(state.portfolio); }
+      else if (state.tool === 'cover_letter') renderLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
+      else if (state.tool === 'org_letter') renderOrgLetter(json.data.full_letter || json.data.letter_text || '', json.data.subject || '');
+      showGeneratedDocumentOnMobile();
+    } else {
+      addMsg(json.error || 'Something went wrong. Please try again.', 'ai');
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    removeSpinner();
+    btn.disabled = false;
+    addMsg('Network error. Please check your connection.', 'ai');
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey && document.activeElement.id === 'userInput') {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+function showQualityNotes(data) {
+  const notes = Array.isArray(data?.quality_notes) ? data.quality_notes.filter(note => typeof note === 'string' && note.trim()) : [];
+  if (notes.length) addMsg('Before official use, review: ' + notes.slice(0, 6).join('; '), 'ai');
+}
+
+function addMsg(text, who) {
+  const msgs = document.getElementById('messages');
+  const isAI = who === 'ai';
+  msgs.innerHTML += `<div class="msg ${isAI ? 'ai-msg' : 'user-msg'}"><div class="msg-avatar">${isAI ? 'AI' : 'You'}</div><div class="msg-bubble">${escapeHtml(text)}</div></div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function addSpinner() {
+  const msgs = document.getElementById('messages');
+  msgs.innerHTML += `<div class="spinner-wrap" id="spinnerMsg"><div class="spinner"></div> Generating...</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+}
+function removeSpinner() { const s = document.getElementById('spinnerMsg'); if (s) s.remove(); }
+
+async function buildFromForm() {
+  if (!v('f_name')) {
+    showToast('Enter your full name to build your document.');
+    document.getElementById('f_name')?.focus();
+    return;
+  }
+  const hasDetails = ['f_summary','f_skills','f_experience','f_education','f_projects','f_certs','f_achievements','f_interests','f_referees','f_research','f_teaching','f_publications','f_presentations','f_grants_awards','f_memberships'].some(id => v(id));
+  if (!hasDetails) {
+    showToast('Add at least one detail, such as your summary, skills, experience, or education.');
+    document.getElementById('f_summary')?.focus();
+    return;
+  }
+  const skills = v('f_skills').split(',').map(s => s.trim()).filter(Boolean);
+  const langs = v('f_languages').split(',').map(s => s.trim()).filter(Boolean);
+  const certs = v('f_certs').split(',').map(s => s.trim()).filter(Boolean);
+  const experience = v('f_experience').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+    const parts = line.split('|').map(s => s.trim());
+    const hasLocationColumn = parts.length >= 5;
+    const detailText = hasLocationColumn ? parts.slice(4).join(' | ') : parts.slice(3).join(' | ');
+    const bullets = detailText.split(/;|•/).map(item => item.trim()).filter(Boolean);
+    return { title: parts[0]||'', company: parts[1]||'', period: parts[2]||'', location: hasLocationColumn ? (parts[3]||'') : '', bullets };
+  });
+  const education = v('f_education').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+    const parts = line.split('|').map(s => s.trim());
+    return { degree: parts[0]||'', institution: parts[1]||'', year: parts[2]||'', grade: parts[3]||'' };
+  });
+  const projects = v('f_projects').split('\n').filter(Boolean).map(line => {
+    const parts = line.split('|').map(s => s.trim());
+    return { name: parts[0]||'', description: parts[1]||'', tech: parts[2] ? parts[2].split(',').map(s=>s.trim()) : [] };
+  });
+  const achievements = v('f_achievements').split('\n').map(s => s.trim()).filter(Boolean);
+  const interests = v('f_interests').split(',').map(s => s.trim()).filter(Boolean);
+  const referees = v('f_referees').split('\n').map(line => line.trim()).filter(Boolean).map(line => {
+    const p = line.split('|').map(s => s.trim());
+    return { name: p[0] || '', title: p[1] || '', organisation: p[2] || '', contact: p[3] || '' };
+  });
+  const lines = id => v(id).split('\n').map(item => item.trim()).filter(Boolean);
+  state.resume = {
+    name: v('f_name'), email: v('f_email'), phone: v('f_phone'), location: v('f_location'),
+    linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'),
+    skills, languages: langs, certifications: certs, experience, education, projects,
+    achievements, interests, referees,
+    ...(state.subType === 'academic_cv' ? {
+      research: lines('f_research'), teaching: lines('f_teaching'),
+      publications: lines('f_publications'), presentations: lines('f_presentations'),
+      grants_awards: lines('f_grants_awards'), professional_memberships: lines('f_memberships')
+    } : {})
+  };
+  const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
+  if (!access.success) return;
+  renderResume(state.resume);
+  setPreviewAccess(access.preview_only);
+  showGeneratedDocumentOnMobile();
+  if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
+  else showToast('Document generated successfully. Your credit was used.');
+  const missing = [];
+  if (!state.resume.email && !state.resume.phone) missing.push('at least one reliable contact method');
+  if (!state.resume.summary) missing.push('a tailored professional profile');
+  if (!state.resume.education.length) missing.push('education or relevant training');
+  if (!state.resume.skills.length) missing.push('role-relevant skills');
+  if (!state.resume.experience.length && !state.resume.projects.length) missing.push('experience, practical projects, or placements');
+  if (state.subType === 'academic_cv') {
+    if (!state.resume.research.length) missing.push('research interests or experience, if relevant');
+    if (!state.resume.publications.length) missing.push('publications, or confirmation none are applicable');
+  }
+  if (missing.length) addMsg('Completeness review before official submission: consider adding or verifying ' + missing.join('; ') + '. Do not invent missing facts.', 'ai');
+}
+
+async function buildPortfolioFromForm() {
+  if (!v('pf_name')) {
+    showToast('Enter your full name to build your portfolio.');
+    document.getElementById('pf_name')?.focus();
+    return;
+  }
+  if (!v('pf_title') && !v('pf_bio') && !v('pf_skills') && !v('pf_projects')) {
+    showToast('Add a title, bio, skill, or project before updating the preview.');
+    document.getElementById('pf_title')?.focus();
+    return;
+  }
+  const skills = v('pf_skills').split(',').map(s => s.trim()).filter(Boolean).map(s => ({ name: s, level: 50 }));
+  const projects = v('pf_projects').split('\n').filter(Boolean).map(line => {
+    const p = line.split('|').map(s => s.trim());
+    return { name: p[0]||'', description: p[1]||'', tech: p[2] ? p[2].split(',').map(s=>s.trim()) : [] };
+  });
+  const education = v('pf_edu').split('\n').filter(Boolean).map(line => {
+    const p = line.split('|').map(s => s.trim());
+    return { degree: p[0]||'', institution: p[1]||'', year: p[2]||'' };
+  });
+  const achievements = v('pf_achievements').split('\n').filter(Boolean);
+  state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements };
+  const access = await authorizeLocalDocument('portfolio', state.portfolio);
+  if (!access.success) return;
+  renderPortfolio(state.portfolio);
+  setPreviewAccess(access.preview_only);
+  showGeneratedDocumentOnMobile();
+  if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
+  else showToast('Portfolio generated successfully. Your credit was used.');
+}
+
+async function generateCoverLetter() {
+  let userInput = '';
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  if (state.clType === 'job') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Company address / vacancy reference: ${v('cl_company_address')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
+  else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
+  else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
+  setPreviewLoading();
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
+    });
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderLetter(letter, json.data?.subject || '');
+      showQualityNotes(json.data);
+      setPreviewAccess(json.preview_only);
+      showGeneratedDocumentOnMobile();
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
+}
+
+async function generateOrgLetter() {
+  const data = collectOrgData();
+  const currentDate = new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'});
+  const userInput = `Letter type: ${state.orgType}. Today's date: ${currentDate}. Use this as the letter date unless the user supplied a specific date. Details: ${JSON.stringify(data)}`;
+  setPreviewLoading();
+  try {
+    const res = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
+    });
+    const json = await res.json().catch(() => ({}));
+    if (res.ok && json.success) {
+      const letter = json.data?.full_letter || json.data?.letter_text || '';
+      if (!letter) throw new Error('The AI returned an empty letter. Please retry.');
+      renderOrgLetter(letter, json.data?.subject || '');
+      showQualityNotes(json.data);
+      setPreviewAccess(json.preview_only);
+      showGeneratedDocumentOnMobile();
+      refreshCreditBalance();
+      if (json.preview_only) showToast('Watermarked preview ready. Add credits to unlock copying and PDF export.');
+    } else {
+      showGenerationFailure(json.error || `Formal-letter generation failed (HTTP ${res.status}). Please retry.`);
+      if (json.requires_topup || res.status === 402) toggleWalletPalette();
+    }
+  } catch(e) {
+    showGenerationFailure(e.message || 'Network error. Please try again.');
+  }
+}
+
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeHtml(s) { return esc(s); }
+
+function renderResume(d) {
+  if (!d || !d.name) return;
+  applyDocumentStyle();
+  const layout = state.template === 'modern' || state.template === 'sidebar' ? 'modern'
+    : state.template === 'minimal' || state.template === 'monochrome' ? 'minimal'
+    : 'classic';
+  if (layout === 'classic') renderClassic(d);
+  else if (layout === 'modern') renderModern(d);
+  else renderMinimal(d);
+}
+
+function renderClassic(d) {
+  const contact = [d.email, d.phone, d.location, d.linkedin, d.website].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join('');
+  const skillsHtml = (d.skills||[]).map(s=>`<span class="skill-tag">${esc(s)}</span>`).join('');
+  const expHtml = (d.experience||[]).map(e=>`<div class="exp-item"><div class="exp-title-row"><span class="exp-title">${esc(e.title)}</span><span class="exp-period">${esc(e.period||'')}</span></div><div class="exp-company">${esc(e.company||'')}${e.location?' · '+esc(e.location):''}</div><ul class="exp-bullets">${(e.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>`).join('');
+  const eduHtml = (d.education||[]).map(e=>`<div class="edu-item"><div class="edu-degree">${esc(e.degree)}</div><div class="edu-inst">${esc(e.institution||'')}${e.grade?' · '+esc(e.grade):''}</div><div class="edu-year">${esc(e.year||'')}</div></div>`).join('');
+  const certHtml = (d.certifications||[]).map(c=>`<span class="skill-tag">${esc(c)}</span>`).join('');
+  const langHtml = (d.languages||[]).map(l=>`<span class="skill-tag">${esc(l)}</span>`).join('');
+  const projHtml = (d.projects||[]).map(p=>`<div class="exp-item"><div class="exp-title-row"><span class="exp-title">${esc(p.name)}</span></div><div class="exp-company">${(p.tech||[]).map(esc).join(', ')}</div><p style="font-size:13px;color:#555;margin-top:4px">${esc(p.description||'')}</p></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const interestHtml = (d.interests||[]).map(a=>`<span class="skill-tag">${esc(a)}</span>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<div class="exp-item"><strong>${esc(r.name||'')}</strong>${r.title?` · ${esc(r.title)}`:''}${r.organisation?` — ${esc(r.organisation)}`:''}${r.contact?`<div>${esc(r.contact)}</div>`:''}</div>`).join('');
+  const academicSection = (title, items) => {
+    const values = Array.isArray(items) ? items : (items ? [items] : []);
+    const rows = values.map(item => {
+      if (typeof item === 'string') return `<li>${esc(item)}</li>`;
+      if (item && typeof item === 'object') {
+        const label = [item.title, item.name, item.degree, item.role, item.institution, item.year].filter(Boolean).join(' — ');
+        const detail = [item.description, item.abstract, item.details, item.publisher, item.date].filter(Boolean).join(' ');
+        return `<li>${esc(label || JSON.stringify(item))}${detail ? `<div>${esc(detail)}</div>` : ''}</li>`;
+      }
+      return '';
+    }).join('');
+    return rows ? `<div class="classic-section"><h2>${esc(title)}</h2><ul>${rows}</ul></div>` : '';
+  };
+  const academicHtml = academicSection('Research', d.research) + academicSection('Teaching Experience', d.teaching) + academicSection('Publications', d.publications) + academicSection('Presentations', d.presentations) + academicSection('Grants & Awards', d.grants_awards) + academicSection('Professional Memberships', d.professional_memberships);
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-classic"><div class="classic-head"><h1>${esc(d.name)}</h1><div class="classic-contact">${contact}</div></div>${d.summary?`<div class="classic-section"><h2>Professional Profile</h2><p>${esc(d.summary)}</p></div>`:''}${skillsHtml?`<div class="classic-section"><h2>Core Competencies</h2><div class="skills-wrap">${skillsHtml}</div></div>`:''}${expHtml?`<div class="classic-section"><h2>Professional Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="classic-section"><h2>Education</h2>${eduHtml}</div>`:''}${projHtml?`<div class="classic-section"><h2>Selected Projects</h2>${projHtml}</div>`:''}${achievementHtml?`<div class="classic-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="classic-section"><h2>Certifications & Training</h2><div class="skills-wrap">${certHtml}</div></div>`:''}${langHtml?`<div class="classic-section"><h2>Languages</h2><div class="skills-wrap">${langHtml}</div></div>`:''}${interestHtml?`<div class="classic-section"><h2>Professional Interests</h2><div class="skills-wrap">${interestHtml}</div></div>`:''}${refereeHtml?`<div class="classic-section"><h2>Referees</h2>${refereeHtml}</div>`:''}${academicHtml}</div>`;
+}
+
+function renderModern(d) {
+  const skillsHtml = (d.skills||[]).slice(0,10).map(s=>`<div class="m-skill-item"><div class="m-skill-name">${esc(s)}</div><div class="m-skill-bar"><div class="m-skill-fill" style="width:80%"></div></div></div>`).join('');
+  const langHtml = (d.languages||[]).map(l=>`<div class="m-skill-item"><div class="m-skill-name" style="color:#94a3b8">${esc(l)}</div></div>`).join('');
+  const contactHtml = [d.email?`<div class="modern-contact-item"><span class="ci-icon">✉</span>${esc(d.email)}</div>`:'',d.phone?`<div class="modern-contact-item"><span class="ci-icon">📞</span>${esc(d.phone)}</div>`:'',d.location?`<div class="modern-contact-item"><span class="ci-icon">📍</span>${esc(d.location)}</div>`:'',d.linkedin?`<div class="modern-contact-item"><span class="ci-icon">🔗</span>${esc(d.linkedin)}</div>`:''].filter(Boolean).join('');
+  const expHtml = (d.experience||[]).map(e=>`<div class="m-exp-item"><div class="m-exp-head"><span class="m-exp-title">${esc(e.title)}</span><span class="m-exp-period">${esc(e.period||'')}</span></div><div class="m-exp-company">${esc(e.company||'')}</div><ul class="m-bullets">${(e.bullets||[]).map(b=>`<li>${esc(b)}</li>`).join('')}</ul></div>`).join('');
+  const eduHtml = (d.education||[]).map(e=>`<div class="m-edu-item"><div class="m-edu-degree">${esc(e.degree)}</div><div class="m-edu-inst">${esc(e.institution||'')} ${e.year?'· '+esc(e.year):''}</div></div>`).join('');
+  const certHtml = (d.certifications||[]).map(c=>`<span class="m-tag">${esc(c)}</span>`).join('');
+  const projectHtml = (d.projects||[]).map(p=>`<div class="m-exp-item"><strong>${esc(p.name||'')}</strong><p>${esc(p.description||'')}</p><small>${(p.tech||[]).map(esc).join(', ')}</small></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<div class="m-exp-item"><strong>${esc(r.name||'')}</strong><div>${esc(r.title||'')}${r.organisation?` · ${esc(r.organisation)}`:''}</div>${r.contact?`<div>${esc(r.contact)}</div>`:''}</div>`).join('');
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-modern"><div class="modern-left"><h1>${esc(d.name)}</h1><div class="m-role">${esc(d.summary||'').substring(0,80)}</div>${contactHtml}${skillsHtml?`<h3>Core Skills</h3>${skillsHtml}`:''}${langHtml?`<h3>Languages</h3>${langHtml}`:''}${(d.interests||[]).length?`<h3>Interests</h3><p>${(d.interests||[]).map(esc).join(', ')}</p>`:''}</div><div class="modern-right">${d.summary?`<div class="m-section"><h2>Professional Profile</h2><p class="m-summary">${esc(d.summary)}</p></div>`:''}${expHtml?`<div class="m-section"><h2>Experience</h2>${expHtml}</div>`:''}${eduHtml?`<div class="m-section"><h2>Education</h2>${eduHtml}</div>`:''}${projectHtml?`<div class="m-section"><h2>Projects</h2>${projectHtml}</div>`:''}${achievementHtml?`<div class="m-section"><h2>Achievements</h2><ul>${achievementHtml}</ul></div>`:''}${certHtml?`<div class="m-section"><h2>Certifications & Training</h2><div class="m-tags">${certHtml}</div></div>`:''}${refereeHtml?`<div class="m-section"><h2>Referees</h2>${refereeHtml}</div>`:''}</div></div>`;
+}
+
+function renderMinimal(d) {
+  const contact = [d.email, d.phone, d.location].filter(Boolean).map(c=>`<span>${esc(c)}</span>`).join('');
+  const skillsHtml = (d.skills||[]).map(s=>`<span class="min-skill">${esc(s)}</span>`).join('');
+  const langHtml = (d.languages||[]).map(l=>`<span class="min-skill">${esc(l)}</span>`).join('');
+  const expHtml = (d.experience||[]).map(e=>`<div class="min-exp-item"><div class="min-period">${esc(e.period||'')}</div><div class="min-exp-body"><div class="min-exp-title">${esc(e.title)}</div><div class="min-exp-company">${esc(e.company||'')}</div><div class="min-exp-desc">${(e.bullets||[]).join(' · ')}</div></div></div>`).join('');
+  const eduHtml = (d.education||[]).map(e=>`<div class="min-exp-item"><div class="min-period">${esc(e.year||'')}</div><div class="min-exp-body"><div class="min-exp-title">${esc(e.degree)}</div><div class="min-exp-company">${esc(e.institution||'')}</div></div></div>`).join('');
+  const projectHtml = (d.projects||[]).map(p=>`<div class="min-exp-item"><div class="min-exp-body"><div class="min-exp-title">${esc(p.name||'')}</div><div class="min-exp-company">${esc((p.tech||[]).map(esc).join(', '))}</div><p>${esc(p.description||'')}</p></div></div>`).join('');
+  const achievementHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  const refereeHtml = (d.referees||[]).map(r=>`<p><strong>${esc(r.name||'')}</strong>${r.title?` · ${esc(r.title)}`:''}${r.organisation?` — ${esc(r.organisation)}`:''}${r.contact?` · ${esc(r.contact)}`:''}</p>`).join('');
+  document.getElementById('docSheet').innerHTML = `<div class="tpl-minimal"><div class="min-head"><h1>${esc(d.name)}</h1><div class="min-contact">${contact}</div></div>${d.summary?`<p class="min-summary">${esc(d.summary)}</p>`:''}${skillsHtml?`<div class="min-section"><div class="min-section-title">Core Skills</div><div class="min-skills">${skillsHtml}</div></div>`:''}${expHtml?`<div class="min-section"><div class="min-section-title">Experience</div>${expHtml}</div>`:''}${eduHtml?`<div class="min-section"><div class="min-section-title">Education</div>${eduHtml}</div>`:''}${projectHtml?`<div class="min-section"><div class="min-section-title">Projects</div>${projectHtml}</div>`:''}${achievementHtml?`<div class="min-section"><div class="min-section-title">Achievements</div><ul>${achievementHtml}</ul></div>`:''}${langHtml?`<div class="min-section"><div class="min-section-title">Languages</div><div class="min-skills">${langHtml}</div></div>`:''}${(d.certifications||[]).length?`<div class="min-section"><div class="min-section-title">Certifications & Training</div><p>${(d.certifications||[]).map(esc).join(', ')}</p></div>`:''}${(d.interests||[]).length?`<div class="min-section"><div class="min-section-title">Professional Interests</div><p>${(d.interests||[]).map(esc).join(', ')}</p></div>`:''}${refereeHtml?`<div class="min-section"><div class="min-section-title">Referees</div>${refereeHtml}</div>`:''}</div>`;
+}
+
+function renderPortfolio(d) {
+  if (!d || !d.name) return;
+  applyDocumentStyle();
+  const contacts = [d.contact?.email?`<span class="pf-contact-chip">✉ ${esc(d.contact.email)}</span>`:'',d.contact?.github?`<span class="pf-contact-chip">⌥ ${esc(d.contact.github)}</span>`:'',d.contact?.linkedin?`<span class="pf-contact-chip">🔗 ${esc(d.contact.linkedin)}</span>`:''].filter(Boolean).join('');
+  const skillsHtml = (d.skills||[]).map(s=>`<span class="pf-skill"><span class="pf-skill-dot"></span>${esc(s.name||s)}</span>`).join('');
+  const projHtml = (d.projects||[]).map(p=>`<div class="pf-project"><div class="pf-project-name">${esc(p.name)}</div><div class="pf-project-desc">${esc(p.description||'')}</div><div class="pf-tech-wrap">${(p.tech||[]).map(t=>`<span class="pf-tech">${esc(t)}</span>`).join('')}</div></div>`).join('');
+  const achHtml = (d.achievements||[]).map(a=>`<li>${esc(a)}</li>`).join('');
+  document.getElementById('docSheet').innerHTML = `<div class="portfolio-sheet"><div class="pf-hero"><h1>${esc(d.name)}</h1><div class="pf-hero-title">${esc(d.title||'')}</div><div class="pf-hero-bio">${esc(d.bio||'')}</div><div class="pf-contacts">${contacts}</div></div><div class="pf-body">${skillsHtml?`<div class="pf-section"><h2>Skills</h2><div class="pf-skills-grid">${skillsHtml}</div></div>`:''}${projHtml?`<div class="pf-section"><h2>Projects</h2><div class="pf-projects">${projHtml}</div></div>`:''}${achHtml?`<div class="pf-section pf-achievements"><h2>Achievements</h2><ul>${achHtml}</ul></div>`:''}</div></div>`;
+}
+
+function renderLetter(text, subject) {
+  if (!text) return;
+  applyDocumentStyle();
+  document.getElementById('docSheet').innerHTML = `<div class="letter-sheet">${subject?`<div class="letter-subject-line">${esc(subject)}</div>`:''}<pre>${esc(text)}</pre></div>`;
+}
+function renderOrgLetter(text, subject) { renderLetter(text, subject || ''); }
+
+function showGenerationFailure(message) {
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.innerHTML = `<div class="placeholder"><p style="font-weight:700;color:#fca5a5">Document generation failed</p><p style="margin-top:10px">${esc(message || 'Please try again.')}</p></div>`;
+  showToast(message || 'Document generation failed. Please try again.');
+}
+
+function setPreviewLoading() {
+  document.getElementById('docSheet').innerHTML = `<div class="placeholder"><div class="spinner" style="width:32px;height:32px;border-width:3px"></div><p style="margin-top:16px">Generating your document...</p></div>`;
+}
+
+let previewOnly = false;
+function setPreviewAccess(isPreviewOnly) {
+  previewOnly = Boolean(isPreviewOnly);
+  const sheet = document.getElementById('docSheet');
+  if (sheet) sheet.classList.toggle('preview-watermarked', previewOnly);
+  const copyBtn = document.getElementById('copyDocumentBtn');
+  const downloadBtn = document.getElementById('downloadDocumentBtn');
+  const launcher = document.getElementById('walletLauncher');
+  const nudge = document.getElementById('walletNudge');
+  if (copyBtn) { copyBtn.title = previewOnly ? 'Copy unlocks with wallet credits' : 'Copy document'; copyBtn.setAttribute('aria-label', copyBtn.title); }
+  if (downloadBtn) { downloadBtn.title = previewOnly ? 'PDF export unlocks with wallet credits' : 'Download PDF'; downloadBtn.setAttribute('aria-label', downloadBtn.title); }
+  if (launcher) {
+    launcher.classList.toggle('wallet-needs-credits', previewOnly);
+    launcher.setAttribute('aria-label', previewOnly ? 'Open wallet to unlock clean copy and PDF export' : 'Open wallet');
+    launcher.title = previewOnly ? 'Unlock clean document with credits' : 'Wallet';
+  }
+  if (nudge) nudge.hidden = !previewOnly || !document.getElementById('billingPanel')?.hidden;
+}
+async function authorizeLocalDocument(docType, documentData) {
+  const email = billingEmailValue();
+  try {
+    const res = await fetch('/api/wallet/authorize-document', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, doc_type: docType, document: documentData, request_id: crypto.randomUUID()})
+    });
+    const json = await res.json();
+    if (!res.ok || !json.success) throw new Error(json.error || 'Could not verify wallet access.');
+    if (typeof json.wallet_balance === 'number') {
+      const balance = document.getElementById('creditBalanceValue');
+      if (balance) balance.textContent = String(json.wallet_balance) + ' credits';
+    }
+    return json;
+  } catch (error) {
+    showToast(error.message || 'Could not verify wallet access. Please try again.');
+    return {success:false, preview_only:true};
+  }
+}
+async function authorizeDocumentAction(action) {
+  const email = billingEmailValue();
+  if (!email) {
+    showToast('Open Wallet and enter your account email before using credits.');
+    toggleWalletPalette();
+    return false;
+  }
+  try {
+    const res = await fetch('/api/wallet/consume-action', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, action, action_id: crypto.randomUUID()})
+    });
+    const json = await res.json();
+    if (!res.ok || !json.success) {
+      if (json.requires_topup || res.status === 402) {
+        setPreviewAccess(true);
+        showToast(json.error || 'No credits left. Add credits in Wallet to continue.');
+        toggleWalletPalette();
+      } else {
+        showToast(json.error || 'Could not verify credit access. Please try again.');
+      }
+      return false;
+    }
+    if (typeof json.wallet_balance === 'number') {
+      const balance = document.getElementById('creditBalanceValue');
+      if (balance) balance.textContent = String(json.wallet_balance) + ' credits';
+      refreshCreditBalance();
+    }
+    return true;
+  } catch (error) {
+    showToast('Could not verify credit access. Please try again.');
+    return false;
+  }
+}
+async function downloadDocument() {
+  if (previewOnly) { showToast('Add credits in Wallet to download a clean document.'); toggleWalletPalette(); return; }
+  if (!(await authorizeDocumentAction('download'))) return;
+  window.print();
+}
+async function copyDocument() {
+  if (previewOnly) { showToast('Add credits in Wallet to copy a clean document.'); toggleWalletPalette(); return; }
+  if (!(await authorizeDocumentAction('copy'))) return;
+  const sheet = document.getElementById('docSheet');
+  navigator.clipboard.writeText(sheet.innerText).then(() => showToast('Copied to clipboard!')).catch(() => showToast('Copy failed. Please select and copy manually.'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('navTools');
+  menu.style.display = menu.style.display === 'flex' ? '' : 'flex';
+}
+
+function showGeneratedDocumentOnMobile() {
+  // Generation already performed its normal wallet authorization. Switching views
+  // here is presentation-only and must not consume an additional preview credit.
+  if (!window.matchMedia('(max-width: 768px)').matches) return;
+  const layout = document.querySelector('.app-layout');
+  if (!layout) return;
+  layout.dataset.mobileView = 'preview';
+  document.querySelectorAll('.mobile-workspace-switch [data-view]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.view === 'preview'));
+  });
+}
+
+async function setMobileWorkspace(view) {
+  const layout = document.querySelector('.app-layout');
+  if (!layout) return;
+  const nextView = view === 'preview' ? 'preview' : 'edit';
+  const currentView = layout.dataset.mobileView || 'edit';
+  if (nextView === currentView) return;
+  if (nextView === 'preview' && window.matchMedia('(max-width: 768px)').matches) {
+    if (!(await authorizeDocumentAction('preview'))) return;
+  }
+  layout.dataset.mobileView = nextView;
+  document.querySelectorAll('.mobile-workspace-switch [data-view]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.view === nextView));
+  });
+}
+
+let previewVisible = true;
+async function toggleMobilePreview() {
+  const right = document.querySelector('.right-panel');
+  const nextVisible = !previewVisible;
+  if (nextVisible && !(await authorizeDocumentAction('preview'))) return;
+  previewVisible = nextVisible;
+  right.style.display = previewVisible ? '' : 'none';
+  document.getElementById('mobilePreviewBtn').textContent = previewVisible ? '👁' : '📝';
+}
+
+
+// Progressive Web App installation support. Installation is offered only when
+// the browser says the app can be installed; unsupported browsers keep working normally.
+let docCraftInstallPrompt = null;
+const docCraftInstallButton = document.getElementById('installAppBtn');
+window.addEventListener('beforeinstallprompt', (event) => {
+  event.preventDefault();
+  docCraftInstallPrompt = event;
+  if (docCraftInstallButton) docCraftInstallButton.hidden = false;
+});
+async function installDocCraftApp() {
+  if (!docCraftInstallPrompt) {
+    showToast('Use your browser menu and choose Install app or Add to Home screen.');
+    return;
+  }
+  docCraftInstallPrompt.prompt();
+  await docCraftInstallPrompt.userChoice;
+  docCraftInstallPrompt = null;
+  if (docCraftInstallButton) docCraftInstallButton.hidden = true;
+}
+window.addEventListener('appinstalled', () => {
+  if (docCraftInstallButton) docCraftInstallButton.hidden = true;
+  showToast('DocCraft Pro installed successfully.');
+});
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').catch((error) => {
+      console.warn('DocCraft offline support could not be enabled:', error);
+    });
+  });
+}
+applyDocumentStyle();
+const initialTemplatePicker = document.getElementById('templateSelect');
+if (initialTemplatePicker) initialTemplatePicker.value = state.template;
+verifyReturnedPayment();
+</script>
+</body>
+</html>
+
 </style>
 
 </head>
