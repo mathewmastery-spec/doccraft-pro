@@ -1895,19 +1895,19 @@ function loadForm(tool) {
       <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
       <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
-    
+    `;
     const variantGuide = document.createElement('div');
-     variantGuide.className = 'variant-intro';
-     variantGuide.textContent = state.subType === 'academic_cv'
-       ? 'Academic CV: lead with academic qualifications, research, teaching, publications, conference activity and scholarly awards. Include only verified work.'
-       : state.subType === 'cv'
-         ? 'Professional CV: build a fuller record of employment, placements, education, projects, training, volunteering and professional development.'
-         : 'Resume: create a concise, targeted summary of your most relevant skills, experience and achievements for a specific opportunity.';
-     fc.prepend(variantGuide);
-     const professionalFields = document.getElementById('professionalCvFields');
-     if (professionalFields) professionalFields.style.display = state.subType === 'cv' ? 'block' : 'none';
-     const academicFields = document.getElementById('academicCvFields');
-    if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';`;
+    variantGuide.className = 'variant-intro';
+    variantGuide.textContent = state.subType === 'academic_cv'
+      ? 'Academic CV: lead with academic qualifications, research, teaching, publications, conference activity and scholarly awards. Include only verified work.'
+      : state.subType === 'cv'
+        ? 'Professional CV: build a fuller record of employment, placements, education, projects, training, volunteering and professional development.'
+        : 'Resume: create a concise, targeted summary of your most relevant skills, experience and achievements for a specific opportunity.';
+    fc.prepend(variantGuide);
+    const professionalFields = document.getElementById('professionalCvFields');
+    if (professionalFields) professionalFields.style.display = state.subType === 'cv' ? 'block' : 'none';
+    const academicFields = document.getElementById('academicCvFields');
+    if (academicFields) academicFields.style.display = state.subType === 'academic_cv' ? 'block' : 'none';
   } else if (tool === 'cover_letter') {
     const clForms = {
       job: `
