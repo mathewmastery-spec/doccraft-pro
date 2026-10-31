@@ -846,6 +846,50 @@ body{
   .preview-actions .btn{font-size:13px;padding:9px 5px}
   .tpl-pill{padding:6px 8px;font-size:11px}
 }
+
+/* Document AI chat: enforce readable contrast across CV, Resume and Academic CV. */
+#pane-chat .chat-input-area{
+  display:flex!important;align-items:flex-end!important;gap:10px!important;
+  padding:14px 16px!important;background:#fff!important;
+  border-top:1px solid #e5e0ee!important;
+}
+#pane-chat .chat-input-area textarea#userInput{
+  display:block!important;flex:1 1 auto!important;width:100%!important;min-width:0!important;
+  min-height:58px!important;max-height:180px!important;resize:vertical!important;
+  padding:13px 15px!important;border:1.5px solid #cfc7dc!important;border-radius:13px!important;
+  background-color:#fff!important;background-image:none!important;
+  color:#24212d!important;-webkit-text-fill-color:#24212d!important;
+  caret-color:#6543a5!important;color-scheme:light!important;
+  font:500 15px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;
+  opacity:1!important;box-shadow:0 1px 3px rgba(35,25,55,.04)!important;
+}
+#pane-chat .chat-input-area textarea#userInput::placeholder{
+  color:#777183!important;-webkit-text-fill-color:#777183!important;opacity:1!important;
+}
+#pane-chat .chat-input-area textarea#userInput:focus{
+  border-color:#8b6ac5!important;outline:none!important;
+  box-shadow:0 0 0 3px rgba(101,67,165,.13)!important;
+}
+#pane-chat .chat-input-area textarea#userInput::selection{background:#e5daf8!important;color:#24212d!important}
+#pane-chat .chat-input-area textarea#userInput:-webkit-autofill{
+  -webkit-text-fill-color:#24212d!important;box-shadow:0 0 0 1000px #fff inset!important;
+}
+#pane-chat .chat-prompt-hint{
+  flex:0 0 auto;align-self:center;max-width:185px;color:#706a7d;
+  font-size:11px;line-height:1.45;padding:0 2px;
+}
+#pane-chat .chat-prompt-hint strong{display:block;color:#503487;font-size:11px;margin-bottom:3px}
+#pane-chat .chat-input-area .send-btn{
+  min-height:48px!important;min-width:82px!important;padding:11px 17px!important;
+  border-radius:12px!important;white-space:nowrap!important;
+}
+@media(max-width:700px){
+  #pane-chat .chat-input-area{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:8px!important;padding:11px 12px max(11px,env(safe-area-inset-bottom))!important}
+  #pane-chat .chat-input-area textarea#userInput{grid-column:1/-1!important;min-height:82px!important;max-height:180px!important;font-size:16px!important;padding:12px!important}
+  #pane-chat .chat-prompt-hint{grid-column:1;grid-row:2;max-width:none;font-size:10px}
+  #pane-chat .chat-input-area .send-btn{grid-column:2;grid-row:2;width:auto!important;min-width:86px!important;min-height:42px!important}
+}
+
 </style>
 
 <!-- DocCraft Pro visual refresh: presentation-only overrides; application markup and logic remain unchanged. -->
@@ -1414,8 +1458,9 @@ body{color:var(--dc-ink)}
           </div>
         </div>
         <div class="chat-input-area">
-          <textarea id="userInput" aria-label="Describe the document you want to create" placeholder="Example: I’m a recent graduate with customer service experience and strong computer skills…" rows="2"></textarea>
-          <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+          <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Tell me about your experience, skills or goals…" rows="2"></textarea>
+          <div class="chat-prompt-hint" id="chatPromptHint"><strong>Need a starting point?</strong><span id="chatPromptRotator" aria-live="polite">Tell me about a project you're proud of.</span></div>
+          <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send message">Send <span aria-hidden="true">➤</span></button>
         </div>
       </div>
 
@@ -2130,6 +2175,32 @@ function collectOrgData() {
   };
   return { ...base, ...(extra[t] || {}) };
 }
+
+// Rotate gentle, practical writing prompts without inserting text into the user's message.
+(function initChatPromptRotator(){
+  const input=document.getElementById('userInput');
+  const hint=document.getElementById('chatPromptRotator');
+  if(!input||!hint)return;
+  const prompts=[
+    "Tell me about a project you're proud of.",
+    "What have you learned through work, school or volunteering?",
+    "Which skills do people rely on you for?",
+    "What achievement would you like an employer to notice?",
+    "Describe a challenge you helped solve.",
+    "What role, course or opportunity are you aiming for?",
+    "Share any training, practical work or community contribution.",
+    "What would make this CV reflect you more accurately?"
+  ];
+  let index=0;
+  const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduceMotion)return;
+  window.setInterval(()=>{
+    if(document.activeElement===input||input.value.trim())return;
+    index=(index+1)%prompts.length;
+    hint.textContent=prompts[index];
+    input.placeholder=prompts[index];
+  },4800);
+})();
 
 async function sendMessage() {
   const input = document.getElementById('userInput');
