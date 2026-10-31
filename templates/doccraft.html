@@ -2340,14 +2340,12 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
-    const firstTurnGuide = documentChatHistory.length === 1
-      ? 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins.\n\n'
-      : '';
+    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\\n\\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: firstTurnGuide + msg,
+        message: conversationGuide + msg,
         history: documentChatHistory.slice(0, -1),
         context: { document_type: currentChatDocumentType() }
       })
