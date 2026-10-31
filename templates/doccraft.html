@@ -1374,6 +1374,17 @@ body.chat-modal-open{overflow:hidden!important}
   #pane-chat .chat-approval button{width:100%;min-height:44px}
 }
 @media(prefers-reduced-motion:reduce){ #pane-chat.is-open .chat-window{animation:none!important}}
+
+/* Compact, professional wallet package cards */
+#creditPackages{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px!important;margin-top:12px!important}
+#creditPackages .credit-package-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;min-width:0;min-height:104px;padding:13px 14px!important;border:1px solid rgba(147,197,253,.28)!important;border-radius:13px!important;background:linear-gradient(145deg,rgba(30,41,59,.92),rgba(15,23,42,.96))!important;color:#f8fafc!important;text-align:left;white-space:normal;box-shadow:0 5px 16px rgba(0,0,0,.13);transition:border-color .16s ease,transform .16s ease,box-shadow .16s ease}
+#creditPackages .credit-package-card:hover{border-color:rgba(96,165,250,.8)!important;transform:translateY(-2px);box-shadow:0 9px 22px rgba(0,0,0,.22)}
+#creditPackages .credit-package-card:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+#creditPackages .credit-package-name{font-size:12px;font-weight:750;letter-spacing:.02em;color:#cbd5e1}
+#creditPackages .credit-package-credits{font-size:21px;line-height:1.1;font-weight:900;letter-spacing:-.03em;color:#fff}
+#creditPackages .credit-package-price{font-size:13px;font-weight:800;color:#93c5fd}
+#creditPackages .credit-package-tag{position:absolute;top:7px;right:7px;padding:3px 6px;border-radius:99px;background:rgba(16,185,129,.16);color:#6ee7b7;font-size:8px;font-weight:900;letter-spacing:.06em}
+@media(max-width:420px){#creditPackages{grid-template-columns:repeat(2,minmax(0,1fr))}#creditPackages .credit-package-card{min-height:96px;padding:11px!important}#creditPackages .credit-package-credits{font-size:19px}}
 </style>
 </head>
 <body>
@@ -1794,8 +1805,24 @@ async function loadCreditPackages() {
       const button = document.createElement('button');
       button.type = 'button';
       const isBestValue = pkg.code === 'growth_v2';
-      button.className = isBestValue ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline';
-      button.textContent = (isBestValue ? '★ BEST VALUE · ' : '') + pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')' + (pkg.description ? ' · ' + pkg.description : '');
+      button.className = 'credit-package-card';
+      button.setAttribute('aria-label', pkg.name + ', ' + pkg.credit_units + ' credits, ' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100));
+      if (isBestValue) {
+        const tag = document.createElement('span');
+        tag.className = 'credit-package-tag';
+        tag.textContent = 'BEST VALUE';
+        button.appendChild(tag);
+      }
+      const name = document.createElement('span');
+      name.className = 'credit-package-name';
+      name.textContent = pkg.name;
+      const credits = document.createElement('span');
+      credits.className = 'credit-package-credits';
+      credits.textContent = Number(pkg.credit_units).toLocaleString() + ' credits';
+      const price = document.createElement('span');
+      price.className = 'credit-package-price';
+      price.textContent = (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString();
+      button.append(name, credits, price);
       button.addEventListener('click', () => startCreditCheckout(pkg.code, button));
       container.appendChild(button);
     });
