@@ -1502,6 +1502,7 @@ body{color:var(--dc-ink)}
           <input id="billingEmail" type="email" autocomplete="email" placeholder="Enter your account email" aria-describedby="billingStatus" required style="flex:1;min-width:190px;padding:12px 13px;border-radius:11px;border:1px solid rgba(147,197,253,.4);background:rgba(8,18,38,.72);color:#eff6ff;font:inherit;font-size:13px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)">
           <button id="checkBalanceBtn" type="submit" class="btn btn-sm btn-primary" style="border-radius:11px;padding:11px 15px;white-space:nowrap;background:linear-gradient(110deg,#2563eb,#0891b2);border:1px solid rgba(191,219,254,.3);box-shadow:0 5px 16px rgba(37,99,235,.25);font-weight:750">Check my balance <span aria-hidden="true">→</span></button>
         </form>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px"><button type="button" id="googleProfileBtn" class="btn btn-sm btn-outline" style="border-radius:9px;border-color:rgba(147,197,253,.4);color:#bfdbfe" onclick="toggleGoogleProfile()">Connect Google profile</button><span id="googleProfileStatus" role="status" style="font-size:11px;color:#a5b4fc">Use the same email as your wallet to show your Google photo.</span></div>
         <div id="creditBalance" role="status" aria-live="polite" style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:13px;padding:14px 15px;border:1px solid rgba(147,197,253,.27);border-radius:13px;background:linear-gradient(110deg,rgba(15,23,42,.78),rgba(30,58,138,.24));">
           <div style="display:flex;align-items:center;gap:11px;min-width:0">
             <span aria-hidden="true" style="display:flex;align-items:center;justify-content:center;width:37px;height:37px;flex:0 0 37px;border-radius:11px;background:rgba(59,130,246,.18);color:#93c5fd;font-size:20px">◉</span>
@@ -2657,6 +2658,51 @@ verifyReturnedPayment();
  async function submit(raw){const message=String(raw||'').trim();if((!message&&!attachmentText)||send.disabled)return;const composed=attachmentText?'[Attached text file: '+attachmentName+']\n'+attachmentText+'\n\n'+message:message;add('user',message||'Please review the attached file: '+attachmentName);history.push({role:'user',content:composed});input.value='';attachmentText='';attachmentName='';const attachment=$('carePopupAttachment');if(attachment){attachment.hidden=true;attachment.textContent='';}send.disabled=true;send.textContent='Thinking…';try{const response=await fetch('/api/care/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:composed,history:history.slice(0,-1).slice(-10),context:{}})});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.error||'DocCraft Care is temporarily unavailable. Please try again.');const reply=String(data.reply||'I could not prepare a reply. Please try again.');add('assistant',reply);history.push({role:'assistant',content:reply});}catch(err){add('assistant',err.message||'I could not connect just now. Please try again.');}finally{send.disabled=false;send.textContent='Send';input.focus();}}
  form.addEventListener('submit',e=>{e.preventDefault();submit(input.value);});backdrop.querySelectorAll('[data-care-prompt]').forEach(btn=>btn.addEventListener('click',()=>{input.value=btn.dataset.carePrompt;input.focus();}));
 })();
+</script>
+<script>
+async function refreshGoogleProfile(){
+  const email=(document.getElementById('billingEmail')?.value||'').trim().toLowerCase();
+  const button=document.getElementById('googleProfileBtn'),status=document.getElementById('googleProfileStatus'),avatar=document.getElementById('careProfile');
+  if(!button||!avatar)return;
+  const fallback=(email.split('@')[0].replace(/[._-]+/g,' ').trim().charAt(0)||'?').toUpperCase();
+  avatar.replaceChildren(document.createTextNode(fallback));
+  button.textContent='Connect Google profile';
+  if(!email){if(status)status.textContent='Enter your wallet email to connect your Google profile.';return;}
+  try{
+    const response=await fetch('/api/profile?email='+encodeURIComponent(email),{headers:{'Accept':'application/json'}});
+    const data=await response.json();
+    if(!response.ok||!data.connected)return;
+    if(data.picture){
+      const img=document.createElement('img');img.src=data.picture;img.alt='Google profile photo';img.referrerPolicy='no-referrer';
+      img.onerror=()=>avatar.replaceChildren(document.createTextNode(fallback));
+      avatar.replaceChildren(img);
+    }else avatar.replaceChildren(document.createTextNode(fallback));
+    button.textContent='Disconnect Google profile';
+    if(status)status.textContent='Google profile connected to '+email+'.';
+  }catch(_){if(status)status.textContent='Could not check Google profile connection.';}
+}
+async function toggleGoogleProfile(){
+  const email=(document.getElementById('billingEmail')?.value||'').trim().toLowerCase();
+  const button=document.getElementById('googleProfileBtn'),status=document.getElementById('googleProfileStatus');
+  if(!email){if(status)status.textContent='Enter your wallet email first.';document.getElementById('billingEmail')?.focus();return;}
+  if(button?.textContent.includes('Disconnect')){
+    const response=await fetch('/api/profile/google/unlink',{method:'POST'});
+    if(response.ok){await refreshGoogleProfile();if(status)status.textContent='Google profile disconnected.';}
+    return;
+  }
+  button.disabled=true;
+  try{
+    const response=await fetch('/api/profile/google/link',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+    const data=await response.json();
+    if(!response.ok||!data.success)throw new Error(data.error||'Could not start Google connection.');
+    window.location.assign('/auth/google/start');
+  }catch(error){if(status)status.textContent=error.message||'Google connection is unavailable.';button.disabled=false;}
+}
+document.getElementById('billingEmail')?.addEventListener('input',refreshGoogleProfile);
+document.getElementById('billingEmail')?.addEventListener('change',refreshGoogleProfile);
+window.addEventListener('DOMContentLoaded',refreshGoogleProfile);
+if(window.location.search.includes('profile_connected=1')){window.history.replaceState({},'',window.location.pathname);refreshGoogleProfile();}
+if(window.location.search.includes('profile_error=')){const status=document.getElementById('googleProfileStatus');if(status)status.textContent='Google account was not connected. Confirm you selected the same verified email as your wallet.';window.history.replaceState({},'',window.location.pathname);}
 </script>
 </body>
 </html>
