@@ -212,25 +212,29 @@ def ensure_user(email: str, full_name: str | None = None, country_code: str | No
 
 def seed_default_credit_packages():
     packages = [
-        {"code": "starter", "name": "Small Pack", "currency": "KES", "price_cents": 1000, "credit_units": 25},
-        {"code": "growth", "name": "Growth Pack", "currency": "KES", "price_cents": 100000, "credit_units": 55},
-        {"code": "pro", "name": "Pro Pack", "currency": "KES", "price_cents": 200000, "credit_units": 120},
+        {"code": "small_v2", "name": "Small", "description": "A simple way to get started.", "currency": "KES", "price_cents": 1000, "credit_units": 15},
+        {"code": "starter_plus_v2", "name": "Starter Plus", "description": "More room to create, with fewer top-ups.", "currency": "KES", "price_cents": 2500, "credit_units": 45},
+        {"code": "growth_v2", "name": "Growth", "description": "Best everyday value for regular creators.", "currency": "KES", "price_cents": 5000, "credit_units": 110},
+        {"code": "professional_v2", "name": "Professional", "description": "More freedom for serious document work.", "currency": "KES", "price_cents": 10000, "credit_units": 260},
+        {"code": "ultimate_v2", "name": "Ultimate", "description": "Maximum value for frequent creators.", "currency": "KES", "price_cents": 20000, "credit_units": 600},
     ]
-    for item in packages:
+    legacy_codes = ("starter", "growth", "pro")
+    for code in legacy_codes:
+        legacy = CreditPackage.query.filter_by(code=code).first()
+        if legacy is not None and legacy.is_active:
+            legacy.is_active = False
+    for index, item in enumerate(packages):
         existing = CreditPackage.query.filter_by(code=item["code"]).first()
         if existing is None:
-            db.session.add(
-                CreditPackage(
-                    code=item["code"],
-                    name=item["name"],
-                    description=f"{item['credit_units']} credits",
-                    currency=item["currency"],
-                    price_cents=item["price_cents"],
-                    credit_units=item["credit_units"],
-                    is_active=True,
-                    sort_order=packages.index(item),
-                )
-            )
+            existing = CreditPackage(code=item["code"])
+            db.session.add(existing)
+        existing.name = item["name"]
+        existing.description = item["description"]
+        existing.currency = item["currency"]
+        existing.price_cents = item["price_cents"]
+        existing.credit_units = item["credit_units"]
+        existing.is_active = True
+        existing.sort_order = index
     db.session.commit()
     return CreditPackage.query.filter_by(is_active=True).order_by(CreditPackage.sort_order).all()
 
