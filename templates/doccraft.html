@@ -2671,7 +2671,10 @@ async function refreshGoogleProfile(){
   try{
     const response=await fetch('/api/profile?email='+encodeURIComponent(email),{headers:{'Accept':'application/json'}});
     const data=await response.json();
-    if(!response.ok||!data.connected)return;
+    if(!response.ok)return;
+    if(!data.configured){button.disabled=true;if(status)status.textContent='Google sign-in setup is pending. Add the Google OAuth credentials in Render to enable profile photos.';return;}
+    button.disabled=false;
+    if(!data.connected)return;
     if(data.picture){
       const img=document.createElement('img');img.src=data.picture;img.alt='Google profile photo';img.referrerPolicy='no-referrer';
       img.onerror=()=>avatar.replaceChildren(document.createTextNode(fallback));
