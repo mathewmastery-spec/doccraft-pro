@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from pathlib import Path
 
@@ -31,7 +33,6 @@ class Config:
     SECRET_KEY = _secret_key()
     SQLALCHEMY_DATABASE_URI = _database_url()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # Validate pooled connections before reuse and recycle periodically.
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True, "pool_recycle": 300}
     AI_PROVIDER = os.getenv("AI_PROVIDER", "openai").strip().lower()
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -50,6 +51,11 @@ class Config:
     PAYSTACK_WEBHOOK_SECRET = os.getenv("PAYSTACK_WEBHOOK_SECRET")
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+    GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+    GOOGLE_CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET")
+    SESSION_COOKIE_SECURE = os.getenv("FLASK_ENV") == "production" or os.getenv("APP_ENV") == "production" or os.getenv("RENDER") == "true"
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = "Lax"
     TESTING = False
 
 
