@@ -1955,6 +1955,12 @@ function getPlaceholder(tool) {
 }
 
 function switchTab(pane, btn) {
+  const chatPaneForMount = document.getElementById('pane-chat');
+  if (pane === 'chat' && chatPaneForMount && chatPaneForMount.parentElement !== document.body) {
+    chatPaneForMount.__doccraftHomeParent = chatPaneForMount.parentElement;
+    chatPaneForMount.__doccraftHomeNext = chatPaneForMount.nextSibling;
+    document.body.appendChild(chatPaneForMount);
+  }
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => {
     b.classList.remove('active');
@@ -1981,6 +1987,13 @@ function closeDocumentChat(returnToForm) {
   if (!chatPane) return;
   chatPane.classList.remove('is-open', 'active');
   chatPane.setAttribute('aria-hidden', 'true');
+  if (chatPane.__doccraftHomeParent) {
+    const homeParent = chatPane.__doccraftHomeParent;
+    const homeNext = chatPane.__doccraftHomeNext;
+    homeParent.insertBefore(chatPane, homeNext && homeNext.parentNode === homeParent ? homeNext : null);
+    delete chatPane.__doccraftHomeParent;
+    delete chatPane.__doccraftHomeNext;
+  }
   document.body.classList.remove('chat-modal-open');
   document.querySelectorAll('.tab-btn').forEach(b => {
     b.classList.remove('active');
