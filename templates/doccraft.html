@@ -136,30 +136,6 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .tab-btn.active .tab-icon{background:rgba(255,255,255,.18)}
 .tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
 .tab-btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
-@media(max-width:768px){
-  .app-layout.ai-chat-expanded .panel-top,
-  .app-layout.ai-chat-expanded #billingPanel,
-  .app-layout.ai-chat-expanded #mainTabs,
-  .app-layout.ai-chat-expanded #workspaceGuide{display:none!important}
-  .app-layout.ai-chat-expanded .left-panel{padding:0!important}
-  .app-layout.ai-chat-expanded #pane-chat{display:flex!important;flex:1 1 auto!important;min-height:0!important}
-  .app-layout.ai-chat-collapsed #pane-chat{
-    display:flex!important;position:fixed!important;left:12px!important;bottom:12px!important;
-    z-index:45!important;width:min(250px,calc(100vw - 24px))!important;height:auto!important;
-    max-height:none!important;flex:none!important;overflow:visible!important;
-    border:1px solid #d9cde8!important;border-radius:15px!important;
-    background:#fff!important;box-shadow:0 12px 36px rgba(22,15,35,.22)!important;
-  }
-  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-header{padding:10px 11px!important;border:0!important;border-radius:15px!important}
-  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-heading strong{font-size:12px!important}
-  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-heading span,
-  .app-layout.ai-chat-collapsed #pane-chat .chat-tool-btn,
-  .app-layout.ai-chat-collapsed #pane-chat .messages,
-  .app-layout.ai-chat-collapsed #pane-chat .chat-attachment-chip,
-  .app-layout.ai-chat-collapsed #pane-chat #chatToolStatus,
-  .app-layout.ai-chat-collapsed #pane-chat .chat-input-area{display:none!important}
-  .app-layout.ai-chat-collapsed #pane-chat .chat-collapse-btn{min-height:34px!important}
-}
 @media(max-width:420px){.tabs{gap:7px;padding:10px}.tab-btn{min-height:84px;padding:10px}.tab-title{font-size:13px}.tab-hint{font-size:10px}}
 .workspace-guide{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(99,102,241,.08);border-bottom:1px solid var(--border);flex-shrink:0}
 .workspace-guide-icon{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:9px;background:rgba(99,102,241,.18);color:#a5b4fc}
@@ -1322,78 +1298,6 @@ body{color:var(--dc-ink)}
 .document-type-kicker{font-size:9px;letter-spacing:.18em;font-weight:800;color:#7353a7;text-transform:uppercase;margin-bottom:7px}
 
 #pane-form .variant-intro{padding:11px 13px;margin:0 0 13px;border:1px solid #ded3f0;border-radius:10px;background:#f7f3fc;color:#43345d;font-size:13px;line-height:1.5}
-
-/* AI writing workspace: spacious, collapsible, and tool-enabled. */
-#pane-chat{position:relative;min-width:0}
-#pane-chat .chat-workspace-header{
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-  flex:0 0 auto;padding:10px 14px;background:#fff;border-bottom:1px solid #e7e1ef;
-}
-#pane-chat .chat-workspace-heading{min-width:0}
-#pane-chat .chat-workspace-heading strong{display:block;color:#302743;font-size:13px;font-weight:800}
-#pane-chat .chat-workspace-heading span{display:block;color:#777183;font-size:11px;margin-top:2px}
-#pane-chat .chat-workspace-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-#pane-chat .chat-tool-btn,#pane-chat .chat-collapse-btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;
-  padding:7px 10px;border:1px solid #ded7e9;border-radius:10px;background:#fff;
-  color:#4b3a67;font-family:inherit;font-size:11px;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap;
-}
-#pane-chat .chat-tool-btn:hover,#pane-chat .chat-collapse-btn:hover{background:#f5f1fb;border-color:#b9a9d3}
-#pane-chat .chat-tool-btn:focus-visible,#pane-chat .chat-collapse-btn:focus-visible{outline:3px solid #c4b5fd;outline-offset:2px}
-#pane-chat .chat-tool-btn svg{width:15px;height:15px}
-#pane-chat .chat-tool-btn[disabled]{opacity:.45;cursor:not-allowed}
-#pane-chat .chat-file-input{display:none}
-#pane-chat .chat-attachment-chip{
-  display:flex;align-items:center;gap:8px;flex:0 0 auto;padding:7px 14px;
-  background:#f6f2fc;border-top:1px solid #e7e1ef;color:#4b3a67;font-size:11px;
-}
-#pane-chat .chat-attachment-chip[hidden]{display:none!important}
-#pane-chat .chat-attachment-chip button{border:0;background:transparent;color:#7c3aed;font-weight:800;cursor:pointer}
-#pane-chat .messages{min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable}
-#pane-chat .chat-input-area{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;align-items:end!important;gap:10px!important;padding:14px 16px max(14px,env(safe-area-inset-bottom))!important;background:#fff!important}
-#pane-chat .chat-input-area textarea#userInput{
-  grid-column:1;grid-row:1;min-height:112px!important;max-height:220px!important;width:100%!important;
-  padding:14px 15px!important;border:1.5px solid #d2c9df!important;border-radius:14px!important;
-  background:#fff!important;color:#292336!important;-webkit-text-fill-color:#292336!important;
-  font:15px/1.55 ui-sans-serif,system-ui,sans-serif!important;resize:vertical!important;
-}
-#pane-chat .chat-input-area .chat-prompt-hint{grid-column:1;grid-row:2;max-width:none!important;padding:0 2px;color:#777183;font-size:11px}
-#pane-chat .chat-input-area .send-btn{grid-column:2;grid-row:1/3;align-self:stretch;min-width:92px!important;min-height:48px!important;width:auto!important}
-.app-layout.ai-chat-expanded .left-panel{width:52%;max-width:760px;flex:0 0 52%}
-.app-layout.ai-chat-expanded #pane-chat{flex:1 1 auto;min-height:0}
-.app-layout.ai-chat-expanded #pane-chat .messages{padding:22px 22px 16px;gap:16px}
-.app-layout.ai-chat-expanded #pane-chat .msg-bubble{max-width:min(520px,88%);font-size:14px;padding:12px 15px;line-height:1.7}
-@media(max-width:768px){
-  .app-layout.ai-chat-expanded{position:relative}
-  .app-layout.ai-chat-expanded .left-panel{
-    position:absolute!important;inset:0!important;z-index:35!important;
-    width:100%!important;max-width:none!important;min-width:0!important;flex:1 1 100%!important;
-    height:100%!important;max-height:100%!important;border:0!important;
-    box-shadow:0 0 0 100vmax rgba(10,15,25,.58)!important;
-  }
-  .app-layout.ai-chat-expanded .right-panel{visibility:hidden!important;pointer-events:none!important}
-  .app-layout.ai-chat-expanded #pane-chat .chat-workspace-header{padding:13px 14px}
-  .app-layout.ai-chat-expanded #pane-chat .chat-workspace-heading strong{font-size:14px}
-  .app-layout.ai-chat-expanded #pane-chat .chat-workspace-heading span{font-size:11px}
-  .app-layout.ai-chat-expanded #pane-chat .messages{padding:18px 15px 14px!important;gap:13px!important}
-  .app-layout.ai-chat-expanded #pane-chat .msg-bubble{max-width:min(84%,560px)!important;font-size:14px!important;line-height:1.65!important;padding:12px 14px!important}
-  .app-layout.ai-chat-expanded #pane-chat .chat-input-area{
-    grid-template-columns:minmax(0,1fr) auto!important;gap:9px!important;
-    padding:12px 13px max(14px,env(safe-area-inset-bottom))!important;
-  }
-  .app-layout.ai-chat-expanded #pane-chat .chat-input-area textarea#userInput{
-    min-height:116px!important;max-height:220px!important;font-size:16px!important;resize:vertical!important;
-  }
-  .app-layout.ai-chat-expanded #pane-chat .chat-input-area .send-btn{min-width:76px!important}
-}
-@media(max-width:420px){
-  #pane-chat .chat-workspace-header{padding:9px 8px;gap:6px}
-  #pane-chat .chat-workspace-heading span{display:none}
-  #pane-chat .chat-tool-btn,#pane-chat .chat-collapse-btn{min-height:34px;padding:6px 7px;font-size:10px}
-  #pane-chat .chat-tool-btn .tool-label{display:none}
-  #pane-chat .chat-input-area textarea#userInput{min-height:100px!important}
-}
-
 </style>
 
 </head>
@@ -1547,27 +1451,14 @@ body{color:var(--dc-ink)}
       </div>
 
       <div class="tab-pane active" id="pane-chat">
-        <div class="chat-workspace-header">
-          <div class="chat-workspace-heading"><strong>AI Writing Workspace</strong><span>Develop your details through a guided conversation</span></div>
-          <div class="chat-workspace-actions" aria-label="Chat actions">
-            <button type="button" class="chat-tool-btn" id="chatUploadBtn" title="Attach a text file" aria-label="Upload a text file">＋ <span class="tool-label">Upload</span></button>
-            <input type="file" class="chat-file-input" id="chatUploadInput" accept=".txt,.md,.csv,.json,text/plain,text/markdown,text/csv,application/json">
-            <button type="button" class="chat-tool-btn" id="chatCopyBtn" title="Copy conversation" aria-label="Copy conversation">▢ <span class="tool-label">Copy</span></button>
-            <button type="button" class="chat-tool-btn" id="chatDownloadBtn" title="Download conversation" aria-label="Download conversation">↓ <span class="tool-label">Save</span></button>
-            <button type="button" class="chat-tool-btn" id="chatShareBtn" title="Share conversation" aria-label="Share conversation">↗ <span class="tool-label">Share</span></button>
-            <button type="button" class="chat-collapse-btn" id="chatCollapseBtn" aria-expanded="false" title="Collapse AI workspace">⌄ <span class="tool-label">Collapse</span></button>
-          </div>
-        </div>
-        <div class="chat-attachment-chip" id="chatAttachmentChip" hidden><span id="chatAttachmentName"></span><button type="button" id="chatAttachmentRemove" aria-label="Remove attachment">×</button></div>
         <div class="messages" id="messages">
           <div class="msg ai-msg">
             <div class="msg-avatar">AI</div>
             <div class="msg-bubble" id="welcomeMsg">Tell me about yourself — your name, skills, experience and education, and I'll build your document instantly.</div>
           </div>
         </div>
-        <div id="chatToolStatus" role="status" aria-live="polite" style="flex:0 0 auto;padding:3px 14px 0;color:#777183;font-size:10px;min-height:16px"></div>
         <div class="chat-input-area">
-          <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Tell me about your experience, skills or goals…" rows="4"></textarea>
+          <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Tell me about your experience, skills or goals…" rows="2"></textarea>
           <div class="chat-prompt-hint" id="chatPromptHint"><strong>Need a starting point?</strong><span id="chatPromptRotator" aria-live="polite">Tell me about a project you're proud of.</span></div>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send message">Send <span aria-hidden="true">➤</span></button>
         </div>
@@ -1896,11 +1787,6 @@ function openTool(tool) {
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('appScreen').style.display = 'block';
   setMobileWorkspace('edit');
-  const appLayout = document.querySelector('.app-layout');
-  const openChatExpanded = tool !== 'org_letter' && tool !== 'cover_letter' && window.matchMedia('(max-width: 768px)').matches;
-  if (appLayout) { appLayout.classList.toggle('ai-chat-expanded', openChatExpanded); appLayout.classList.remove('ai-chat-collapsed'); }
-  const chatCollapse = document.getElementById('chatCollapseBtn');
-  if (chatCollapse) { chatCollapse.setAttribute('aria-expanded', String(openChatExpanded)); chatCollapse.innerHTML = openChatExpanded ? '⌄ <span class="tool-label">Collapse</span>' : '⌃ <span class="tool-label">Expand</span>'; chatCollapse.title = openChatExpanded ? 'Collapse AI workspace' : 'Expand AI workspace'; }
 
   const titles = { resume:'Resume & CV Builder', cover_letter:'Cover Letter Generator', portfolio:'Portfolio Builder', org_letter:'Organisation Letters' };
   const panelTitleEl = document.getElementById('panelTitle');
@@ -1989,11 +1875,6 @@ function switchTab(pane, btn) {
   if (activePane) activePane.classList.add('active');
   btn.classList.add('active');
   btn.setAttribute('aria-pressed', 'true');
-  const appLayout = document.querySelector('.app-layout');
-  const expandChat = pane === 'chat' && window.matchMedia('(max-width: 768px)').matches;
-  if (appLayout) { appLayout.classList.toggle('ai-chat-expanded', expandChat); appLayout.classList.remove('ai-chat-collapsed'); }
-  const collapse = document.getElementById('chatCollapseBtn');
-  if (collapse) { collapse.setAttribute('aria-expanded', String(expandChat)); collapse.innerHTML = expandChat ? '⌄ <span class="tool-label">Collapse</span>' : '⌃ <span class="tool-label">Expand</span>'; collapse.title = expandChat ? 'Collapse AI workspace' : 'Expand AI workspace'; }
 }
 
 function setSubType(sub, btn) {
@@ -2321,100 +2202,11 @@ function collectOrgData() {
   },4800);
 })();
 
-
-let doccraftChatAttachment = null;
-function chatTranscriptText(){
-  const messages=document.querySelectorAll('#messages .msg');
-  const lines=[];
-  messages.forEach(node=>{
-    const who=node.classList.contains('user-msg')?'You':'DocCraft AI';
-    const bubble=node.querySelector('.msg-bubble');
-    if(bubble){const content=(bubble.innerText||bubble.textContent||'').trim();if(content)lines.push(who+': '+content);}
-  });
-  return lines.join('\n\n') || 'No conversation yet.';
-}
-async function copyChatTranscript(){
-  const text=chatTranscriptText();
-  try{
-    if(navigator.clipboard&&window.isSecureContext)await navigator.clipboard.writeText(text);
-    else{
-      const helper=document.createElement('textarea');helper.value=text;helper.style.position='fixed';helper.style.opacity='0';document.body.appendChild(helper);helper.select();
-      if(!document.execCommand('copy'))throw new Error('Copy unavailable');helper.remove();
-    }
-    chatToolFeedback('Conversation copied.');
-  }catch(_){chatToolFeedback('Copy is unavailable in this browser.');}
-}
-function downloadChatTranscript(){
-  const blob=new Blob([chatTranscriptText()],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob),link=document.createElement('a');
-  link.href=url;link.download='doccraft-ai-conversation.txt';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
-  chatToolFeedback('Conversation downloaded.');
-}
-async function shareChatTranscript(){
-  const text=chatTranscriptText();
-  try{
-    if(navigator.share)await navigator.share({title:'DocCraft AI conversation',text});
-    else await copyChatTranscript();
-  }catch(error){if(error.name!=='AbortError')chatToolFeedback('Sharing is not available here.');}
-}
-function chatToolFeedback(message){
-  const status=document.getElementById('chatToolStatus');
-  if(status)status.textContent=message;
-}
-function toggleChatWorkspace(){
-  const layout=document.querySelector('.app-layout'),button=document.getElementById('chatCollapseBtn');
-  if(!layout)return;
-  const mobile=window.matchMedia('(max-width: 768px)').matches;
-  const wasExpanded=layout.classList.contains('ai-chat-expanded');
-  if(mobile){
-    layout.classList.toggle('ai-chat-expanded',!wasExpanded);
-    layout.classList.toggle('ai-chat-collapsed',wasExpanded);
-  }else{
-    layout.classList.toggle('ai-chat-expanded',!wasExpanded);
-    layout.classList.remove('ai-chat-collapsed');
-  }
-  const expanded=layout.classList.contains('ai-chat-expanded');
-  if(button){button.setAttribute('aria-expanded',String(expanded));button.innerHTML=expanded?'⌄ <span class="tool-label">Collapse</span>':'⌃ <span class="tool-label">Expand</span>';button.title=expanded?'Collapse AI workspace':'Expand AI workspace';}
-}
-function clearChatAttachment(){
-  doccraftChatAttachment=null;
-  const chip=document.getElementById('chatAttachmentChip'),input=document.getElementById('chatUploadInput');
-  if(chip)chip.hidden=true;
-  if(input)input.value='';
-}
-async function handleChatFileUpload(file){
-  if(!file)return;
-  const allowed=/\.(txt|md|csv|json)$/i.test(file.name);
-  if(!allowed){chatToolFeedback('For now, upload a text, Markdown, CSV or JSON file.');return;}
-  if(file.size>1024*1024){chatToolFeedback('Please keep text files under 1 MB.');return;}
-  try{
-    const content=await file.text();
-    if(!content.trim()){chatToolFeedback('That file appears to be empty.');return;}
-    doccraftChatAttachment={name:file.name,content:content.slice(0,30000)};
-    const chip=document.getElementById('chatAttachmentChip'),name=document.getElementById('chatAttachmentName');
-    if(name)name.textContent='Attached: '+file.name+(content.length>30000?' (first 30,000 characters)':'');
-    if(chip)chip.hidden=false;
-    chatToolFeedback('File attached. Add a message and press Send.');
-  }catch(_){chatToolFeedback('Could not read that file.');}
-}
-(function bindChatWorkspaceTools(){
-  const byId=id=>document.getElementById(id);
-  byId('chatUploadBtn')?.addEventListener('click',()=>byId('chatUploadInput')?.click());
-  byId('chatUploadInput')?.addEventListener('change',event=>handleChatFileUpload(event.target.files?.[0]));
-  byId('chatCopyBtn')?.addEventListener('click',copyChatTranscript);
-  byId('chatDownloadBtn')?.addEventListener('click',downloadChatTranscript);
-  byId('chatShareBtn')?.addEventListener('click',shareChatTranscript);
-  byId('chatCollapseBtn')?.addEventListener('click',toggleChatWorkspace);
-  byId('chatAttachmentRemove')?.addEventListener('click',clearChatAttachment);
-})();
-
 async function sendMessage() {
   const input = document.getElementById('userInput');
-  const typedMessage = input.value.trim();
-  const attachment = doccraftChatAttachment;
-  const msg = [typedMessage, attachment ? ('Attached file: ' + attachment.name + '\n\nFile content:\n' + attachment.content) : ''].filter(Boolean).join('\n\n');
-  if (!msg.trim()) return;
-  addMsg(typedMessage + (attachment ? ('\n📎 Attached: ' + attachment.name) : ''), 'user');
+  const msg = input.value.trim();
+  if (!msg) return;
+  addMsg(msg, 'user');
   input.value = '';
   const btn = document.getElementById('sendBtn');
   btn.disabled = true;
@@ -2431,7 +2223,6 @@ async function sendMessage() {
     removeSpinner();
     btn.disabled = false;
     if (json.success) {
-      if (attachment) clearChatAttachment();
       refreshCreditBalance();
       setPreviewAccess(json.preview_only);
       if (typeof json.wallet_balance === 'number') {
