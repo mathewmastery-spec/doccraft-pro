@@ -184,6 +184,7 @@ def create_app(test_config=None):
         profile = session.get("doccraft_google_profile") or {}
         matches = bool(requested_email and profile.get("email") == requested_email)
         return jsonify({
+            "configured": bool(app.config.get("GOOGLE_CLIENT_ID") and app.config.get("GOOGLE_CLIENT_SECRET")),
             "connected": matches,
             "email": profile.get("email") if matches else None,
             "name": profile.get("name") if matches else None,
