@@ -136,6 +136,30 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .tab-btn.active .tab-icon{background:rgba(255,255,255,.18)}
 .tab-btn:hover:not(.active){color:var(--text);border-color:#64748b;background:#2b3147}
 .tab-btn:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+@media(max-width:768px){
+  .app-layout.ai-chat-expanded .panel-top,
+  .app-layout.ai-chat-expanded #billingPanel,
+  .app-layout.ai-chat-expanded #mainTabs,
+  .app-layout.ai-chat-expanded #workspaceGuide{display:none!important}
+  .app-layout.ai-chat-expanded .left-panel{padding:0!important}
+  .app-layout.ai-chat-expanded #pane-chat{display:flex!important;flex:1 1 auto!important;min-height:0!important}
+  .app-layout.ai-chat-collapsed #pane-chat{
+    display:flex!important;position:fixed!important;left:12px!important;bottom:12px!important;
+    z-index:45!important;width:min(250px,calc(100vw - 24px))!important;height:auto!important;
+    max-height:none!important;flex:none!important;overflow:visible!important;
+    border:1px solid #d9cde8!important;border-radius:15px!important;
+    background:#fff!important;box-shadow:0 12px 36px rgba(22,15,35,.22)!important;
+  }
+  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-header{padding:10px 11px!important;border:0!important;border-radius:15px!important}
+  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-heading strong{font-size:12px!important}
+  .app-layout.ai-chat-collapsed #pane-chat .chat-workspace-heading span,
+  .app-layout.ai-chat-collapsed #pane-chat .chat-tool-btn,
+  .app-layout.ai-chat-collapsed #pane-chat .messages,
+  .app-layout.ai-chat-collapsed #pane-chat .chat-attachment-chip,
+  .app-layout.ai-chat-collapsed #pane-chat #chatToolStatus,
+  .app-layout.ai-chat-collapsed #pane-chat .chat-input-area{display:none!important}
+  .app-layout.ai-chat-collapsed #pane-chat .chat-collapse-btn{min-height:34px!important}
+}
 @media(max-width:420px){.tabs{gap:7px;padding:10px}.tab-btn{min-height:84px;padding:10px}.tab-title{font-size:13px}.tab-hint{font-size:10px}}
 .workspace-guide{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:rgba(99,102,241,.08);border-bottom:1px solid var(--border);flex-shrink:0}
 .workspace-guide-icon{display:grid;place-items:center;flex:0 0 28px;height:28px;border-radius:9px;background:rgba(99,102,241,.18);color:#a5b4fc}
@@ -1312,7 +1336,7 @@ body{color:var(--dc-ink)}
 #pane-chat .chat-tool-btn,#pane-chat .chat-collapse-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:36px;
   padding:7px 10px;border:1px solid #ded7e9;border-radius:10px;background:#fff;
-  color:#4b3a67;font:600 11px/1.2 inherit;cursor:pointer;white-space:nowrap;
+  color:#4b3a67;font-family:inherit;font-size:11px;font-weight:600;line-height:1.2;cursor:pointer;white-space:nowrap;
 }
 #pane-chat .chat-tool-btn:hover,#pane-chat .chat-collapse-btn:hover{background:#f5f1fb;border-color:#b9a9d3}
 #pane-chat .chat-tool-btn:focus-visible,#pane-chat .chat-collapse-btn:focus-visible{outline:3px solid #c4b5fd;outline-offset:2px}
@@ -1873,9 +1897,10 @@ function openTool(tool) {
   document.getElementById('appScreen').style.display = 'block';
   setMobileWorkspace('edit');
   const appLayout = document.querySelector('.app-layout');
-  if (appLayout) appLayout.classList.toggle('ai-chat-expanded', tool !== 'org_letter' && tool !== 'cover_letter' && window.matchMedia('(max-width: 768px)').matches);
+  const openChatExpanded = tool !== 'org_letter' && tool !== 'cover_letter' && window.matchMedia('(max-width: 768px)').matches;
+  if (appLayout) { appLayout.classList.toggle('ai-chat-expanded', openChatExpanded); appLayout.classList.remove('ai-chat-collapsed'); }
   const chatCollapse = document.getElementById('chatCollapseBtn');
-  if (chatCollapse) chatCollapse.setAttribute('aria-expanded', String(!!(appLayout && appLayout.classList.contains('ai-chat-expanded'))));
+  if (chatCollapse) { chatCollapse.setAttribute('aria-expanded', String(openChatExpanded)); chatCollapse.innerHTML = openChatExpanded ? '⌄ <span class="tool-label">Collapse</span>' : '⌃ <span class="tool-label">Expand</span>'; chatCollapse.title = openChatExpanded ? 'Collapse AI workspace' : 'Expand AI workspace'; }
 
   const titles = { resume:'Resume & CV Builder', cover_letter:'Cover Letter Generator', portfolio:'Portfolio Builder', org_letter:'Organisation Letters' };
   const panelTitleEl = document.getElementById('panelTitle');
@@ -1965,9 +1990,10 @@ function switchTab(pane, btn) {
   btn.classList.add('active');
   btn.setAttribute('aria-pressed', 'true');
   const appLayout = document.querySelector('.app-layout');
-  if (appLayout) appLayout.classList.toggle('ai-chat-expanded', pane === 'chat' && window.matchMedia('(max-width: 768px)').matches);
+  const expandChat = pane === 'chat' && window.matchMedia('(max-width: 768px)').matches;
+  if (appLayout) { appLayout.classList.toggle('ai-chat-expanded', expandChat); appLayout.classList.remove('ai-chat-collapsed'); }
   const collapse = document.getElementById('chatCollapseBtn');
-  if (collapse) collapse.setAttribute('aria-expanded', String(!!(appLayout && appLayout.classList.contains('ai-chat-expanded'))));
+  if (collapse) { collapse.setAttribute('aria-expanded', String(expandChat)); collapse.innerHTML = expandChat ? '⌄ <span class="tool-label">Collapse</span>' : '⌃ <span class="tool-label">Expand</span>'; collapse.title = expandChat ? 'Collapse AI workspace' : 'Expand AI workspace'; }
 }
 
 function setSubType(sub, btn) {
@@ -2338,7 +2364,16 @@ function chatToolFeedback(message){
 function toggleChatWorkspace(){
   const layout=document.querySelector('.app-layout'),button=document.getElementById('chatCollapseBtn');
   if(!layout)return;
-  const expanded=layout.classList.toggle('ai-chat-expanded');
+  const mobile=window.matchMedia('(max-width: 768px)').matches;
+  const wasExpanded=layout.classList.contains('ai-chat-expanded');
+  if(mobile){
+    layout.classList.toggle('ai-chat-expanded',!wasExpanded);
+    layout.classList.toggle('ai-chat-collapsed',wasExpanded);
+  }else{
+    layout.classList.toggle('ai-chat-expanded',!wasExpanded);
+    layout.classList.remove('ai-chat-collapsed');
+  }
+  const expanded=layout.classList.contains('ai-chat-expanded');
   if(button){button.setAttribute('aria-expanded',String(expanded));button.innerHTML=expanded?'⌄ <span class="tool-label">Collapse</span>':'⌃ <span class="tool-label">Expand</span>';button.title=expanded?'Collapse AI workspace':'Expand AI workspace';}
 }
 function clearChatAttachment(){
@@ -2377,9 +2412,9 @@ async function sendMessage() {
   const input = document.getElementById('userInput');
   const typedMessage = input.value.trim();
   const attachment = doccraftChatAttachment;
-  const msg = [typedMessage, attachment ? ('Attached file: ' + attachment.name + '\\n\\nFile content:\\n' + attachment.content) : ''].filter(Boolean).join('\\n\\n');
+  const msg = [typedMessage, attachment ? ('Attached file: ' + attachment.name + '\n\nFile content:\n' + attachment.content) : ''].filter(Boolean).join('\n\n');
   if (!msg.trim()) return;
-  addMsg(typedMessage + (attachment ? ('\\n📎 Attached: ' + attachment.name) : ''), 'user');
+  addMsg(typedMessage + (attachment ? ('\n📎 Attached: ' + attachment.name) : ''), 'user');
   input.value = '';
   const btn = document.getElementById('sendBtn');
   btn.disabled = true;
