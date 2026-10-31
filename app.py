@@ -144,7 +144,7 @@ def create_app(test_config=None):
             return jsonify({"success": False, "error": "Google profile connection is not configured yet."}), 503
         if not session.get("doccraft_profile_link_email"):
             return redirect(url_for("home"))
-        redirect_uri = url_for("google_profile_callback", _external=True)
+        redirect_uri = app.config["APP_BASE_URL"].rstrip("/") + url_for("google_profile_callback")
         return oauth.google.authorize_redirect(redirect_uri, prompt="select_account")
 
     @app.route("/auth/google/callback")
@@ -159,7 +159,7 @@ def create_app(test_config=None):
             verified = userinfo.get("email_verified") is True or str(userinfo.get("email_verified")).lower() == "true"
             picture = str(userinfo.get("picture") or "").strip()
             parsed = urlparse(picture) if picture else None
-            safe_picture = picture if parsed and parsed.scheme == "https" and (parsed.hostname or "").endswith("googleusercontent.com") else ""
+            safe_picture = picture if parsed and parsed.scheme == "https" and ((parsed.hostname or "") == "googleusercontent.com" or (parsed.hostname or "").endswith(".googleusercontent.com")) else ""
             if not verified:
                 session.pop("doccraft_profile_link_email", None)
                 return redirect(url_for("home") + "?profile_error=email_unverified")
