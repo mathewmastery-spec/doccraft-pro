@@ -1794,7 +1794,7 @@ async function loadCreditPackages() {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'btn btn-sm btn-outline';
-      button.textContent = pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')';
+      button.textContent = pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')' + (pkg.description ? ' · ' + pkg.description : '');
       button.addEventListener('click', () => startCreditCheckout(pkg.code, button));
       container.appendChild(button);
     });
