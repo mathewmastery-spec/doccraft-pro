@@ -1793,8 +1793,9 @@ async function loadCreditPackages() {
     data.packages.forEach(pkg => {
       const button = document.createElement('button');
       button.type = 'button';
-      button.className = 'btn btn-sm btn-outline';
-      button.textContent = pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')' + (pkg.description ? ' · ' + pkg.description : '');
+      const isBestValue = pkg.code === 'growth_v2';
+      button.className = isBestValue ? 'btn btn-sm btn-primary' : 'btn btn-sm btn-outline';
+      button.textContent = (isBestValue ? '★ BEST VALUE · ' : '') + pkg.name + ' — ' + pkg.credit_units + ' credits (' + (pkg.currency || 'KES') + ' ' + (Number(pkg.price_cents || 0) / 100).toLocaleString() + ')' + (pkg.description ? ' · ' + pkg.description : '');
       button.addEventListener('click', () => startCreditCheckout(pkg.code, button));
       container.appendChild(button);
     });
