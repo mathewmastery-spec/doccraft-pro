@@ -5,7 +5,9 @@ import json
 import os
 import uuid
 
-from flask import Flask, Response, jsonify, render_template, request, send_from_directory
+from flask import Flask, Response, jsonify, redirect, render_template, request, send_from_directory, session, url_for
+from authlib.integrations.flask_client import OAuth
+from urllib.parse import urlparse
 from openai import OpenAI
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -98,6 +100,16 @@ def create_app(test_config=None):
     if test_config:
         app.config.update(test_config)
 
+    oauth = OAuth(app)
+    if app.config.get("GOOGLE_CLIENT_ID") and app.config.get("GOOGLE_CLIENT_SECRET"):
+        oauth.register(
+            name="google",
+            server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
+            client_id=app.config["GOOGLE_CLIENT_ID"],
+            client_secret=app.config["GOOGLE_CLIENT_SECRET"],
+            client_kwargs={"scope": "openid email profile"},
+        )
+
     db.init_app(app)
     migrate.init_app(app, db)
     app.register_blueprint(billing_bp)
@@ -112,6 +124,77 @@ def create_app(test_config=None):
         with app.app_context():
             db.create_all()
             seed_default_credit_packages()
+
+
+    @app.route("/api/profile/google/link", methods=["POST"])
+    def begin_google_profile_link():
+        payload = request.get_json(silent=True) or {}
+        email_value = payload.get("email") or ""
+        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        if not email or "@" not in email or len(email) > 254:
+            return jsonify({"success": False, "error": "Enter your wallet email before connecting Google."}), 400
+        if not app.config.get("GOOGLE_CLIENT_ID") or not app.config.get("GOOGLE_CLIENT_SECRET"):
+            return jsonify({"success": False, "error": "Google profile connection is not configured yet."}), 503
+        session["doccraft_profile_link_email"] = email
+        return jsonify({"success": True})
+
+    @app.route("/auth/google/start")
+    def google_profile_start():
+        if not app.config.get("GOOGLE_CLIENT_ID") or not app.config.get("GOOGLE_CLIENT_SECRET"):
+            return jsonify({"success": False, "error": "Google profile connection is not configured yet."}), 503
+        if not session.get("doccraft_profile_link_email"):
+            return redirect(url_for("home"))
+        redirect_uri = url_for("google_profile_callback", _external=True)
+        return oauth.google.authorize_redirect(redirect_uri, prompt="select_account")
+
+    @app.route("/auth/google/callback")
+    def google_profile_callback():
+        expected_email = str(session.get("doccraft_profile_link_email") or "").strip().lower()
+        try:
+            if not expected_email:
+                return redirect(url_for("home") + "?profile_error=missing_wallet_email")
+            token = oauth.google.authorize_access_token()
+            userinfo = token.get("userinfo") or oauth.google.userinfo()
+            google_email = str(userinfo.get("email") or "").strip().lower()
+            verified = userinfo.get("email_verified") is True or str(userinfo.get("email_verified")).lower() == "true"
+            picture = str(userinfo.get("picture") or "").strip()
+            parsed = urlparse(picture) if picture else None
+            safe_picture = picture if parsed and parsed.scheme == "https" and (parsed.hostname or "").endswith("googleusercontent.com") else ""
+            if not verified:
+                session.pop("doccraft_profile_link_email", None)
+                return redirect(url_for("home") + "?profile_error=email_unverified")
+            if google_email != expected_email:
+                session.pop("doccraft_profile_link_email", None)
+                return redirect(url_for("home") + "?profile_error=email_mismatch")
+            session["doccraft_google_profile"] = {
+                "email": google_email,
+                "name": str(userinfo.get("name") or "")[:160],
+                "picture": safe_picture,
+            }
+            session.pop("doccraft_profile_link_email", None)
+            return redirect(url_for("home") + "?profile_connected=1")
+        except Exception:
+            app.logger.exception("Google profile connection failed")
+            session.pop("doccraft_profile_link_email", None)
+            return redirect(url_for("home") + "?profile_error=connection_failed")
+
+    @app.route("/api/profile")
+    def current_profile():
+        requested_email = str(request.args.get("email") or "").strip().lower()
+        profile = session.get("doccraft_google_profile") or {}
+        matches = bool(requested_email and profile.get("email") == requested_email)
+        return jsonify({
+            "connected": matches,
+            "email": profile.get("email") if matches else None,
+            "name": profile.get("name") if matches else None,
+            "picture": profile.get("picture") if matches else None,
+        })
+
+    @app.route("/api/profile/google/unlink", methods=["POST"])
+    def unlink_google_profile():
+        session.pop("doccraft_google_profile", None)
+        session.pop("doccraft_profile_link_email", None)
+        return jsonify({"success": True})
 
     @app.route("/")
     def home():
