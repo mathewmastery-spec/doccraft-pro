@@ -136,7 +136,7 @@ def checkout():
     if not package_code:
         return _json_error("package_code is required.", 400)
 
-    _sync_small_package_price()
+    _sync_credit_packages()
     package = CreditPackage.query.filter_by(code=package_code, is_active=True).first()
     if package is None:
         packages = seed_default_credit_packages()
