@@ -2332,9 +2332,9 @@ function careerLaunchContextText() {
   if (brief.role) parts.push('Role / programme: ' + brief.role);
   if (brief.organisation) parts.push('Organisation / institution: ' + brief.organisation);
   if (brief.sourceUrl) parts.push('User-supplied opportunity URL (reference only; page contents have NOT been fetched): ' + brief.sourceUrl);
-  if (brief.description) parts.push('OPPORTUNITY MATERIAL — employer requirements, not applicant facts:\\n' + brief.description);
-  if (brief.applicantEvidence) parts.push('APPLICANT EVIDENCE — user-supplied facts to verify and organise, not automatically proven credentials:\\n' + brief.applicantEvidence);
-  if (brief.goal) parts.push('CLIENT GOAL:\\n' + brief.goal);
+  if (brief.description) parts.push('OPPORTUNITY MATERIAL — employer requirements, not applicant facts:\n' + brief.description);
+  if (brief.applicantEvidence) parts.push('APPLICANT EVIDENCE — user-supplied facts to verify and organise, not automatically proven credentials:\n' + brief.applicantEvidence);
+  if (brief.goal) parts.push('CLIENT GOAL:\n' + brief.goal);
   parts.push(
     '',
     'ANALYSIS INSTRUCTIONS:',
@@ -2347,7 +2347,7 @@ function careerLaunchContextText() {
       ? 'IMPORTANT LINK LIMITATION: The URL is stored as a reference only; its webpage has not been fetched. Do not claim to have read it. Ask the client to upload the advert/PDF/screenshot or paste the webpage text before extracting requirements.'
       : 'Use the supplied opportunity text and attachments as the source of employer requirements.'
   );
-  return parts.join('\\n');
+  return parts.join('\n');
 }
 
 function captureCareerLaunchBrief() {
@@ -2392,7 +2392,7 @@ function startCareerResume() {
   if (chatButton) switchTab('chat', chatButton);
   const input = document.getElementById('userInput');
   if (input) {
-    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\\n\\n' + careerLaunchContextText();
+    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\n\n' + careerLaunchContextText();
     input.focus();
   }
   addMsg('Career Launch is ready. The opportunity is reference material, not your personal experience. Share your actual background and we will check the fit before you approve generation.', 'ai');
@@ -2767,7 +2767,7 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
-    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\\n\\n';
+    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\n\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2998,7 +2998,7 @@ async function generateCoverLetter() {
   else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
   else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
   if (state.careerLaunchActive && state.careerLaunchBrief) {
-    userInput += '\\n\\n' + careerLaunchContextText();
+    userInput += '\n\n' + careerLaunchContextText();
   }
   setPreviewLoading();
   try {
@@ -3530,8 +3530,8 @@ body:has(#careerLaunchHome:not([hidden])) .career-availability-note{margin-top:1
         const remaining = limits[kind] - existing.length;
         if (remaining <= 0) { status.textContent = 'The text limit for this section has been reached.'; break; }
         const extracted = String(result.text || '').slice(0, remaining);
-        const sourceLabel = '\\n[Extracted from ' + result.filename + ']\\n';
-        existing += (existing ? '\\n\\n' : '') + sourceLabel + extracted;
+        const sourceLabel = '\n[Extracted from ' + result.filename + ']\n';
+        existing += (existing ? '\n\n' : '') + sourceLabel + extracted;
         added++;
       } catch (error) {
         status.textContent = file.name + ': ' + (error.message || 'could not be read.');
