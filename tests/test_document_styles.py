@@ -58,3 +58,26 @@ def test_generation_and_wallet_endpoints_remain_present():
     assert "fetch('/api/generate'" in HTML
     assert "fetch('/api/wallet/consume-action'" in HTML
     assert "fetch('/api/wallet/authorize-document'" in HTML
+
+
+def test_more_tips_is_available_in_all_document_form_families():
+    assert HTML.count("moreTipsMarkup()") == 5
+    assert "More Tips to My Document" in HTML
+    assert 'id="documentTips" maxlength="5000"' in HTML
+    assert "additional_tips: readDocumentTips()" in HTML
+    assert "extra: { documentTips: readDocumentTips() }" in HTML
+
+
+def test_more_tips_are_included_in_local_document_previews_safely():
+    assert "appendDocumentTipsToPreview(d.additional_tips)" in HTML
+    assert 'paragraph.textContent = value;' in HTML
+    assert 'heading.textContent = "Additional Information Supplied";' in HTML
+
+
+def test_more_tips_are_validated_and_added_to_ai_generation_context():
+    app_source = (TEMPLATE.parents[1] / "app.py").read_text(encoding="utf-8")
+    assert 'extra.get("documentTips", "")' in app_source
+    assert "len(document_tips) > 5000" in app_source
+    assert "ADDITIONAL USER TIPS FOR THIS DOCUMENT" in app_source
+    assert "Do not treat suggestions as verified facts" in app_source
+    assert "do not invent missing information" in app_source
