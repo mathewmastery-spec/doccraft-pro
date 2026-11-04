@@ -2604,7 +2604,6 @@ async function buildFromForm() {
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
   if (!access.success) return;
   renderResume(state.resume);
-  appendDocumentTipsToPreview(state.resume.additional_tips);
   setPreviewAccess(access.preview_only);
   showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
