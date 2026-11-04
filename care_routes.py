@@ -116,6 +116,25 @@ def care_chat():
     if name:
         context_note += "\nThe user supplied this preferred name for this conversation: " + name
 
+    career = context.get("career_opportunity")
+    if isinstance(career, dict):
+        opportunity_type = str(career.get("opportunityType") or "job")[:30]
+        role = str(career.get("role") or "").strip()[:160]
+        organisation = str(career.get("organisation") or "").strip()[:160]
+        description = str(career.get("description") or "").strip()[:3500]
+        if role or organisation or description:
+            context_note += (
+                "\n\nCAREER OPPORTUNITY REFERENCE — NOT APPLICANT EXPERIENCE"
+                + "\nOpportunity type: " + opportunity_type
+                + ("\nRole / programme: " + role if role else "")
+                + ("\nOrganisation / institution: " + organisation if organisation else "")
+                + ("\nOpportunity description:\n" + description if description else "")
+                + "\nUse this only to understand the target opportunity. It is not evidence "
+                  "that the applicant possesses any listed skill, qualification, experience "
+                  "or achievement. Ask the applicant to confirm relevant evidence. Never "
+                  "invent, imply or assume applicant qualifications."
+            )
+
     try:
         provider, api_key, model = _provider_config()
         if not api_key:
