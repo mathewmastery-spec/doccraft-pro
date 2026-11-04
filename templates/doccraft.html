@@ -2110,17 +2110,14 @@ function readDocumentTips() {
 }
 
 function moreTipsMarkup() {
+  // Use the same proven form-group structure as every other visible input.
+  // This keeps the field visible across all document types and responsive layouts.
   return `
-    <section class="more-tips-panel" aria-labelledby="documentTipsTitle">
-      <div class="more-tips-heading">
-        <span class="more-tips-title" id="documentTipsTitle"><span class="more-tips-icon" aria-hidden="true">✦</span>More Tips to My Document</span>
-        <span class="more-tips-meta">Optional · Add extra context</span>
-      </div>
-      <div class="more-tips-body">
-        <p>Anything important that does not fit in the fields above? Add extra facts or instructions for this document. DocCraft will use only relevant details and will not invent information.</p>
-        <textarea id="documentTips" maxlength="5000" rows="3" aria-label="More tips to my document" placeholder="For example: Include my practical fibre-optics training, highlight my community volunteering, or explain a project that is not covered above."></textarea>
-      </div>
-    </section>`;
+    <div class="form-group document-tips-field" style="display:flex!important;visibility:visible!important;opacity:1!important;flex-direction:column!important;gap:8px!important;padding:12px!important;border:2px solid #4f46e5!important;border-radius:12px!important;background:#eef2ff!important;color:#1e293b!important">
+      <label for="documentTips" style="display:block!important;color:#312e81!important;font-size:13px!important;font-weight:800!important">✦ More Tips to My Document <span style="font-weight:500;color:#4b5563">(Optional)</span></label>
+      <p style="display:block!important;color:#374151!important;font-size:12px!important;line-height:1.5!important">Add any important facts or instructions that the fields above did not capture. DocCraft will use relevant details and will not invent information.</p>
+      <textarea id="documentTips" maxlength="5000" rows="4" aria-label="More tips to my document" placeholder="Add extra context here…" style="display:block!important;visibility:visible!important;width:100%!important;min-height:100px!important;padding:10px!important;border:1px solid #9ca3af!important;border-radius:8px!important;background:#fff!important;color:#111827!important;font:14px/1.5 inherit!important"></textarea>
+    </div>`;
 }
 
 function appendDocumentTipsToPreview(tips) {
@@ -2368,16 +2365,15 @@ function loadForm(tool) {
       moreTipsMarkup() + `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
   }
 
-  // Defensive mount for every document form, including future variants.
-  if (fc && !fc.querySelector('.more-tips-panel')) {
+  // One final, deterministic mount after each form has been built.
+  // Keep the field immediately before the generate button in every form.
+  if (fc && !fc.querySelector('#documentTips')) {
     const holder = document.createElement('div');
     holder.innerHTML = moreTipsMarkup();
     const panel = holder.firstElementChild;
     const generateButton = fc.querySelector('.full-btn');
-    if (panel) {
-      if (generateButton) fc.insertBefore(panel, generateButton);
-      else fc.appendChild(panel);
-    }
+    if (panel && generateButton) fc.insertBefore(panel, generateButton);
+    else if (panel) fc.appendChild(panel);
   }
   
 }
