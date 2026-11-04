@@ -17,7 +17,9 @@ STYLE_IDS = (
 
 
 def test_all_fifteen_styles_are_selectable():
-    options = re.findall(r'<option value="([^"]+)">', HTML)
+    picker = re.search(r'<select id="templateSelect"[^>]*>(.*?)</select>', HTML, re.S)
+    assert picker is not None
+    options = re.findall(r'<option value="([^"]+)">', picker.group(1))
     assert options == list(STYLE_IDS)
 
 
