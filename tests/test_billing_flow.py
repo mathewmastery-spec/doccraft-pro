@@ -10,7 +10,7 @@ from models import CreditLedgerEntry, GenerationRequest, PaymentTransaction, Use
 def test_checkout_and_payment_verification(app):
     with app.app_context():
         client = app.test_client()
-        res = client.post("/api/payments/checkout", json={"email": "kenya@example.com", "full_name": "Kenya User", "package_code": "starter"})
+        res = client.post("/api/payments/checkout", json={"email": "kenya@example.com", "full_name": "Kenya User", "package_code": "small_v2"})
         assert res.status_code == 200
         body = res.get_json()
         assert body["success"] is True
@@ -19,7 +19,7 @@ def test_checkout_and_payment_verification(app):
         verify = client.post("/api/payments/verify", json={"reference": tx.provider_payment_id})
         assert verify.status_code == 200
         wallet = get_or_create_wallet(tx.user_id, currency="KES")
-        assert wallet.balance_credits >= 25
+        assert wallet.balance_credits >= 15
 
 
 def test_duplicate_webhook_is_ignored(app):
