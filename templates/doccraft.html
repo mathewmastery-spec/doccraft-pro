@@ -1484,6 +1484,78 @@ body.chat-modal-open{overflow:hidden!important}
 #creditPackages .credit-package-tag{position:absolute;top:7px;right:7px;padding:3px 6px;border-radius:99px;background:rgba(16,185,129,.16);color:#6ee7b7;font-size:8px;font-weight:900;letter-spacing:.06em}
 @media(max-width:420px){ #creditPackages{grid-template-columns:repeat(2,minmax(0,1fr))}#creditPackages .credit-package-card{min-height:96px;padding:11px!important}#creditPackages .credit-package-credits{font-size:19px}}
 </style>
+
+<style id="career-launch-mode-a-theme">
+/* Mode B shares Mode A's live design tokens: no independent colour palette. */
+@media screen {
+body:has(#careerLaunchHome:not([hidden])){background:var(--bg)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) #homeScreen,
+body:has(#careerLaunchHome:not([hidden])) .career-launch-home{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .navbar{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow)!important;backdrop-filter:none!important}
+body:has(#careerLaunchHome:not([hidden])) .nav-logo{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .logo-hex{color:var(--accent)!important}
+body:has(#careerLaunchHome:not([hidden])) .logo-pro{background:none!important;color:var(--accent2)!important;-webkit-text-fill-color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card,
+body:has(#careerLaunchHome:not([hidden])) .career-brief-card{background:var(--surface)!important;border:1px solid var(--border)!important;box-shadow:var(--shadow)!important;color:var(--text)!important;backdrop-filter:none!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy strong,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,
+body:has(#careerLaunchHome:not([hidden])) .career-steps strong{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy span,
+body:has(#careerLaunchHome:not([hidden])) .mode-choice small,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
+body:has(#careerLaunchHome:not([hidden])) .career-steps p,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-status,
+body:has(#careerLaunchHome:not([hidden])) .career-availability-note{color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block,
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice{border-radius:var(--radius)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active,
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,
+body:has(#careerLaunchHome:not([hidden])) .career-step-label,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
+body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon{color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow span,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
+body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-steps li>span{background:var(--surface2)!important;border:1px solid var(--border)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{color:var(--text)!important;background:none!important;-webkit-text-fill-color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--accent)!important;box-shadow:var(--shadow)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span{background:none!important;color:var(--accent)!important;-webkit-text-fill-color:var(--accent)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile{background:var(--surface2)!important;border:1px dashed var(--accent)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field,
+body:has(#careerLaunchHome:not([hidden])) .career-field label,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select,
+body:has(#careerLaunchHome:not([hidden])) .career-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-field select,
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-field input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea::placeholder{color:var(--text3)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,
+body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-bottom:1px solid var(--border)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text2)!important}
+}
+</style>
+
 </head>
 <body>
 
@@ -1602,33 +1674,55 @@ body.chat-modal-open{overflow:hidden!important}
       </div>
       <div class="career-hero-mark" aria-hidden="true"><span>CL</span><i>✦</i></div>
     </div>
-    <div class="career-workspace-grid">
-      <section class="career-brief-card" aria-labelledby="careerBriefTitle">
+    <div class="career-intelligence-workspace">
+      <section class="career-intake-panel" aria-labelledby="careerIntakeTitle">
         <div class="career-card-heading">
-          <div><div class="career-step-label">START HERE · YOUR OPPORTUNITY</div><h2 id="careerBriefTitle">What are you applying for?</h2><p>Paste the advert or enter the details you already know. This information is temporary tailoring context.</p></div>
-          <span class="career-card-icon" aria-hidden="true">↗</span>
+          <div><div class="career-step-label">01 · BRING THE OPPORTUNITY</div><h2 id="careerIntakeTitle">Start with what you have.</h2><p>Upload an advert, add a link, paste its contents, or explain it in your own words. You do not need to complete every field.</p></div>
+          <span class="career-card-icon" aria-hidden="true">⌁</span>
         </div>
-        <div class="career-field-grid">
-          <div class="career-field"><label for="careerOpportunityType">Opportunity type</label><select id="careerOpportunityType"><option value="job">Job</option><option value="internship">Internship</option><option value="scholarship">Scholarship</option></select></div>
-          <div class="career-field"><label for="careerRole">Role / programme</label><input id="careerRole" type="text" maxlength="160" placeholder="e.g. Telecommunications Technician"></div>
-          <div class="career-field career-field-wide"><label for="careerOrganisation">Organisation / institution <span>(optional)</span></label><input id="careerOrganisation" type="text" maxlength="160" placeholder="Where is the opportunity?"></div>
-          <div class="career-field career-field-wide"><label for="careerDescription">Opportunity description</label><textarea id="careerDescription" rows="8" maxlength="3500" placeholder="Paste the job advert, internship description or scholarship requirements here…"></textarea><div class="career-field-note"><span>Up to 3,500 characters</span><span>Temporary session context · Not saved as your CV</span></div></div>
+        <div class="career-intake-grid">
+          <div class="career-intake-block">
+            <div class="career-intake-block-head"><span class="career-intake-symbol">↗</span><div><strong>Opportunity source</strong><small>Job advert, internship, scholarship or placement</small></div></div>
+            <div class="career-source-actions">
+              <button type="button" class="career-source-tile" data-career-pick="opportunity"><span>＋</span><b>Upload advert</b><small>PDF, DOCX, image, TXT</small></button>
+              <input id="careerOpportunityFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
+              <label class="career-url-field"><span>Opportunity link</span><input id="careerOpportunityLink" type="url" maxlength="1000" placeholder="https://company.com/careers/job…"><small class="career-url-note">The link is kept as a reference. Upload the advert or paste its text so the AI can actually analyse its requirements.</small></label>
+            </div>
+            <label class="career-long-field" for="careerDescription">Paste the advert or explain the opportunity<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the full job advert, requirements, instructions, or describe what you were told…"></textarea></label>
+            <div class="career-intake-status" id="careerOpportunityFilesStatus" role="status" aria-live="polite">You can add several files. Uploads are read for this session and are not saved as a profile.</div>
+          </div>
+          <div class="career-intake-block career-applicant-block">
+            <div class="career-intake-block-head"><span class="career-intake-symbol">◎</span><div><strong>Your evidence</strong><small>Optional now — add your real background when ready</small></div></div>
+            <button type="button" class="career-source-tile career-profile-upload" data-career-pick="applicant"><span>＋</span><b>Upload your CV or evidence</b><small>Existing CV, certificates, training records, portfolio</small></button>
+            <input id="careerApplicantFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
+            <label class="career-long-field" for="careerApplicantEvidence">Add or explain your experience<textarea id="careerApplicantEvidence" rows="6" maxlength="8000" placeholder="Tell us what you have actually studied, done, built, supported or achieved. Separate training from employment."></textarea></label>
+            <div class="career-intake-status" id="careerApplicantFilesStatus" role="status" aria-live="polite">Your evidence stays separate from the employer's requirements. DocCraft will not treat the advert as proof of your skills.</div>
+          </div>
+        </div>
+        <div class="career-goal-row">
+          <label class="career-long-field" for="careerGoal">What should we help you achieve? <span>(optional)</span><textarea id="careerGoal" rows="2" maxlength="1500" placeholder="e.g. Help me understand the requirements, identify what I need to improve, and prepare a strong, truthful application."></textarea></label>
+          <div class="career-field-grid career-meta-fields">
+            <div class="career-field"><label for="careerOpportunityType">Opportunity type</label><select id="careerOpportunityType"><option value="job">Job</option><option value="internship">Internship</option><option value="scholarship">Scholarship</option><option value="attachment">Industrial attachment</option><option value="other">Other opportunity</option></select></div>
+            <div class="career-field"><label for="careerRole">Role / programme <span>(if known)</span></label><input id="careerRole" type="text" maxlength="160" placeholder="e.g. Fibre Technician"></div>
+            <div class="career-field career-field-wide"><label for="careerOrganisation">Organisation / institution <span>(if known)</span></label><input id="careerOrganisation" type="text" maxlength="160" placeholder="Employer or institution name"></div>
+          </div>
         </div>
         <div class="career-brief-actions">
-          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Analyse &amp; tailor my CV <span aria-hidden="true">→</span></button>
-          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">Prepare a cover letter</button>
+          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Analyse opportunity &amp; build my readiness plan <span aria-hidden="true">→</span></button>
+          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">Prepare a tailored cover letter</button>
         </div>
-        <button type="button" class="career-clear-btn" onclick="clearCareerBrief()">Clear opportunity details</button>
+        <button type="button" class="career-clear-btn" onclick="clearCareerBrief()">Clear this session's opportunity and evidence</button>
       </section>
-      <aside class="career-guidance-card" aria-label="Career Launch workflow">
-        <div class="career-guidance-top"><span class="career-guidance-icon" aria-hidden="true">✧</span><div><span class="career-step-label">A GUIDED WORKFLOW</span><h2>One opportunity. A clearer application.</h2></div></div>
+      <aside class="career-guidance-card" aria-label="Opportunity intelligence workflow">
+        <div class="career-guidance-top"><span class="career-guidance-icon" aria-hidden="true">✧</span><div><span class="career-step-label">02 · INTELLIGENCE TO ACTION</span><h2>Understand the demand. Build your readiness.</h2></div></div>
         <ol class="career-steps">
-          <li><span>01</span><div><strong>Understand the opportunity</strong><p>Identify its requirements, priorities and important details.</p></div></li>
-          <li><span>02</span><div><strong>Bring your real experience</strong><p>Use the familiar DocCraft CV or cover-letter editor. AI can ask about relevant evidence and gaps.</p></div></li>
-          <li><span>03</span><div><strong>Review before you use it</strong><p>Check every qualification, claim and document before export.</p></div></li>
+          <li><span>01</span><div><strong>Decode the opportunity</strong><p>Separate essential qualifications, desirable skills, duties, conditions, deadlines and submission instructions.</p></div></li>
+          <li><span>02</span><div><strong>Map your real evidence</strong><p>Compare the requirements with your education, training, projects, work and transferable skills.</p></div></li>
+          <li><span>03</span><div><strong>Expose the gaps</strong><p>Ask focused questions, flag missing proof and suggest practical ways to strengthen readiness.</p></div></li>
+          <li><span>04</span><div><strong>Prepare and review</strong><p>Tailor the CV, cover letter and application message. Check every claim before export.</p></div></li>
         </ol>
-        <div class="career-truth-note"><span aria-hidden="true">◇</span><p><strong>Facts first.</strong> An advert describes what an organisation wants; it does not prove that you have those qualifications. DocCraft must use your confirmed information and flag gaps instead of inventing experience.</p></div>
-        <div class="career-availability-note">Mode B reuses your existing AI provider, document editor, wallet credits and export tools. It does not create a second account or payment system.</div>
+        <div class="career-truth-note"><span aria-hidden="true">◇</span><p><strong>Evidence before claims.</strong> Employer requirements and applicant evidence remain separate. Training is not automatically employment; interest is not certification; an unverified skill is not presented as proven experience.</p></div>
+        <div class="career-availability-note">Files are processed temporarily in memory for this application session. Nothing here is added to a permanent applicant profile.</div>
       </aside>
     </div>
   </section>
@@ -2301,26 +2395,61 @@ function readDocumentTips() {
 function careerLaunchContextText() {
   const brief = state.careerLaunchActive ? state.careerLaunchBrief : null;
   if (!brief) return '';
-  const labels = { job: 'Job', internship: 'Internship', scholarship: 'Scholarship' };
-  const parts = ['CAREER OPPORTUNITY REFERENCE — NOT APPLICANT EXPERIENCE','Opportunity type: ' + (labels[brief.opportunityType] || 'Job')];
+  const labels = { job: 'Job', internship: 'Internship', scholarship: 'Scholarship', attachment: 'Industrial attachment', other: 'Other opportunity' };
+  const parts = [
+    'CAREER LAUNCH — OPPORTUNITY INTELLIGENCE CONTEXT',
+    'Treat employer/opportunity material and applicant evidence as two separate sources. Never merge them or treat one as proof of the other.',
+    'Opportunity type: ' + (labels[brief.opportunityType] || 'Job')
+  ];
   if (brief.role) parts.push('Role / programme: ' + brief.role);
   if (brief.organisation) parts.push('Organisation / institution: ' + brief.organisation);
-  if (brief.description) parts.push('Opportunity description:\\n' + brief.description);
-  parts.push('', 'Use this information only to understand the target opportunity and tailor the document where the applicant’s own information supports the claim. The advert is not evidence that the applicant has any listed skill, qualification, experience or achievement. Do not invent or imply missing qualifications. Ask the applicant to confirm relevant experience or identify the gap.');
-  return parts.join('\\n');
+  if (brief.sourceUrl) parts.push('User-supplied opportunity URL (reference only; page contents have NOT been fetched): ' + brief.sourceUrl);
+  if (brief.description) parts.push('OPPORTUNITY MATERIAL — employer requirements, not applicant facts:\n' + brief.description);
+  if (brief.applicantEvidence) parts.push('APPLICANT EVIDENCE — user-supplied facts to verify and organise, not automatically proven credentials:\n' + brief.applicantEvidence);
+  if (brief.goal) parts.push('CLIENT GOAL:\n' + brief.goal);
+  parts.push(
+    '',
+    'ANALYSIS INSTRUCTIONS:',
+    '1. First extract mandatory requirements, desirable requirements, duties, deliverables, qualifications, experience, certifications/licences, location/availability conditions, deadline and application instructions. Mark absent details as not stated; do not infer them.',
+    '2. Then compare only against the applicant evidence actually supplied. Label each item evidenced, partially evidenced, unconfirmed or gap. Do not invent years, outcomes, certificates, employment or practical experience.',
+    '3. Ask concise, targeted questions to verify high-impact unknowns. Distinguish formal employment, informal responsibility, volunteering, projects, education and short training.',
+    '4. Build a practical readiness plan: what evidence to gather, what to learn or practise, what can be honestly strengthened now, and what remains unmet. Never imply a guaranteed job or selection.',
+    '5. Only after the client approves, tailor documents and application messages. Do not generate a final application before the opportunity and applicant facts are sufficiently understood.',
+    brief.sourceUrl && !brief.description
+      ? 'IMPORTANT LINK LIMITATION: The URL is stored as a reference only; its webpage has not been fetched. Do not claim to have read it. Ask the client to upload the advert/PDF/screenshot or paste the webpage text before extracting requirements.'
+      : 'Use the supplied opportunity text and attachments as the source of employer requirements.'
+  );
+  return parts.join('\n');
 }
 
 function captureCareerLaunchBrief() {
   const opportunityType = document.getElementById('careerOpportunityType')?.value || 'job';
   const role = (document.getElementById('careerRole')?.value || '').trim().slice(0, 160);
   const organisation = (document.getElementById('careerOrganisation')?.value || '').trim().slice(0, 160);
-  const description = (document.getElementById('careerDescription')?.value || '').trim().slice(0, 3500);
-  if (!role && !description) {
-    showToast('Add the role or paste the opportunity description first.');
-    document.getElementById('careerRole')?.focus();
+  const description = (document.getElementById('careerDescription')?.value || '').trim().slice(0, 14000);
+  const applicantEvidence = (document.getElementById('careerApplicantEvidence')?.value || '').trim().slice(0, 8000);
+  const goal = (document.getElementById('careerGoal')?.value || '').trim().slice(0, 1500);
+  const rawUrl = (document.getElementById('careerOpportunityLink')?.value || '').trim();
+  let sourceUrl = '';
+  if (rawUrl) {
+    try {
+      const parsed = new URL(rawUrl);
+      if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password) throw new Error('Use a valid public http or https link without login details.');
+      sourceUrl = parsed.href.slice(0, 1000);
+    } catch (error) {
+      showToast(error.message || 'Enter a valid opportunity link.');
+      document.getElementById('careerOpportunityLink')?.focus();
+      return null;
+    }
+  }
+  if (!role && !description && !sourceUrl && !applicantEvidence) {
+    showToast('Add an advert, upload a file, paste a link, or explain the opportunity first.');
+    document.getElementById('careerDescription')?.focus();
     return null;
   }
-  state.careerLaunchBrief = { opportunityType, role, organisation, description };
+  state.careerLaunchBrief = {
+    opportunityType, role, organisation, description, applicantEvidence, goal, sourceUrl
+  };
   return state.careerLaunchBrief;
 }
 
@@ -2335,7 +2464,7 @@ function startCareerResume() {
   if (chatButton) switchTab('chat', chatButton);
   const input = document.getElementById('userInput');
   if (input) {
-    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\\n\\n' + careerLaunchContextText();
+    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\n\n' + careerLaunchContextText();
     input.focus();
   }
   addMsg('Career Launch is ready. The opportunity is reference material, not your personal experience. Share your actual background and we will check the fit before you approve generation.', 'ai');
@@ -2358,13 +2487,19 @@ function startCareerCoverLetter() {
 }
 
 function clearCareerBrief() {
-  ['careerOpportunityType', 'careerRole', 'careerOrganisation', 'careerDescription'].forEach(id => {
+  ['careerOpportunityType', 'careerRole', 'careerOrganisation', 'careerDescription', 'careerApplicantEvidence', 'careerGoal', 'careerOpportunityLink', 'careerOpportunityFiles', 'careerApplicantFiles'].forEach(id => {
     const field = document.getElementById(id);
     if (field) field.value = id === 'careerOpportunityType' ? 'job' : '';
   });
+  ['careerOpportunityFilesStatus', 'careerApplicantFilesStatus'].forEach(id => {
+    const status = document.getElementById(id);
+    if (status) status.textContent = id === 'careerOpportunityFilesStatus'
+      ? 'You can add several files. Uploads are read for this session and are not saved as a profile.'
+      : 'Your evidence stays separate from the employer\'s requirements. DocCraft will not treat the advert as proof of your skills.';
+  });
   state.careerLaunchBrief = null;
   state.careerLaunchActive = false;
-  showToast('Opportunity details cleared from this session.');
+  showToast('Opportunity details and temporary evidence cleared.');
 }
 
 function moreTipsMarkup() {
@@ -2704,7 +2839,7 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
-    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\\n\\n';
+    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\n\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -2935,7 +3070,7 @@ async function generateCoverLetter() {
   else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
   else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
   if (state.careerLaunchActive && state.careerLaunchBrief) {
-    userInput += '\\n\\n' + careerLaunchContextText();
+    userInput += '\n\n' + careerLaunchContextText();
   }
   setPreviewLoading();
   try {
@@ -3367,6 +3502,120 @@ if(window.location.search.includes('profile_error=')){const status=document.getE
       if(status)status.textContent='Added '+file.name+'. Review the extracted text before generating.';
     }catch(error){if(status)status.textContent=error.message||'File could not be read.';}
     finally{if(button)button.disabled=false;picker.value='';}
+  });
+})();
+</script>
+
+<style id="career-intelligence-intake">
+@media screen {
+body:has(#careerLaunchHome:not([hidden])) .career-intelligence-workspace{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(290px,.8fr);gap:20px;align-items:start}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card{min-width:0;border:1px solid rgba(125,166,255,.2);border-radius:22px;background:linear-gradient(145deg,rgba(18,32,59,.94),rgba(13,23,45,.96));box-shadow:0 22px 65px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.055);color:#edf4ff;backdrop-filter:blur(18px)}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel{padding:clamp(20px,3vw,34px)}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel .career-card-heading h2,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2{color:#f2f7ff;font-family:'DM Sans',sans-serif;font-weight:750;letter-spacing:-.035em}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel .career-card-heading p{color:#9fb2d0;line-height:1.65}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin-top:22px}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block{min-width:0;padding:16px;border:1px solid rgba(132,169,224,.17);border-radius:16px;background:rgba(255,255,255,.035)}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head{display:flex;gap:10px;align-items:center;margin-bottom:14px}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:rgba(47,139,232,.18);color:#9ceaff;font-size:19px}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong{display:block;color:#edf4ff;font-size:13px}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small{display:block;color:#91a8ca;font-size:10px;line-height:1.45;margin-top:3px}
+body:has(#careerLaunchHome:not([hidden])) .career-source-actions{display:grid;grid-template-columns:1fr;gap:10px}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;width:100%;min-height:88px;padding:13px;border:1px dashed rgba(114,190,255,.45);border-radius:12px;background:linear-gradient(130deg,rgba(37,99,235,.13),rgba(124,58,237,.1));color:#eaf4ff;text-align:left;cursor:pointer}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile>span{font-size:20px;color:#83e4ff}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile b{font-size:12px}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile small{font-size:10px;color:#9fb2d0;line-height:1.4}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile:hover{border-color:#6bd8ff;background:rgba(44,130,230,.18)}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,body:has(#careerLaunchHome:not([hidden])) .career-long-field{display:flex;flex-direction:column;gap:7px;margin-top:13px;color:#d8e7ff;font-size:11px;font-weight:750}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select{width:100%;min-width:0;padding:11px 12px;border:1px solid rgba(132,169,224,.24);border-radius:11px;background:rgba(5,14,31,.78);color:#f0f6ff;font:13px/1.55 'DM Sans',sans-serif}
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea{resize:vertical;min-height:95px}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input:focus,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea:focus,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input:focus,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select:focus{outline:none;border-color:#5bcfff;box-shadow:0 0 0 3px rgba(58,181,255,.15)}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input::placeholder{color:#7188aa}
+body:has(#careerLaunchHome:not([hidden])) .career-url-note{color:#91a8ca;font-size:10px;font-weight:500;line-height:1.45}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-status{min-height:34px;margin-top:10px;color:#91a8ca;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
+body:has(#careerLaunchHome:not([hidden])) .career-applicant-block{background:linear-gradient(145deg,rgba(42,63,102,.17),rgba(124,58,237,.06))}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-top:18px;padding:16px;border:1px solid rgba(132,169,224,.16);border-radius:15px;background:rgba(255,255,255,.025)}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row .career-long-field{margin:0}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row .career-long-field textarea{min-height:85px}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-content:start}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field{min-width:0}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label{display:block;margin-bottom:5px;color:#d8e7ff;font-size:10px}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label span{color:#91a8ca;font-weight:500}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field-wide{grid-column:1/-1}
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select{min-height:40px;padding:9px;font-size:12px}
+body:has(#careerLaunchHome:not([hidden])) .career-brief-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{margin-top:12px}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card{padding:clamp(18px,2.5vw,27px)}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{padding:0;margin:18px 0;list-style:none}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps li{display:flex;gap:11px;padding:13px 0;border-bottom:1px solid rgba(132,169,224,.13)}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps li>span{flex:0 0 28px;display:grid;place-items:center;height:28px;border-radius:9px;background:rgba(61,151,238,.13);color:#8de5ff;font-size:10px;font-weight:800}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps strong{color:#eaf3ff;font-size:12px}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps p{margin-top:4px;color:#9fb2d0;font-size:11px;line-height:1.55}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{display:flex;gap:9px;margin-top:17px;padding:13px;border:1px solid rgba(95,210,255,.19);border-radius:12px;background:rgba(36,141,199,.08);color:#a9c9e7;font-size:10px;line-height:1.55}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note strong{color:#c6f3ff}
+body:has(#careerLaunchHome:not([hidden])) .career-availability-note{margin-top:13px;color:#8198b9;font-size:10px;line-height:1.5}
+}
+@media(max-width:900px){body:has(#careerLaunchHome:not([hidden])) .career-intelligence-workspace{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:620px){body:has(#careerLaunchHome:not([hidden])) .career-intake-grid,body:has(#careerLaunchHome:not([hidden])) .career-goal-row{grid-template-columns:minmax(0,1fr)}body:has(#careerLaunchHome:not([hidden])) .career-meta-fields{grid-template-columns:minmax(0,1fr)}body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field-wide{grid-column:auto}body:has(#careerLaunchHome:not([hidden])) .career-brief-actions{flex-direction:column}body:has(#careerLaunchHome:not([hidden])) .career-brief-actions button{width:100%}}
+@media(prefers-reduced-motion:reduce){body:has(#careerLaunchHome:not([hidden])) .career-source-tile{transition:none}}
+</style>
+
+<script>
+(function(){
+  if (window.__careerIntakeBound) return;
+  window.__careerIntakeBound = true;
+  const limits = { opportunity: 14000, applicant: 8000 };
+  const names = { opportunity: 'careerOpportunityFiles', applicant: 'careerApplicantFiles' };
+  const statusIds = { opportunity: 'careerOpportunityFilesStatus', applicant: 'careerApplicantFilesStatus' };
+  const textIds = { opportunity: 'careerDescription', applicant: 'careerApplicantEvidence' };
+  const allowed = /\\.(pdf|docx|txt|md|csv|png|jpe?g|webp)$/i;
+
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-career-pick]');
+    if (!button) return;
+    document.getElementById(names[button.dataset.careerPick])?.click();
+  });
+
+  async function extractFiles(kind, fileList) {
+    const files = Array.from(fileList || []);
+    const status = document.getElementById(statusIds[kind]);
+    const picker = document.getElementById(names[kind]);
+    const field = document.getElementById(textIds[kind]);
+    if (!files.length || !status || !field) return;
+    if (files.length > 4) {
+      status.textContent = 'Choose up to four files at a time.';
+      if (picker) picker.value = '';
+      return;
+    }
+    let existing = field.value.trim();
+    let added = 0;
+    for (const file of files) {
+      if (!allowed.test(file.name)) { status.textContent = file.name + ': unsupported file type.'; continue; }
+      if (file.size > 8 * 1024 * 1024) { status.textContent = file.name + ': file exceeds 8 MB.'; continue; }
+      if (file.size === 0) { status.textContent = file.name + ': file is empty.'; continue; }
+      status.textContent = 'Reading ' + file.name + '…';
+      try {
+        const body = new FormData();
+        body.append('file', file);
+        const response = await fetch('/api/document-tips/extract', { method: 'POST', body });
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result.error || 'Could not read this file.');
+        const remaining = limits[kind] - existing.length;
+        if (remaining <= 0) { status.textContent = 'The text limit for this section has been reached.'; break; }
+        const extracted = String(result.text || '').slice(0, remaining);
+        const sourceLabel = '\n[Extracted from ' + result.filename + ']\n';
+        existing += (existing ? '\n\n' : '') + sourceLabel + extracted;
+        added++;
+      } catch (error) {
+        status.textContent = file.name + ': ' + (error.message || 'could not be read.');
+      }
+    }
+    field.value = existing.slice(0, limits[kind]);
+    field.dispatchEvent(new Event('input', { bubbles: true }));
+    if (added) status.textContent = added + ' file' + (added === 1 ? '' : 's') + ' added. Review the extracted text; correct any reading errors.';
+    if (picker) picker.value = '';
+  }
+  Object.entries(names).forEach(([kind, id]) => {
+    document.getElementById(id)?.addEventListener('change', event => extractFiles(kind, event.target.files));
   });
 })();
 </script>
