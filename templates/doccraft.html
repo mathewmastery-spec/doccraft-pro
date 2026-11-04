@@ -1485,77 +1485,86 @@ body.chat-modal-open{overflow:hidden!important}
 @media(max-width:420px){ #creditPackages{grid-template-columns:repeat(2,minmax(0,1fr))}#creditPackages .credit-package-card{min-height:96px;padding:11px!important}#creditPackages .credit-package-credits{font-size:19px}}
 </style>
 
-<style id="career-launch-mode-a-theme">
-/* Mode B shares Mode A's live design tokens: no independent colour palette. */
+
+
+
+<style id="career-launch-exact-mode-a-colours">
+/* Strict colour parity: Mode B consumes the exact active Mode A theme tokens.
+   Layout and workflow stay distinct; no independent Mode B palette remains. */
 @media screen {
 body:has(#careerLaunchHome:not([hidden])){background:var(--bg)!important;color:var(--text)!important}
 body:has(#careerLaunchHome:not([hidden])) #homeScreen,
-body:has(#careerLaunchHome:not([hidden])) .career-launch-home{color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .navbar{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow)!important;backdrop-filter:none!important}
-body:has(#careerLaunchHome:not([hidden])) .nav-logo{color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .logo-hex{color:var(--accent)!important}
-body:has(#careerLaunchHome:not([hidden])) .logo-pro{background:none!important;color:var(--accent2)!important;-webkit-text-fill-color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-launch-home{background:transparent!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .navbar,
 body:has(#careerLaunchHome:not([hidden])) .mode-chooser,
 body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,
 body:has(#careerLaunchHome:not([hidden])) .career-guidance-card,
-body:has(#careerLaunchHome:not([hidden])) .career-brief-card{background:var(--surface)!important;border:1px solid var(--border)!important;box-shadow:var(--shadow)!important;color:var(--text)!important;backdrop-filter:none!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy strong,
-body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,
-body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2,
-body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,
-body:has(#careerLaunchHome:not([hidden])) .career-steps strong{color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy span,
-body:has(#careerLaunchHome:not([hidden])) .mode-choice small,
-body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
-body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
-body:has(#careerLaunchHome:not([hidden])) .career-steps p,
-body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
-body:has(#careerLaunchHome:not([hidden])) .career-intake-status,
-body:has(#careerLaunchHome:not([hidden])) .career-availability-note{color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-brief-card{background:var(--surface)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:var(--shadow)!important;backdrop-filter:none!important}
 body:has(#careerLaunchHome:not([hidden])) .mode-choice,
 body:has(#careerLaunchHome:not([hidden])) .career-intake-block,
-body:has(#careerLaunchHome:not([hidden])) .career-goal-row{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice{border-radius:var(--radius)!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active,
-body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important;box-shadow:none!important}
-body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,
-body:has(#careerLaunchHome:not([hidden])) .career-step-label,
-body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
-body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
-body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon{color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row,
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark,
 body:has(#careerLaunchHome:not([hidden])) .career-eyebrow span,
 body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
 body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
 body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon,
-body:has(#careerLaunchHome:not([hidden])) .career-steps li>span{background:var(--surface2)!important;border:1px solid var(--border)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
-body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{color:var(--text)!important;background:none!important;-webkit-text-fill-color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--accent)!important;box-shadow:var(--shadow)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span{background:none!important;color:var(--accent)!important;-webkit-text-fill-color:var(--accent)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-source-tile{background:var(--surface2)!important;border:1px dashed var(--accent)!important;color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-url-field,
-body:has(#careerLaunchHome:not([hidden])) .career-long-field,
-body:has(#careerLaunchHome:not([hidden])) .career-field label,
-body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-steps li>span,
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active,
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{background:var(--accent)!important;background-image:none!important;border-color:var(--accent)!important;color:#fff!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,
+body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:none!important}
 body:has(#careerLaunchHome:not([hidden])) .career-url-field input,
 body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,
 body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,
 body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select,
 body:has(#careerLaunchHome:not([hidden])) .career-field input,
 body:has(#careerLaunchHome:not([hidden])) .career-field select,
-body:has(#careerLaunchHome:not([hidden])) .career-field textarea{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:none}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span,
+body:has(#careerLaunchHome:not([hidden])) .nav-logo,
+body:has(#careerLaunchHome:not([hidden])) .logo-pro{background:none!important;background-image:none!important;color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:before,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:after{display:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,
+body:has(#careerLaunchHome:not([hidden])) .career-steps strong,
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label,
+body:has(#careerLaunchHome:not([hidden])) .career-field label,
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy strong{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
+body:has(#careerLaunchHome:not([hidden])) .career-steps p,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-status,
+body:has(#careerLaunchHome:not([hidden])) .career-availability-note,
+body:has(#careerLaunchHome:not([hidden])) .career-url-note,
+body:has(#careerLaunchHome:not([hidden])) .career-field-note,
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy span,
+body:has(#careerLaunchHome:not([hidden])) .mode-choice small{color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,
+body:has(#careerLaunchHome:not([hidden])) .career-step-label,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
+body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon,
+body:has(#careerLaunchHome:not([hidden])) .logo-hex{color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{color:var(--text2)!important}
 body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,
 body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,
 body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input::placeholder,
 body:has(#careerLaunchHome:not([hidden])) .career-field input::placeholder,
 body:has(#careerLaunchHome:not([hidden])) .career-field textarea::placeholder{color:var(--text3)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,
-body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-bottom:1px solid var(--border)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile:hover{background:var(--surface2)!important;border-color:var(--accent)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--border)!important}
 }
 </style>
-
 </head>
 <body>
 
@@ -3619,57 +3628,5 @@ body:has(#careerLaunchHome:not([hidden])) .career-availability-note{margin-top:1
   });
 })();
 </script>
-<style id="career-launch-premium-visual">
-/* Mode B only: premium luminous intelligence-studio visual system. */
-@media screen {
-body:has(#careerLaunchHome:not([hidden])){background:radial-gradient(ellipse at 12% 8%,rgba(35,112,255,.2),transparent 34rem),radial-gradient(ellipse at 88% 12%,rgba(129,74,255,.19),transparent 32rem),#080f20!important;color:#edf4ff!important}
-body:has(#careerLaunchHome:not([hidden])) #homeScreen{max-width:1440px;min-height:calc(100vh - 76px);color:#edf4ff}
-body:has(#careerLaunchHome:not([hidden])) .navbar{background:rgba(8,15,32,.84)!important;border-bottom:1px solid rgba(125,166,255,.2)!important;backdrop-filter:blur(22px);box-shadow:0 8px 36px rgba(0,0,0,.2)!important}
-body:has(#careerLaunchHome:not([hidden])) .nav-logo{color:#f4f8ff!important}
-body:has(#careerLaunchHome:not([hidden])) .logo-hex{color:#67d8ff!important}
-body:has(#careerLaunchHome:not([hidden])) .logo-pro{background:linear-gradient(90deg,#72e2ff,#a99aff 58%,#d4b5ff)!important;-webkit-background-clip:text!important;background-clip:text!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-chooser{border:1px solid rgba(123,166,255,.24)!important;border-radius:22px!important;background:linear-gradient(115deg,rgba(16,31,61,.96),rgba(20,23,53,.93))!important;box-shadow:0 18px 60px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.06)!important;color:#f4f8ff!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy strong{color:#f4f8ff!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy span{color:#9fb3d5!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice{border:1px solid rgba(135,166,220,.2)!important;background:rgba(255,255,255,.045)!important;color:#c7d5ed!important;border-radius:15px!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice small{color:#9fb3d5!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active{background:linear-gradient(120deg,#1766dc,#5146cb 58%,#7548d5)!important;border-color:rgba(126,193,255,.85)!important;color:#fff!important;box-shadow:0 10px 28px rgba(40,105,230,.32),inset 0 1px 0 rgba(255,255,255,.22)!important}
-body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active small{color:#e3edff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-launch-home{padding:clamp(32px,5vw,66px) 0 48px;color:#edf4ff;position:relative}
-body:has(#careerLaunchHome:not([hidden])) .career-hero{gap:32px;padding:8px 0 38px}
-body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,body:has(#careerLaunchHome:not([hidden])) .career-step-label{color:#7edfff!important;letter-spacing:.17em}
-body:has(#careerLaunchHome:not([hidden])) .career-eyebrow span{background:rgba(67,174,255,.13)!important;color:#8de8ff!important;border:1px solid rgba(109,204,255,.24)}
-body:has(#careerLaunchHome:not([hidden])) .career-hero h1{max-width:850px;color:#f4f8ff!important;font-family:'DM Sans',sans-serif!important;font-size:clamp(40px,6vw,76px)!important;font-weight:800!important;letter-spacing:-.065em!important;line-height:.99!important}
-body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{background:linear-gradient(100deg,#73e3ff,#9c9bff 48%,#d6aaff)!important;-webkit-background-clip:text!important;background-clip:text!important}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p{color:#a9bad5!important;font-size:15px;line-height:1.85}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{flex-basis:clamp(100px,13vw,158px)!important;width:clamp(100px,13vw,158px)!important;height:clamp(100px,13vw,158px)!important;border:1px solid rgba(117,191,255,.48)!important;border-radius:36px!important;background:radial-gradient(circle at 35% 28%,rgba(113,224,255,.36),transparent 34%),linear-gradient(145deg,rgba(42,104,201,.32),rgba(105,66,190,.3))!important;color:#c7f4ff!important;box-shadow:0 0 0 12px rgba(77,140,255,.045),0 0 65px rgba(73,133,255,.2),inset 0 1px 0 rgba(255,255,255,.2)!important;transform:none!important;animation:careerOrbFloat 6s ease-in-out infinite}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:before,body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:after{content:"";position:absolute;inset:-10px;border:1px solid rgba(103,208,255,.2);border-radius:42px;animation:careerOrbPulse 4s ease-out infinite}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:after{animation-delay:2s}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span{font-family:'DM Sans',sans-serif!important;font-size:clamp(30px,4vw,48px)!important;font-weight:900;letter-spacing:-.08em;background:linear-gradient(135deg,#fff,#80e8ff 55%,#c1aaff);-webkit-background-clip:text;background-clip:text;color:transparent}
-body:has(#careerLaunchHome:not([hidden])) .career-hero-mark i{color:#9cecff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-brief-card,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card{border:1px solid rgba(125,166,255,.2)!important;border-radius:22px!important;background:linear-gradient(145deg,rgba(18,32,59,.94),rgba(13,23,45,.96))!important;box-shadow:0 22px 65px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.055)!important;color:#edf4ff!important;backdrop-filter:blur(18px)}
-body:has(#careerLaunchHome:not([hidden])) .career-brief-card{padding:clamp(20px,3vw,34px)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2{color:#f2f7ff!important;font-family:'DM Sans',sans-serif!important;font-weight:750!important;letter-spacing:-.035em}
-body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,body:has(#careerLaunchHome:not([hidden])) .career-steps p{color:#9fb2d0!important}
-body:has(#careerLaunchHome:not([hidden])) .career-card-icon,body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon{background:linear-gradient(145deg,rgba(47,139,232,.22),rgba(128,83,222,.22))!important;border:1px solid rgba(119,188,255,.22);color:#9ceaff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field label{color:#d8e7ff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field label span{color:#91a8ca!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field input,body:has(#careerLaunchHome:not([hidden])) .career-field select,body:has(#careerLaunchHome:not([hidden])) .career-field textarea{border:1px solid rgba(132,169,224,.24)!important;border-radius:12px!important;background:rgba(5,14,31,.78)!important;color:#f0f6ff!important;font:14px/1.55 'DM Sans',sans-serif!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field input:focus,body:has(#careerLaunchHome:not([hidden])) .career-field select:focus,body:has(#careerLaunchHome:not([hidden])) .career-field textarea:focus{border-color:#5bcfff!important;box-shadow:0 0 0 3px rgba(58,181,255,.15),0 0 22px rgba(58,181,255,.08)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field input::placeholder,body:has(#careerLaunchHome:not([hidden])) .career-field textarea::placeholder{color:#7188aa!important}
-body:has(#careerLaunchHome:not([hidden])) .career-field-note{color:#8299bb!important}
-body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{min-height:50px!important;padding:13px 20px!important;border-radius:12px!important;background:linear-gradient(110deg,#1679e8,#4b55dc 58%,#7652d9)!important;box-shadow:0 10px 26px rgba(36,104,225,.28),inset 0 1px 0 rgba(255,255,255,.2)!important;font-size:13px!important}
-body:has(#careerLaunchHome:not([hidden])) .career-primary-btn:hover{transform:translateY(-2px);box-shadow:0 15px 32px rgba(36,104,225,.36)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{border:1px solid rgba(133,174,235,.27)!important;border-radius:12px!important;background:rgba(255,255,255,.055)!important;color:#d7e7ff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-bottom:1px solid rgba(132,169,224,.13)!important}
-body:has(#careerLaunchHome:not([hidden])) .career-steps li>span{background:rgba(61,151,238,.13)!important;border:1px solid rgba(105,191,255,.22);color:#8de5ff!important}
-body:has(#careerLaunchHome:not([hidden])) .career-steps strong{color:#eaf3ff!important}
-@media(max-width:760px){body:has(#careerLaunchHome:not([hidden])) .career-hero{align-items:flex-start}body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{margin-top:12px}body:has(#careerLaunchHome:not([hidden])) .career-workspace-grid{grid-template-columns:minmax(0,1fr)!important}}
-@media(max-width:520px){body:has(#careerLaunchHome:not([hidden])) .career-launch-home{padding-top:30px}body:has(#careerLaunchHome:not([hidden])) .career-hero{gap:12px;padding-bottom:26px}body:has(#careerLaunchHome:not([hidden])) .career-hero h1{font-size:clamp(36px,11vw,52px)!important}body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p{font-size:13px}body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{flex-basis:76px!important;width:76px!important;height:76px!important;border-radius:23px!important}body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span{font-size:25px!important}body:has(#careerLaunchHome:not([hidden])) .career-field-grid{grid-template-columns:minmax(0,1fr)!important}body:has(#careerLaunchHome:not([hidden])) .career-field-wide{grid-column:auto}body:has(#careerLaunchHome:not([hidden])) .career-brief-actions{flex-direction:column}body:has(#careerLaunchHome:not([hidden])) .career-brief-actions button{width:100%}}
-}
-@keyframes careerOrbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-@keyframes careerOrbPulse{0%{transform:scale(.94);opacity:.65}100%{transform:scale(1.16);opacity:0}}
-@media(prefers-reduced-motion:reduce){body:has(#careerLaunchHome:not([hidden])) .career-hero-mark,body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:before,body:has(#careerLaunchHome:not([hidden])) .career-hero-mark:after{animation:none!important}}
-</style>
 </body>
 </html>
