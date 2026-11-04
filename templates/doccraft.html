@@ -2111,16 +2111,16 @@ function readDocumentTips() {
 
 function moreTipsMarkup() {
   return `
-    <details class="more-tips-panel">
-      <summary>
-        <span class="more-tips-title"><span class="more-tips-icon" aria-hidden="true">✦</span>More Tips to My Document</span>
+    <section class="more-tips-panel" aria-labelledby="documentTipsTitle">
+      <div class="more-tips-heading">
+        <span class="more-tips-title" id="documentTipsTitle"><span class="more-tips-icon" aria-hidden="true">✦</span>More Tips to My Document</span>
         <span class="more-tips-meta">Optional · Add extra context</span>
-      </summary>
+      </div>
       <div class="more-tips-body">
         <p>Anything important that does not fit in the fields above? Add extra facts or instructions for this document. DocCraft will use only relevant details and will not invent information.</p>
         <textarea id="documentTips" maxlength="5000" rows="3" aria-label="More tips to my document" placeholder="For example: Include my practical fibre-optics training, highlight my community volunteering, or explain a project that is not covered above."></textarea>
       </div>
-    </details>`;
+    </section>`;
 }
 
 function appendDocumentTipsToPreview(tips) {
@@ -2366,6 +2366,18 @@ function loadForm(tool) {
     };
     fc.innerHTML = (orgForms[state.orgType] || orgForms.job_application) +
       moreTipsMarkup() + `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
+  }
+
+  // Defensive mount for every document form, including future variants.
+  if (fc && !fc.querySelector('.more-tips-panel')) {
+    const holder = document.createElement('div');
+    holder.innerHTML = moreTipsMarkup();
+    const panel = holder.firstElementChild;
+    const generateButton = fc.querySelector('.full-btn');
+    if (panel) {
+      if (generateButton) fc.insertBefore(panel, generateButton);
+      else fc.appendChild(panel);
+    }
   }
   
 }
