@@ -405,6 +405,78 @@ def create_app(test_config=None):
             app.logger.exception("DocCraft wallet action authorization failed")
             return jsonify({"success": False, "error": "Could not verify credit access. Please try again."}), 503
 
+
+    @app.route("/api/document-tips/extract", methods=["POST"])
+    def extract_document_tips():
+        """Extract user-selected reference material in memory; never persist uploads."""
+        from werkzeug.utils import secure_filename
+
+        uploaded = request.files.get("file")
+        if uploaded is None or not uploaded.filename:
+            return jsonify({"success": False, "error": "Choose a file first."}), 400
+        filename = secure_filename(uploaded.filename)
+        extension = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+        allowed = {"txt", "md", "csv", "pdf", "docx", "png", "jpg", "jpeg", "webp"}
+        if extension not in allowed:
+            return jsonify({"success": False, "error": "Use a TXT, MD, CSV, PDF, DOCX, PNG, JPG or WEBP file."}), 415
+        raw = uploaded.read(8 * 1024 * 1024 + 1)
+        if not raw:
+            return jsonify({"success": False, "error": "The selected file is empty."}), 400
+        if len(raw) > 8 * 1024 * 1024:
+            return jsonify({"success": False, "error": "Files must be 8 MB or smaller."}), 413
+        try:
+            if extension in {"txt", "md", "csv"}:
+                extracted = raw.decode("utf-8-sig")
+            elif extension == "pdf":
+                from pypdf import PdfReader
+                import io
+                reader = PdfReader(io.BytesIO(raw))
+                if len(reader.pages) > 25:
+                    return jsonify({"success": False, "error": "PDFs are limited to 25 pages."}), 413
+                extracted = "\n".join((page.extract_text() or "") for page in reader.pages)
+                if not extracted.strip():
+                    return jsonify({"success": False, "error": "No selectable text was found in this PDF. Try a text-based PDF or paste the relevant information."}), 422
+            elif extension == "docx":
+                from docx import Document
+                import io
+                document = Document(io.BytesIO(raw))
+                extracted = "\n".join(p.text for p in document.paragraphs if p.text.strip())
+                for table in document.tables:
+                    for row in table.rows:
+                        extracted += "\n" + " | ".join(cell.text for cell in row.cells)
+            else:
+                provider = str(app.config.get("AI_PROVIDER") or os.getenv("AI_PROVIDER") or "openai").strip().lower()
+                if provider != "gemini":
+                    return jsonify({"success": False, "error": "Image-to-text extraction is currently available when Gemini is selected as the AI provider. You can still type or dictate the image details."}), 422
+                from google import genai
+                from google.genai import types
+                import mimetypes
+                api_key = app.config.get("GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+                if not api_key:
+                    return jsonify({"success": False, "error": "Image reading is not configured. Please type or dictate the image details."}), 503
+                mime_type = mimetypes.guess_type(filename)[0] or "image/jpeg"
+                client = genai.Client(api_key=api_key)
+                response = client.models.generate_content(
+                    model=str(app.config.get("GEMINI_MODEL") or os.getenv("GEMINI_MODEL") or "gemini-3.8-flash"),
+                    contents=[
+                        "Extract only clearly visible, relevant factual information from this image for a professional document. Preserve names, dates and numbers exactly. Do not guess unclear text. Return concise plain text.",
+                        types.Part.from_bytes(data=raw, mime_type=mime_type),
+                    ],
+                    config=types.GenerateContentConfig(temperature=0.1, max_output_tokens=1800),
+                )
+                extracted = response.text or ""
+            extracted = extracted.strip()
+            if not extracted:
+                return jsonify({"success": False, "error": "No readable text was found in that file."}), 422
+            if len(extracted) > 12000:
+                extracted = extracted[:12000]
+            return jsonify({"success": True, "filename": filename, "text": extracted})
+        except UnicodeDecodeError:
+            return jsonify({"success": False, "error": "This text file is not UTF-8 encoded. Save it as UTF-8 and try again."}), 422
+        except Exception:
+            app.logger.exception("Document tips file extraction failed")
+            return jsonify({"success": False, "error": "Could not read this file. Try another file or paste the relevant information."}), 422
+
     @app.route("/api/generate", methods=["POST"])
     def generate():
         # Import locally so the existing application can still start even if a

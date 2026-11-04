@@ -2116,6 +2116,12 @@ function moreTipsMarkup() {
     <div class="form-group document-tips-field" style="display:flex!important;visibility:visible!important;opacity:1!important;flex-direction:column!important;gap:8px!important;padding:12px!important;border:2px solid #4f46e5!important;border-radius:12px!important;background:#eef2ff!important;color:#1e293b!important">
       <label for="documentTips" style="display:block!important;color:#312e81!important;font-size:13px!important;font-weight:800!important">✦ More Tips to My Document <span style="font-weight:500;color:#4b5563">(Optional)</span></label>
       <p style="display:block!important;color:#374151!important;font-size:12px!important;line-height:1.5!important">Add any important facts or instructions that the fields above did not capture. DocCraft will use relevant details and will not invent information.</p>
+      <div class="document-tips-tools" style="display:flex;flex-wrap:wrap;gap:8px;margin:4px 0">
+        <button type="button" class="secondary-btn" data-tips-upload>＋ Upload file / image</button>
+        <button type="button" class="secondary-btn" data-tips-voice>🎙 Dictate</button>
+        <input type="file" data-tips-file accept=".txt,.md,.csv,.pdf,.docx,.png,.jpg,.jpeg,.webp" hidden>
+        <span data-tips-status role="status" aria-live="polite" style="font-size:12px;color:#334155;align-self:center">TXT, PDF, DOCX or image · up to 8 MB</span>
+      </div>
       <textarea id="documentTips" maxlength="5000" rows="4" aria-label="More tips to my document" placeholder="Add extra context here…" style="display:block!important;visibility:visible!important;width:100%!important;min-height:100px!important;padding:10px!important;border:1px solid #9ca3af!important;border-radius:8px!important;background:#fff!important;color:#111827!important;font:14px/1.5 inherit!important"></textarea>
     </div>`;
 }
@@ -3062,6 +3068,43 @@ document.getElementById('billingEmail')?.addEventListener('change',refreshGoogle
 window.addEventListener('DOMContentLoaded',refreshGoogleProfile);
 if(window.location.search.includes('profile_connected=1')){window.history.replaceState({},'',window.location.pathname);refreshGoogleProfile();}
 if(window.location.search.includes('profile_error=')){const status=document.getElementById('googleProfileStatus');if(status)status.textContent='Google account was not connected. Confirm you selected the same verified email as your wallet.';window.history.replaceState({},'',window.location.pathname);}
+</script>
+
+<script>
+(function(){
+  if(window.__docTipsToolsBound)return;window.__docTipsToolsBound=true;
+  document.addEventListener('click',async function(event){
+    const upload=event.target.closest('[data-tips-upload]');
+    const voice=event.target.closest('[data-tips-voice]');
+    if(upload){const field=upload.parentElement.querySelector('[data-tips-file]');field?.click();return;}
+    if(voice){
+      const status=voice.parentElement.querySelector('[data-tips-status]');
+      const Speech=window.SpeechRecognition||window.webkitSpeechRecognition;
+      if(!Speech){if(status)status.textContent='Voice dictation is not supported by this browser. Try Chrome or type your notes.';return;}
+      const recognition=new Speech();recognition.lang=document.documentElement.lang||'en-US';recognition.interimResults=false;recognition.maxAlternatives=1;
+      voice.disabled=true;if(status)status.textContent='Listening… speak now';
+      recognition.onresult=function(e){const field=document.getElementById('documentTips');const spoken=e.results?.[0]?.[0]?.transcript||'';if(field&&spoken)field.value=(field.value.trim()?field.value.trim()+'\n':'')+spoken;if(status)status.textContent=spoken?'Voice note added. Review the text before generating.':'No speech was captured.';};
+      recognition.onerror=function(){if(status)status.textContent='Could not capture speech. Check microphone permission and try again.';};
+      recognition.onend=function(){voice.disabled=false;if(status&&status.textContent==='Listening… speak now')status.textContent='Dictation ended.';};
+      try{recognition.start();}catch(_){voice.disabled=false;if(status)status.textContent='Microphone could not start. Try again.';}return;
+    }
+  });
+  document.addEventListener('change',async function(event){
+    const picker=event.target.closest('[data-tips-file]');if(!picker||!picker.files?.[0])return;
+    const file=picker.files[0],status=picker.parentElement.querySelector('[data-tips-status]'),textarea=document.getElementById('documentTips'),button=picker.parentElement.querySelector('[data-tips-upload]');
+    if(file.size>8*1024*1024){if(status)status.textContent='File is larger than 8 MB.';picker.value='';return;}
+    if(status)status.textContent='Reading '+file.name+'…';if(button)button.disabled=true;
+    try{
+      const body=new FormData();body.append('file',file);
+      const response=await fetch('/api/document-tips/extract',{method:'POST',body});
+      const result=await response.json();
+      if(!response.ok||!result.success)throw new Error(result.error||'Could not read this file.');
+      if(textarea){const addition='[Extracted from '+result.filename+']\n'+result.text;textarea.value=(textarea.value.trim()?textarea.value.trim()+'\n\n':'')+addition;textarea.dispatchEvent(new Event('input',{bubbles:true}));}
+      if(status)status.textContent='Added '+file.name+'. Review the extracted text before generating.';
+    }catch(error){if(status)status.textContent=error.message||'File could not be read.';}
+    finally{if(button)button.disabled=false;picker.value='';}
+  });
+})();
 </script>
 </body>
 </html>
