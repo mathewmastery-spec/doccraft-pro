@@ -1614,7 +1614,7 @@ body.chat-modal-open{overflow:hidden!important}
             <div class="career-source-actions">
               <button type="button" class="career-source-tile" data-career-pick="opportunity"><span>＋</span><b>Upload advert</b><small>PDF, DOCX, image, TXT</small></button>
               <input id="careerOpportunityFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
-              <label class="career-url-field"><span>Opportunity link</span><input id="careerOpportunityLink" type="url" maxlength="1000" placeholder="https://company.com/careers/job…"></label>
+              <label class="career-url-field"><span>Opportunity link</span><input id="careerOpportunityLink" type="url" maxlength="1000" placeholder="https://company.com/careers/job…"><small class="career-url-note">The link is kept as a reference. Upload the advert or paste its text so the AI can actually analyse its requirements.</small></label>
             </div>
             <label class="career-long-field" for="careerDescription">Paste the advert or explain the opportunity<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the full job advert, requirements, instructions, or describe what you were told…"></textarea></label>
             <div class="career-intake-status" id="careerOpportunityFilesStatus" role="status" aria-live="polite">You can add several files. Uploads are read for this session and are not saved as a profile.</div>
@@ -3458,6 +3458,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-url-field input,body:has(#care
 body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea{resize:vertical;min-height:95px}
 body:has(#careerLaunchHome:not([hidden])) .career-url-field input:focus,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea:focus,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input:focus,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select:focus{outline:none;border-color:#5bcfff;box-shadow:0 0 0 3px rgba(58,181,255,.15)}
 body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input::placeholder{color:#7188aa}
+body:has(#careerLaunchHome:not([hidden])) .career-url-note{color:#91a8ca;font-size:10px;font-weight:500;line-height:1.45}
 body:has(#careerLaunchHome:not([hidden])) .career-intake-status{min-height:34px;margin-top:10px;color:#91a8ca;font-size:10px;line-height:1.5;overflow-wrap:anywhere}
 body:has(#careerLaunchHome:not([hidden])) .career-applicant-block{background:linear-gradient(145deg,rgba(42,63,102,.17),rgba(124,58,237,.06))}
 body:has(#careerLaunchHome:not([hidden])) .career-goal-row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-top:18px;padding:16px;border:1px solid rgba(132,169,224,.16);border-radius:15px;background:rgba(255,255,255,.025)}
