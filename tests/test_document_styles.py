@@ -61,7 +61,7 @@ def test_generation_and_wallet_endpoints_remain_present():
 
 
 def test_more_tips_is_available_in_all_document_form_families():
-    assert HTML.count("moreTipsMarkup()") == 5
+    assert HTML.count("moreTipsMarkup()") == 6
     assert "More Tips to My Document" in HTML
     assert 'id="documentTips" maxlength="5000"' in HTML
     assert "additional_tips: readDocumentTips()" in HTML
