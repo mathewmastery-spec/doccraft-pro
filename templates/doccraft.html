@@ -2934,6 +2934,9 @@ async function generateCoverLetter() {
   if (state.clType === 'job') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('cl_position')}, Company: ${v('cl_company')}, Company address / vacancy reference: ${v('cl_company_address')}, Hiring Manager: ${v('cl_manager')}, Years Exp: ${v('cl_exp')}, Field: ${v('cl_field')}, Why company: ${v('cl_why')}, Achievement: ${v('cl_achievement')}`;
   else if (state.clType === 'internship') userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Phone: ${v('cl_phone')}, Position: ${v('int_position')}, Company: ${v('int_company')}, University: ${v('int_university')}, Course: ${v('int_course')}, Year: ${v('int_year')}, Motivation: ${v('int_motivation')}`;
   else userInput = `Today's date: ${currentDate}. Name: ${v('cl_name')}, Email: ${v('cl_email')}, Scholarship: ${v('sch_name')}, Institution: ${v('sch_inst')}, Programme: ${v('sch_prog')}, Background: ${v('sch_bg')}, Goals: ${v('sch_goals')}`;
+  if (state.careerLaunchActive && state.careerLaunchBrief) {
+    userInput += '\\n\\n' + careerLaunchContextText();
+  }
   setPreviewLoading();
   try {
     const res = await fetch('/api/generate', {
