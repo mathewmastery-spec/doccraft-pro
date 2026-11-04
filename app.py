@@ -425,7 +425,9 @@ def create_app(test_config=None):
         if not isinstance(user_input, str) or not user_input.strip():
             return jsonify({"success": False, "error": "Please enter your information."}), 400
         if not isinstance(extra, dict):
-            return jsonify({"success": False, "error": "Invalid additional document data."}), 400        document_tips = extra.get("documentTips", "")
+            return jsonify({"success": False, "error": "Invalid additional document data."}), 400
+
+        document_tips = extra.get("documentTips", "")
         if not isinstance(document_tips, str) or len(document_tips) > 5000:
             return jsonify({"success": False, "error": "Additional document tips must be text of 5,000 characters or fewer."}), 400
 
@@ -558,7 +560,8 @@ def create_app(test_config=None):
 
             context = ""
             if extra.get("currentData"):
-                context = "\n\nExisting data to merge with:\n" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)            if document_tips.strip():
+                context = "\n\nExisting data to merge with:\n" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
+            if document_tips.strip():
                 context += (
                     "\n\nADDITIONAL USER TIPS FOR THIS DOCUMENT (user-supplied; optional):\n"
                     + document_tips.strip()
