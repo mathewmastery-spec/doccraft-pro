@@ -1484,6 +1484,78 @@ body.chat-modal-open{overflow:hidden!important}
 #creditPackages .credit-package-tag{position:absolute;top:7px;right:7px;padding:3px 6px;border-radius:99px;background:rgba(16,185,129,.16);color:#6ee7b7;font-size:8px;font-weight:900;letter-spacing:.06em}
 @media(max-width:420px){ #creditPackages{grid-template-columns:repeat(2,minmax(0,1fr))}#creditPackages .credit-package-card{min-height:96px;padding:11px!important}#creditPackages .credit-package-credits{font-size:19px}}
 </style>
+
+<style id="career-launch-mode-a-theme">
+/* Mode B shares Mode A's live design tokens: no independent colour palette. */
+@media screen {
+body:has(#careerLaunchHome:not([hidden])){background:var(--bg)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) #homeScreen,
+body:has(#careerLaunchHome:not([hidden])) .career-launch-home{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .navbar{background:var(--surface)!important;border-bottom:1px solid var(--border)!important;box-shadow:var(--shadow)!important;backdrop-filter:none!important}
+body:has(#careerLaunchHome:not([hidden])) .nav-logo{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .logo-hex{color:var(--accent)!important}
+body:has(#careerLaunchHome:not([hidden])) .logo-pro{background:none!important;color:var(--accent2)!important;-webkit-text-fill-color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card,
+body:has(#careerLaunchHome:not([hidden])) .career-brief-card{background:var(--surface)!important;border:1px solid var(--border)!important;box-shadow:var(--shadow)!important;color:var(--text)!important;backdrop-filter:none!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy strong,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,
+body:has(#careerLaunchHome:not([hidden])) .career-steps strong{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-chooser-copy span,
+body:has(#careerLaunchHome:not([hidden])) .mode-choice small,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
+body:has(#careerLaunchHome:not([hidden])) .career-steps p,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-status,
+body:has(#careerLaunchHome:not([hidden])) .career-availability-note{color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block,
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice{border-radius:var(--radius)!important}
+body:has(#careerLaunchHome:not([hidden])) .mode-choice.is-active,
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,
+body:has(#careerLaunchHome:not([hidden])) .career-step-label,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
+body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon{color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow span,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-symbol,
+body:has(#careerLaunchHome:not([hidden])) .career-card-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-icon,
+body:has(#careerLaunchHome:not([hidden])) .career-steps li>span{background:var(--surface2)!important;border:1px solid var(--border)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{color:var(--text)!important;background:none!important;-webkit-text-fill-color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--accent)!important;box-shadow:var(--shadow)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-mark span{background:none!important;color:var(--accent)!important;-webkit-text-fill-color:var(--accent)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile{background:var(--surface2)!important;border:1px dashed var(--accent)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field,
+body:has(#careerLaunchHome:not([hidden])) .career-field label,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields .career-field label{color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select,
+body:has(#careerLaunchHome:not([hidden])) .career-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-field select,
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-field input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea::placeholder{color:var(--text3)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,
+body:has(#careerLaunchHome:not([hidden])) .career-clear-btn{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-bottom:1px solid var(--border)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:var(--surface2)!important;border:1px solid var(--border)!important;color:var(--text2)!important}
+}
+</style>
+
 </head>
 <body>
 
