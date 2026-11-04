@@ -1313,6 +1313,89 @@ body{color:var(--dc-ink)}
 .document-type-kicker{font-size:9px;letter-spacing:.18em;font-weight:800;color:#7353a7;text-transform:uppercase;margin-bottom:7px}
 
 #pane-form .variant-intro{padding:11px 13px;margin:0 0 13px;border:1px solid #ded3f0;border-radius:10px;background:#f7f3fc;color:#43345d;font-size:13px;line-height:1.5}
+
+.mode-chooser{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:0 0 18px;padding:16px 18px;border:1px solid rgba(74,92,52,.17);border-radius:16px;background:rgba(255,253,244,.76);box-shadow:0 8px 24px rgba(67,85,42,.035)}
+.mode-chooser-copy{display:flex;flex-direction:column;gap:4px;min-width:190px}
+.mode-chooser-kicker{font-size:9px;font-weight:900;letter-spacing:.15em;color:#8b691a}
+.mode-chooser-copy strong{font-family:'Playfair Display',Georgia,serif;font-size:19px;font-weight:500;color:#29402f}
+.mode-chooser-copy>span:last-child{font-size:11px;color:#7b846f}
+.mode-chooser-control{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;width:min(100%,490px);padding:5px;border:1px solid rgba(74,92,52,.14);border-radius:13px;background:#eeeedf}
+.mode-choice{display:grid;grid-template-columns:31px minmax(0,1fr) 18px;align-items:center;gap:9px;min-width:0;min-height:58px;padding:8px 10px;border:1px solid transparent;border-radius:10px;background:transparent;color:#68715b;text-align:left;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .18s,border-color .18s,color .18s,box-shadow .18s}
+.mode-choice:hover{background:rgba(126,87,194,.07);color:#4b328d}
+.mode-choice-icon{display:grid;place-items:center;width:29px;height:29px;border-radius:9px;background:rgba(126,87,194,.11);font-size:16px}
+.mode-choice b,.mode-choice small{display:block;overflow:hidden;text-overflow:ellipsis}
+.mode-choice b{font-size:11px;font-weight:900;letter-spacing:.04em}
+.mode-choice small{margin-top:2px;font-size:11px;font-weight:600;white-space:nowrap}
+.mode-choice-check{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:transparent;color:transparent;font-size:11px;font-weight:900}
+.mode-choice.is-active{background:linear-gradient(135deg,#4b328d,#7251b8);border-color:#8062b6;color:#fff;box-shadow:0 4px 13px rgba(75,50,141,.18)}
+.mode-choice.is-active .mode-choice-icon{background:rgba(255,255,255,.17)}
+.mode-choice.is-active .mode-choice-check{background:rgba(255,255,255,.2);color:#fff}
+#documentStudioHome[hidden],#careerLaunchHome[hidden]{display:none!important}
+.career-launch-home{padding:48px 0 18px}
+.career-hero{display:flex;align-items:center;justify-content:space-between;gap:28px;padding:4px 0 30px}
+.career-hero-copy{max-width:790px}
+.career-eyebrow,.career-step-label{font-size:10px;font-weight:900;letter-spacing:.15em;color:#8b691a}
+.career-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.career-eyebrow span{display:grid;place-items:center;width:25px;height:25px;border-radius:8px;background:#eee8fa;color:#6845a8;font-size:14px}
+.career-hero h1{font-family:'Playfair Display',Georgia,serif;font-size:clamp(38px,5vw,66px);font-weight:400;letter-spacing:-.055em;line-height:1.03;color:#29402f}
+.career-hero h1 span{background:linear-gradient(110deg,#4b328d,#a07822);-webkit-background-clip:text;background-clip:text;color:transparent}
+.career-hero-copy>p{max-width:700px;margin-top:16px;color:#68715b;font-size:15px;line-height:1.8}
+.career-hero-mark{position:relative;display:grid;place-items:center;flex:0 0 112px;width:112px;height:112px;border:1px solid rgba(126,87,194,.19);border-radius:32px;background:linear-gradient(145deg,#eee8fa,#f5f0df);color:#4b328d;box-shadow:0 18px 44px rgba(67,85,42,.08);transform:rotate(4deg)}
+.career-hero-mark span{font-family:'Playfair Display',Georgia,serif;font-size:36px}
+.career-hero-mark i{position:absolute;right:13px;top:10px;color:#a07822;font-size:21px;font-style:normal}
+.career-workspace-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(280px,.8fr);gap:18px;align-items:start}
+.career-brief-card,.career-guidance-card{border:1px solid rgba(74,92,52,.17);border-radius:18px;background:rgba(255,253,244,.85);box-shadow:0 12px 34px rgba(67,85,42,.06)}
+.career-brief-card{padding:clamp(18px,3vw,30px)}
+.career-card-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:24px}
+.career-card-heading h2,.career-guidance-card h2{margin-top:7px;font-family:'Playfair Display',Georgia,serif;font-size:25px;font-weight:500;line-height:1.2;color:#29402f}
+.career-card-heading p{margin-top:8px;color:#7b846f;font-size:13px;line-height:1.6}
+.career-card-icon{display:grid;place-items:center;flex:0 0 42px;width:42px;height:42px;border-radius:13px;background:#eee8fa;color:#6845a8;font-size:22px}
+.career-field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.career-field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.career-field-wide{grid-column:1/-1}
+.career-field label{font-size:12px;font-weight:800;color:#53644d}
+.career-field label span{font-weight:500;color:#879080}
+.career-field input,.career-field select,.career-field textarea{width:100%;min-width:0;border:1px solid rgba(74,92,52,.22);border-radius:10px;background:#fbfaf2;color:#29402f;padding:12px 13px;font:13px/1.5 'DM Sans',sans-serif;outline:none}
+.career-field input,.career-field select{min-height:44px}
+.career-field textarea{min-height:160px;resize:vertical}
+.career-field input:focus,.career-field select:focus,.career-field textarea:focus{border-color:#8062b6;box-shadow:0 0 0 3px rgba(126,87,194,.12)}
+.career-field input::placeholder,.career-field textarea::placeholder{color:#9a9f91}
+.career-field-note{display:flex;justify-content:space-between;gap:12px;color:#879080;font-size:10px;line-height:1.4}
+.career-brief-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.career-primary-btn,.career-secondary-btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:11px 16px;border:1px solid transparent;border-radius:10px;font:800 12px 'DM Sans',sans-serif;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.career-primary-btn{background:linear-gradient(135deg,#4b328d,#7251b8);color:#fff;box-shadow:0 8px 18px rgba(75,50,141,.17)}
+.career-secondary-btn{background:#f5f2e6;border-color:rgba(74,92,52,.2);color:#4b328d}
+.career-primary-btn:hover,.career-secondary-btn:hover{transform:translateY(-1px)}
+.career-clear-btn{margin-top:13px;padding:5px 0;border:0;background:transparent;color:#879080;font:600 11px 'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.career-guidance-card{padding:24px}
+.career-guidance-top{display:flex;align-items:flex-start;gap:12px}
+.career-guidance-icon{display:grid;place-items:center;flex:0 0 38px;width:38px;height:38px;border-radius:12px;background:#e5efdc;color:#4e713a;font-size:20px}
+.career-guidance-card h2{font-size:22px;margin-top:5px}
+.career-steps{display:flex;flex-direction:column;gap:19px;margin:27px 0 24px;padding:0;list-style:none}
+.career-steps li{display:flex;align-items:flex-start;gap:12px}
+.career-steps li>span{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:#eee8fa;color:#6845a8;font-size:10px;font-weight:900}
+.career-steps strong{display:block;color:#40533c;font-size:12px}
+.career-steps p{margin-top:4px;color:#7b846f;font-size:11px;line-height:1.55}
+.career-truth-note{display:flex;align-items:flex-start;gap:10px;padding:13px;border:1px solid rgba(140,162,66,.22);border-radius:12px;background:#f2f4e8}
+.career-truth-note>span{color:#8b691a;font-size:18px}
+.career-truth-note p{color:#68715b;font-size:11px;line-height:1.6}
+.career-truth-note strong{color:#40533c}
+.career-availability-note{margin-top:15px;color:#92998a;font-size:10px;line-height:1.5}
+.career-session-banner{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 13px;padding:10px 11px;border:1px solid rgba(126,87,194,.2);border-radius:11px;background:#f1ebfa}
+.career-session-banner[hidden]{display:none!important}
+.career-session-banner b,.career-session-banner small{display:block}
+.career-session-banner b{font-size:11px;color:#4b328d}
+.career-session-banner small{margin-top:3px;font-size:10px;color:#75688a}
+.career-session-banner button{padding:7px 9px;border:1px solid rgba(126,87,194,.25);border-radius:8px;background:#fff;color:#4b328d;font:700 10px 'DM Sans',sans-serif;cursor:pointer;white-space:nowrap}
+@media screen and (max-width:900px){.mode-chooser{gap:14px;padding:14px}.mode-chooser-copy strong{font-size:17px}.career-workspace-grid{grid-template-columns:minmax(0,1.15fr) minmax(250px,.85fr)}}
+@media screen and (max-width:700px){
+ .mode-chooser{align-items:stretch;flex-direction:column;gap:11px;padding:13px}.mode-chooser-control{width:100%}.mode-choice{min-height:54px;padding:7px}
+ .career-launch-home{padding:27px 0 8px}.career-hero{padding:4px 0 22px}.career-hero-mark{flex-basis:68px;width:68px;height:68px;border-radius:20px}.career-hero-mark span{font-size:25px}.career-hero-mark i{right:8px;top:6px;font-size:15px}
+ .career-workspace-grid{grid-template-columns:minmax(0,1fr);gap:13px}.career-guidance-card{padding:19px}.career-field-grid{grid-template-columns:minmax(0,1fr)}.career-field-wide{grid-column:auto}
+ .career-brief-actions{display:grid;grid-template-columns:minmax(0,1fr)}.career-primary-btn,.career-secondary-btn{width:100%}.career-field-note{font-size:9px}.career-session-banner{align-items:flex-start;flex-direction:column}
+}
+@media screen and (max-width:390px){.mode-choice{grid-template-columns:25px minmax(0,1fr) 17px;gap:6px;padding:6px}.mode-choice-icon{width:24px;height:24px}.mode-choice small{font-size:10px}.career-hero h1{font-size:38px}.career-card-heading h2{font-size:22px}}
+
 </style>
 
 <style id="doccraft-conversation-workspace">
@@ -1429,6 +1512,18 @@ body.chat-modal-open{overflow:hidden!important}
 
 <!-- ── HOME SCREEN ────────────────────────────────── -->
 <div id="homeScreen">
+  <section class="mode-chooser" id="modeChooser" aria-label="Choose your DocCraft operating mode">
+    <div class="mode-chooser-copy">
+      <span class="mode-chooser-kicker">ONE PLATFORM · TWO EXPERIENCES</span>
+      <strong>Choose how you want to work</strong>
+      <span>Switch modes any time from Home.</span>
+    </div>
+    <div class="mode-chooser-control" role="group" aria-label="Operating mode">
+      <button type="button" class="mode-choice is-active" id="modeChoiceA" data-mode-choice="documents" aria-pressed="true" onclick="switchProductMode('documents')"><span class="mode-choice-icon" aria-hidden="true">▤</span><span><b>Mode A</b><small>Document Studio</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
+      <button type="button" class="mode-choice" id="modeChoiceB" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span class="mode-choice-icon" aria-hidden="true">↗</span><span><b>Mode B</b><small>Career Launch</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
+    </div>
+  </section>
+  <div id="documentStudioHome">
   <section class="hero">
     <div class="hero-left">
       <div class="hero-badge">International Student Edition</div>
@@ -1497,6 +1592,46 @@ body.chat-modal-open{overflow:hidden!important}
       </div>
     </div>
   </section>
+  </div>
+  <section id="careerLaunchHome" class="career-launch-home" hidden aria-labelledby="careerLaunchTitle">
+    <div class="career-hero">
+      <div class="career-hero-copy">
+        <div class="career-eyebrow"><span aria-hidden="true">✦</span> MODE B · CAREER LAUNCH STUDIO</div>
+        <h1 id="careerLaunchTitle">Move from opportunity to <span>application.</span></h1>
+        <p>Bring an opportunity you are considering. DocCraft helps you understand what it asks for, connect it to your real experience, and prepare the right application documents.</p>
+      </div>
+      <div class="career-hero-mark" aria-hidden="true"><span>CL</span><i>✦</i></div>
+    </div>
+    <div class="career-workspace-grid">
+      <section class="career-brief-card" aria-labelledby="careerBriefTitle">
+        <div class="career-card-heading">
+          <div><div class="career-step-label">START HERE · YOUR OPPORTUNITY</div><h2 id="careerBriefTitle">What are you applying for?</h2><p>Paste the advert or enter the details you already know. This information is temporary tailoring context.</p></div>
+          <span class="career-card-icon" aria-hidden="true">↗</span>
+        </div>
+        <div class="career-field-grid">
+          <div class="career-field"><label for="careerOpportunityType">Opportunity type</label><select id="careerOpportunityType"><option value="job">Job</option><option value="internship">Internship</option><option value="scholarship">Scholarship</option></select></div>
+          <div class="career-field"><label for="careerRole">Role / programme</label><input id="careerRole" type="text" maxlength="160" placeholder="e.g. Telecommunications Technician"></div>
+          <div class="career-field career-field-wide"><label for="careerOrganisation">Organisation / institution <span>(optional)</span></label><input id="careerOrganisation" type="text" maxlength="160" placeholder="Where is the opportunity?"></div>
+          <div class="career-field career-field-wide"><label for="careerDescription">Opportunity description</label><textarea id="careerDescription" rows="8" maxlength="3500" placeholder="Paste the job advert, internship description or scholarship requirements here…"></textarea><div class="career-field-note"><span>Up to 3,500 characters</span><span>Temporary session context · Not saved as your CV</span></div></div>
+        </div>
+        <div class="career-brief-actions">
+          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Analyse &amp; tailor my CV <span aria-hidden="true">→</span></button>
+          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">Prepare a cover letter</button>
+        </div>
+        <button type="button" class="career-clear-btn" onclick="clearCareerBrief()">Clear opportunity details</button>
+      </section>
+      <aside class="career-guidance-card" aria-label="Career Launch workflow">
+        <div class="career-guidance-top"><span class="career-guidance-icon" aria-hidden="true">✧</span><div><span class="career-step-label">A GUIDED WORKFLOW</span><h2>One opportunity. A clearer application.</h2></div></div>
+        <ol class="career-steps">
+          <li><span>01</span><div><strong>Understand the opportunity</strong><p>Identify its requirements, priorities and important details.</p></div></li>
+          <li><span>02</span><div><strong>Bring your real experience</strong><p>Use the familiar DocCraft CV or cover-letter editor. AI can ask about relevant evidence and gaps.</p></div></li>
+          <li><span>03</span><div><strong>Review before you use it</strong><p>Check every qualification, claim and document before export.</p></div></li>
+        </ol>
+        <div class="career-truth-note"><span aria-hidden="true">◇</span><p><strong>Facts first.</strong> An advert describes what an organisation wants; it does not prove that you have those qualifications. DocCraft must use your confirmed information and flag gaps instead of inventing experience.</p></div>
+        <div class="career-availability-note">Mode B reuses your existing AI provider, document editor, wallet credits and export tools. It does not create a second account or payment system.</div>
+      </aside>
+    </div>
+  </section>
 </div>
 
 <!-- ── APP SCREEN ─────────────────────────────────── -->
@@ -1511,9 +1646,10 @@ body.chat-modal-open{overflow:hidden!important}
     <!-- LEFT PANEL -->
     <div class="left-panel">
       <div class="panel-top">
+        <div class="career-session-banner" id="careerSessionBanner" hidden><span><b>Mode B · Career Launch</b><small id="careerSessionHint">Opportunity context is attached to this session.</small></span><button type="button" onclick="returnToCareerLaunch()">← Back to Career Launch</button></div>
         <div class="panel-top-row">
           <div class="panel-title" id="panelTitle">Resume Builder</div>
-          <button class="back-btn" onclick="showHome()">← Home</button>
+          <button class="back-btn" onclick="returnToWorkspaceHome()">← Home</button>
         </div>
 
         <div id="docTypePills" class="doc-type-row">
@@ -1683,7 +1819,8 @@ body.chat-modal-open{overflow:hidden!important}
 <script>
 const state = {
   tool: 'resume', subType: 'resume', clType: 'job', orgType: 'job_application',
-  template: 'classic', resume: {}, portfolio: {}, letter: '', orgLetter: ''
+  template: 'classic', resume: {}, portfolio: {}, letter: '', orgLetter: '',
+  workspaceMode: 'documents', careerLaunchActive: false, careerLaunchBrief: null
 };
 
 function openWalletPalette() {
@@ -1904,17 +2041,69 @@ async function verifyReturnedPayment() {
   }
 }
 
+function switchProductMode(mode) {
+  const nextMode = mode === 'career' ? 'career' : 'documents';
+  state.workspaceMode = nextMode;
+  if (nextMode === 'documents') {
+    state.careerLaunchActive = false;
+    state.careerLaunchBrief = null;
+  }
+  const documentHome = document.getElementById('documentStudioHome');
+  const careerHome = document.getElementById('careerLaunchHome');
+  if (documentHome) documentHome.hidden = nextMode !== 'documents';
+  if (careerHome) careerHome.hidden = nextMode !== 'career';
+  document.querySelectorAll('[data-mode-choice]').forEach(button => {
+    const active = button.dataset.modeChoice === nextMode;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  const navTools = document.getElementById('navTools');
+  if (navTools) navTools.style.display = nextMode === 'career' ? 'none' : '';
+}
+
 function showHome() {
+  state.careerLaunchActive = false;
+  state.careerLaunchBrief = null;
+  state.workspaceMode = 'documents';
   document.getElementById('homeScreen').style.display = '';
   document.getElementById('appScreen').style.display = 'none';
+  const banner = document.getElementById('careerSessionBanner');
+  if (banner) banner.hidden = true;
+  switchProductMode('documents');
   document.querySelectorAll('.nav-tool').forEach(b => b.classList.remove('active'));
 }
 
-function openTool(tool) {
+function returnToWorkspaceHome() {
+  if (state.careerLaunchActive && state.workspaceMode === 'career') returnToCareerLaunch();
+  else showHome();
+}
+
+function returnToCareerLaunch() {
+  if (!state.careerLaunchBrief) return showHome();
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('homeScreen').style.display = '';
+  state.workspaceMode = 'career';
+  switchProductMode('career');
+  const banner = document.getElementById('careerSessionBanner');
+  if (banner) banner.hidden = true;
+}
+
+function openTool(tool, keepCareerSession) {
   state.tool = tool;
+  if (!keepCareerSession) {
+    state.careerLaunchActive = false;
+    state.careerLaunchBrief = null;
+    state.workspaceMode = 'documents';
+  }
   document.getElementById('homeScreen').style.display = 'none';
   document.getElementById('appScreen').style.display = 'block';
   setMobileWorkspace('edit');
+  const careerBanner = document.getElementById('careerSessionBanner');
+  if (careerBanner) careerBanner.hidden = !state.careerLaunchActive;
+  const careerHint = document.getElementById('careerSessionHint');
+  if (careerHint && state.careerLaunchBrief) careerHint.textContent = [state.careerLaunchBrief.role, state.careerLaunchBrief.organisation].filter(Boolean).join(' · ') || 'Opportunity context is attached to this session.';
+  const navTools = document.getElementById('navTools');
+  if (navTools) navTools.style.display = state.careerLaunchActive ? 'none' : '';
 
   const titles = { resume:'Resume & CV Builder', cover_letter:'Cover Letter Generator', portfolio:'Portfolio Builder', org_letter:'Organisation Letters' };
   const panelTitleEl = document.getElementById('panelTitle');
@@ -2107,6 +2296,75 @@ async function setTemplate(tpl, picker) {
 function readDocumentTips() {
   const field = document.getElementById('documentTips');
   return field ? field.value.trim().slice(0, 5000) : "";
+}
+
+function careerLaunchContextText() {
+  const brief = state.careerLaunchActive ? state.careerLaunchBrief : null;
+  if (!brief) return '';
+  const labels = { job: 'Job', internship: 'Internship', scholarship: 'Scholarship' };
+  const parts = ['CAREER OPPORTUNITY REFERENCE — NOT APPLICANT EXPERIENCE','Opportunity type: ' + (labels[brief.opportunityType] || 'Job')];
+  if (brief.role) parts.push('Role / programme: ' + brief.role);
+  if (brief.organisation) parts.push('Organisation / institution: ' + brief.organisation);
+  if (brief.description) parts.push('Opportunity description:\\n' + brief.description);
+  parts.push('', 'Use this information only to understand the target opportunity and tailor the document where the applicant’s own information supports the claim. The advert is not evidence that the applicant has any listed skill, qualification, experience or achievement. Do not invent or imply missing qualifications. Ask the applicant to confirm relevant experience or identify the gap.');
+  return parts.join('\\n');
+}
+
+function captureCareerLaunchBrief() {
+  const opportunityType = document.getElementById('careerOpportunityType')?.value || 'job';
+  const role = (document.getElementById('careerRole')?.value || '').trim().slice(0, 160);
+  const organisation = (document.getElementById('careerOrganisation')?.value || '').trim().slice(0, 160);
+  const description = (document.getElementById('careerDescription')?.value || '').trim().slice(0, 3500);
+  if (!role && !description) {
+    showToast('Add the role or paste the opportunity description first.');
+    document.getElementById('careerRole')?.focus();
+    return null;
+  }
+  state.careerLaunchBrief = { opportunityType, role, organisation, description };
+  return state.careerLaunchBrief;
+}
+
+function startCareerResume() {
+  if (!captureCareerLaunchBrief()) return;
+  state.workspaceMode = 'career';
+  state.careerLaunchActive = true;
+  documentChatHistory = [];
+  openTool('resume', true);
+  document.querySelectorAll('#docTypePills [data-sub]').forEach(button => button.classList.toggle('active', button.dataset.sub === 'resume'));
+  const chatButton = document.querySelector('.tab-btn[aria-controls="pane-chat"]');
+  if (chatButton) switchTab('chat', chatButton);
+  const input = document.getElementById('userInput');
+  if (input) {
+    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\\n\\n' + careerLaunchContextText();
+    input.focus();
+  }
+  addMsg('Career Launch is ready. The opportunity is reference material, not your personal experience. Share your actual background and we will check the fit before you approve generation.', 'ai');
+}
+
+function startCareerCoverLetter() {
+  if (!captureCareerLaunchBrief()) return;
+  const brief = state.careerLaunchBrief;
+  state.workspaceMode = 'career';
+  state.careerLaunchActive = true;
+  state.clType = brief.opportunityType === 'internship' ? 'internship' : (brief.opportunityType === 'scholarship' ? 'scholarship' : 'job');
+  openTool('cover_letter', true);
+  document.querySelectorAll('#clTypePills [data-sub]').forEach(button => button.classList.toggle('active', button.dataset.sub === state.clType));
+  const fieldIds = state.clType === 'internship' ? ['int_position', 'int_company'] : (state.clType === 'scholarship' ? ['sch_prog', 'sch_inst'] : ['cl_position', 'cl_company']);
+  const roleField = document.getElementById(fieldIds[0]);
+  const organisationField = document.getElementById(fieldIds[1]);
+  if (roleField && brief.role) roleField.value = brief.role;
+  if (organisationField && brief.organisation) organisationField.value = brief.organisation;
+  showToast('Opportunity details added. Complete your own information and review the generated letter.');
+}
+
+function clearCareerBrief() {
+  ['careerOpportunityType', 'careerRole', 'careerOrganisation', 'careerDescription'].forEach(id => {
+    const field = document.getElementById(id);
+    if (field) field.value = id === 'careerOpportunityType' ? 'job' : '';
+  });
+  state.careerLaunchBrief = null;
+  state.careerLaunchActive = false;
+  showToast('Opportunity details cleared from this session.');
 }
 
 function moreTipsMarkup() {
@@ -2453,7 +2711,10 @@ async function sendMessage() {
       body: JSON.stringify({
         message: conversationGuide + msg,
         history: documentChatHistory.slice(0, -1),
-        context: { document_type: currentChatDocumentType() }
+        context: {
+          document_type: currentChatDocumentType(),
+          career_opportunity: state.careerLaunchActive ? state.careerLaunchBrief : null
+        }
       })
     });
     const json = await res.json();
@@ -2487,7 +2748,7 @@ async function approveAndGenerate() {
   const transcript = documentChatHistory.map(item =>
     (item.role === 'user' ? 'USER' : 'ASSISTANT') + ': ' + item.content
   ).join('\n\n');
-  const userInput = 'Create the requested ' + currentChatDocumentType() + ' using this approved conversation. Use only factual details supplied by the user or explicitly confirmed by the user. Treat assistant suggestions as suggestions, not facts, unless the user confirms them. Preserve all relevant user-provided information.\n\nAGREED CONVERSATION:\n' + transcript;
+  const userInput = 'Create the requested ' + currentChatDocumentType() + ' using this approved conversation. Use only factual details supplied by the user or explicitly confirmed by the user. Treat assistant suggestions as suggestions, not facts, unless the user confirms them. Preserve all relevant user-provided information.\n\nAGREED CONVERSATION:\n' + transcript + (careerLaunchContextText() ? '\n\n' + careerLaunchContextText() : '');
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
