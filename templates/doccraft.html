@@ -193,6 +193,21 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .send-btn:hover:not(:disabled){opacity:.9}
 .send-btn:disabled{opacity:.5;cursor:not-allowed}
 
+/* Optional user-provided context before document generation. */
+.more-tips-panel{margin:10px 0 12px;border:1px solid rgba(59,130,246,.28);border-radius:13px;background:linear-gradient(135deg,rgba(59,130,246,.07),rgba(14,165,233,.035));overflow:hidden}
+.more-tips-panel>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;cursor:pointer;list-style:none;color:var(--text);font-size:13px;font-weight:700}
+.more-tips-panel>summary::-webkit-details-marker{display:none}
+.more-tips-title{display:flex;align-items:center;gap:8px}
+.more-tips-icon{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:rgba(59,130,246,.13);color:#60a5fa;font-size:15px}
+.more-tips-meta{color:var(--text3);font-size:10px;font-weight:500;text-align:right}
+.more-tips-body{padding:0 14px 14px}
+.more-tips-body p{margin:0 0 8px;color:var(--text2);font-size:11px;line-height:1.5}
+.more-tips-body textarea{width:100%;min-height:86px;resize:vertical;padding:10px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--text);font:inherit;font-size:12px;line-height:1.5}
+.more-tips-body textarea:focus{outline:2px solid rgba(59,130,246,.35);border-color:#60a5fa}
+.more-tips-preview{margin-top:18px;padding:14px 16px;border:1px solid #dbeafe;border-left:3px solid #3b82f6;border-radius:6px;background:#f8fbff;color:#1e293b;white-space:pre-wrap;overflow-wrap:anywhere}
+.more-tips-preview h2{margin:0 0 7px;color:#1d4ed8;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.more-tips-preview p{margin:0;font-size:12px;line-height:1.65}
+
 /* FORM */
 .form-scroll{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
 .section-sep{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1px;text-transform:uppercase;padding-top:8px;border-top:1px solid var(--border);margin-top:4px}
@@ -2089,6 +2104,40 @@ async function setTemplate(tpl, picker) {
   if (sheet && sheet.querySelector('.tpl-classic,.tpl-modern,.tpl-minimal')) renderResume(state.resume);
 }
 
+function readDocumentTips() {
+  const field = document.getElementById('documentTips');
+  return field ? field.value.trim().slice(0, 5000) : "";
+}
+
+function moreTipsMarkup() {
+  return `
+    <details class="more-tips-panel">
+      <summary>
+        <span class="more-tips-title"><span class="more-tips-icon" aria-hidden="true">✦</span>More Tips to My Document</span>
+        <span class="more-tips-meta">Optional · Add extra context</span>
+      </summary>
+      <div class="more-tips-body">
+        <p>Anything important that does not fit in the fields above? Add extra facts or instructions for this document. DocCraft will use only relevant details and will not invent information.</p>
+        <textarea id="documentTips" maxlength="5000" rows="3" aria-label="More tips to my document" placeholder="For example: Include my practical fibre-optics training, highlight my community volunteering, or explain a project that is not covered above."></textarea>
+      </div>
+    </details>`;
+}
+
+function appendDocumentTipsToPreview(tips) {
+  const value = typeof tips === "string" ? tips.trim() : "";
+  const sheet = document.getElementById("docSheet");
+  if (!value || !sheet) return;
+  sheet.querySelector(".more-tips-preview")?.remove();
+  const section = document.createElement("section");
+  section.className = "more-tips-preview";
+  const heading = document.createElement("h2");
+  heading.textContent = "Additional Information Supplied";
+  const paragraph = document.createElement("p");
+  paragraph.textContent = value;
+  section.append(heading, paragraph);
+  sheet.appendChild(section);
+}
+
 function loadForm(tool) {
   const fc = document.getElementById('formContent');
   if (tool === 'resume') {
@@ -2138,6 +2187,7 @@ function loadForm(tool) {
       <div class="form-group"><label>Professional Interests <span class="form-hint">(optional, comma-separated)</span></label><input id="f_interests" placeholder="Telecommunications, network automation"></div>
       <div class="form-group"><label>Referees <span class="form-hint">Name | Title/Relationship | Organisation | Contact (one per line; get permission first)</span></label><textarea id="f_referees" rows="2" placeholder="Jane Doe | Lecturer | Thika Technical Training Institute | jane@example.com"></textarea></div>
       <p class="form-hint">Only enter accurate information. Leave unknown details blank—DocCraft will not invent qualifications, dates, results or referee contacts.</p>
+      ${moreTipsMarkup()}
       <button class="btn btn-primary full-btn" onclick="buildFromForm()">Generate Document</button>
     `;
     const variantGuide = document.createElement('div');
@@ -2203,7 +2253,7 @@ function loadForm(tool) {
         <div class="form-group"><label>Your Goals</label><textarea id="sch_goals" rows="2" placeholder="What you aim to achieve..."></textarea></div>`
     };
     fc.innerHTML = (clForms[state.clType] || clForms.job) +
-      `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateCoverLetter()">Generate Cover Letter</button>`;
+      moreTipsMarkup() + `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateCoverLetter()">Generate Cover Letter</button>`;
   } else if (tool === 'portfolio') {
     fc.innerHTML = `
       <div class="section-sep">Personal Info</div>
@@ -2222,6 +2272,7 @@ function loadForm(tool) {
       <div class="section-sep">Education & Achievements</div>
       <div class="form-group"><label>Education</label><textarea id="pf_edu" rows="2" placeholder="BSc Computer Science | UCL | 2024"></textarea></div>
       <div class="form-group"><label>Achievements <span class="form-hint">(one per line)</span></label><textarea id="pf_achievements" rows="2" placeholder="1st Place – University Hackathon 2024"></textarea></div>
+      ${moreTipsMarkup()}
       <button class="btn btn-primary full-btn" onclick="buildPortfolioFromForm()">Generate Portfolio</button>
     `;
   } else if (tool === 'org_letter') {
@@ -2314,7 +2365,7 @@ function loadForm(tool) {
         <div class="form-group"><label>Your Background</label><textarea id="og_bg" rows="2" placeholder="Brief about your expertise..."></textarea></div>`
     };
     fc.innerHTML = (orgForms[state.orgType] || orgForms.job_application) +
-      `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
+      moreTipsMarkup() + `<button class="btn btn-primary full-btn" style="margin-top:12px" onclick="generateOrgLetter()">Generate Letter</button>`;
   }
   
 }
@@ -2537,6 +2588,7 @@ async function buildFromForm() {
     linkedin: v('f_linkedin'), website: v('f_website'), summary: v('f_summary'),
     skills, languages: langs, certifications: certs, experience, education, projects,
     achievements, interests, referees,
+    additional_tips: readDocumentTips(),
     ...(state.subType === 'cv' ? {
       volunteering: lines('f_volunteering'),
       professional_memberships: lines('f_prof_memberships'),
@@ -2552,6 +2604,7 @@ async function buildFromForm() {
   const access = await authorizeLocalDocument(state.subType || 'resume', state.resume);
   if (!access.success) return;
   renderResume(state.resume);
+  appendDocumentTipsToPreview(state.resume.additional_tips);
   setPreviewAccess(access.preview_only);
   showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean document.');
@@ -2590,10 +2643,11 @@ async function buildPortfolioFromForm() {
     return { degree: p[0]||'', institution: p[1]||'', year: p[2]||'' };
   });
   const achievements = v('pf_achievements').split('\n').filter(Boolean);
-  state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements };
+  state.portfolio = { name: v('pf_name'), title: v('pf_title'), bio: v('pf_bio'), contact: { email: v('pf_email'), github: v('pf_github'), linkedin: v('pf_linkedin') }, skills, projects, education, achievements, additional_tips: readDocumentTips() };
   const access = await authorizeLocalDocument('portfolio', state.portfolio);
   if (!access.success) return;
   renderPortfolio(state.portfolio);
+  appendDocumentTipsToPreview(state.portfolio.additional_tips);
   setPreviewAccess(access.preview_only);
   showGeneratedDocumentOnMobile();
   if (access.preview_only) showToast('Watermarked preview ready. Add credits to unlock a clean portfolio.');
@@ -2611,7 +2665,7 @@ async function generateCoverLetter() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
+      body: JSON.stringify({ doc_type: 'cover_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { documentTips: readDocumentTips() } })
     });
     const json = await res.json().catch(() => ({}));
     if (res.ok && json.success) {
@@ -2641,7 +2695,7 @@ async function generateOrgLetter() {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: {} })
+      body: JSON.stringify({ doc_type: 'org_letter', user_input: userInput, email: billingEmailValue(), request_id: crypto.randomUUID(), extra: { documentTips: readDocumentTips() } })
     });
     const json = await res.json().catch(() => ({}));
     if (res.ok && json.success) {
@@ -2675,6 +2729,7 @@ function renderResume(d) {
   if (layout === 'classic') renderClassic(d);
   else if (layout === 'modern') renderModern(d);
   else renderMinimal(d);
+  appendDocumentTipsToPreview(d.additional_tips);
 }
 
 function renderClassic(d) {
