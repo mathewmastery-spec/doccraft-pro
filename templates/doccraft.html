@@ -1601,7 +1601,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     </div>
     <div class="mode-chooser-control" role="group" aria-label="Operating mode">
       <button type="button" class="mode-choice is-active" id="modeChoiceA" data-mode-choice="documents" aria-pressed="true" onclick="switchProductMode('documents')"><span class="mode-choice-icon" aria-hidden="true">▤</span><span><b>Mode A</b><small>Document Studio</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
-      <button type="button" class="mode-choice" id="modeChoiceB" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span class="mode-choice-icon" aria-hidden="true">↗</span><span><b>Mode B</b><small>Career Launch</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
+      <button type="button" class="mode-choice" id="modeChoiceB" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span class="mode-choice-icon" aria-hidden="true">↗</span><span><b>Mode B</b><small>Smart Potential Lab</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
     </div>
   </section>
   <div id="documentStudioHome">
@@ -1674,42 +1674,66 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     </div>
   </section>
   </div>
+  <section id="potentialLabHome" class="potential-lab-home" hidden aria-labelledby="potentialLabTitle">
+    <div class="potential-lab-layout">
+      <div class="potential-lab-visual"><img src="https://images.openai.com/static-rsc-4/asHjdjgiJNNc6KJobLUv5kgyl1xWH61uKfvV7gbtPQP4VBnItV3OWaOoCp0KEV1dK3_izhvEkLJx9V7eSGYjgyhpGZzi6FdtxmCx7YU3hZb4YpjaseXzUW1-jPdCA-fKRdowti1Ec9UA7PQMw1wbvMkGlTJjpegBXujPwlqIE3E?purpose=inline" alt="AI and psychometrics inspired visual representing intelligent discovery of human potential" loading="eager" referrerpolicy="no-referrer"><div class="potential-image-caption"><span>✦</span><div><strong>SMART POTENTIAL LAB</strong><small>Human potential · Real-world intelligence</small></div></div></div>
+      <div class="potential-lab-intro"><div class="potential-lab-eyebrow">MODE B · DISCOVER. DEVELOP. CONNECT.</div><h1 id="potentialLabTitle">Your potential has <span>somewhere to go.</span></h1><p>Understand what you can become, discover the right opportunities and resources, connect with relevant people and organisations, and turn possibilities into practical action.</p><div class="potential-lab-promise"><span>01</span> Start with who you are. You do not need to know your destination yet.</div></div>
+    </div>
+    <div class="potential-capability-heading"><div><span>YOUR INTELLIGENCE WORKSPACE</span><h2>Where would you like to begin?</h2></div><p>Choose a direction. You can move between them at any time.</p></div>
+    <div class="potential-capability-grid">
+      <button type="button" class="potential-capability-card is-featured" onclick="openPotentialCapability('potential')"><span class="potential-capability-number">01</span><span class="potential-capability-icon">◎</span><strong>Know Your Potential</strong><small>Understand your abilities, interests, experience, ambitions and overlooked strengths.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('opportunities')"><span class="potential-capability-number">02</span><span class="potential-capability-icon">⌖</span><strong>Discover Opportunities</strong><small>Find jobs, internships, attachments, scholarships, programmes and open calls.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('learning')"><span class="potential-capability-number">03</span><span class="potential-capability-icon">⌘</span><strong>Find Courses &amp; Resources</strong><small>Discover useful courses, certifications, institutions and practical learning.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('people')"><span class="potential-capability-number">04</span><span class="potential-capability-icon">♧</span><strong>Connect With People</strong><small>Find mentors, professional communities, associations and relevant organisations.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('roadmap')"><span class="potential-capability-number">05</span><span class="potential-capability-icon">⌁</span><strong>Build Your Advancement Path</strong><small>Map skills to develop, experience to gain and achievable next steps.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('action')"><span class="potential-capability-number">06</span><span class="potential-capability-icon">↗</span><strong>Turn Potential Into Action</strong><small>Analyse an advert, compare your evidence and prepare truthful applications.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+      <button type="button" class="potential-capability-card" onclick="openPotentialCapability('ahead')"><span class="potential-capability-number">07</span><span class="potential-capability-icon">✧</span><strong>Stay Ahead</strong><small>Explore emerging opportunities, new programmes, deadlines and changing pathways.</small><span class="potential-capability-arrow">Explore <b>↗</b></span></button>
+    </div>
+    <section id="potentialActionPanel" class="potential-action-panel" hidden aria-labelledby="potentialActionTitle">
+      <div class="potential-action-top"><div><span class="potential-lab-eyebrow">YOUR NEXT STEP</span><h2 id="potentialActionTitle">Know Your Potential</h2><p id="potentialActionDescription">Tell us a little about yourself. Start with what you know; incomplete information is welcome.</p></div><button type="button" class="potential-close" onclick="closePotentialCapability()" aria-label="Close this panel">×</button></div>
+      <div class="potential-action-fields"><label class="potential-lab-field">Your skills, experience, interests or questions<textarea id="potentialProfile" rows="4" maxlength="5000" placeholder="What have you studied, learned, worked on, built, helped with or enjoyed? What would you like to explore?"></textarea></label><label class="potential-lab-field">Country or region <span>(optional)</span><input id="potentialRegion" type="text" maxlength="120" placeholder="e.g. Kenya, East Africa, remote"></label></div>
+      <div class="potential-action-buttons"><button type="button" class="potential-primary" id="potentialPrimaryAction">Explore with DocCraft AI ↗</button><button type="button" class="potential-secondary" id="potentialOpportunityAction">Analyse an opportunity in DocCraft</button></div>
+      <div id="potentialSearchResults" class="potential-search-results" aria-live="polite" hidden></div>
+      <p class="potential-source-note">External discovery opens public web search results. Check the original organisation, eligibility, dates and contact details before acting. DocCraft does not claim that search results are verified opportunities.</p>
+    </section>
+  </section>
   <section id="careerLaunchHome" class="career-launch-home" hidden aria-labelledby="careerLaunchTitle">
+    <button type="button" class="potential-back-link" onclick="returnToPotentialLab()">← Back to Smart Potential Lab</button>
     <div class="career-hero">
       <div class="career-hero-copy">
-        <div class="career-eyebrow"><span aria-hidden="true">✦</span> MODE B · CAREER LAUNCH STUDIO</div>
-        <h1 id="careerLaunchTitle">Move from opportunity to <span>application.</span></h1>
-        <p>Bring an opportunity you are considering. DocCraft helps you understand what it asks for, connect it to your real experience, and prepare the right application documents.</p>
+        <div class="career-eyebrow"><span aria-hidden="true">✦</span> OPPORTUNITY &amp; APPLICATION WORKSPACE</div>
+        <h1 id="careerLaunchTitle">You do not have to figure it all out <span>alone.</span></h1>
+        <p>Whether you have a job advert, an old CV, or just an idea, start where you are. We will break the process into clear steps and help you build an honest, confident application.</p>
       </div>
       <div class="career-hero-mark" aria-hidden="true"><span>CL</span><i>✦</i></div>
     </div>
     <div class="career-intelligence-workspace">
       <section class="career-intake-panel" aria-labelledby="careerIntakeTitle">
         <div class="career-card-heading">
-          <div><div class="career-step-label">01 · BRING THE OPPORTUNITY</div><h2 id="careerIntakeTitle">Start with what you have.</h2><p>Upload an advert, add a link, paste its contents, or explain it in your own words. You do not need to complete every field.</p></div>
+          <div><div class="career-step-label">STEP 1 · START ANYWHERE</div><h2 id="careerIntakeTitle">What opportunity are you thinking about?</h2><p>No perfect documents needed. Share whatever you have — even a short description is enough to begin.</p></div>
           <span class="career-card-icon" aria-hidden="true">⌁</span>
         </div>
         <div class="career-intake-grid">
           <div class="career-intake-block">
-            <div class="career-intake-block-head"><span class="career-intake-symbol">↗</span><div><strong>Opportunity source</strong><small>Job advert, internship, scholarship or placement</small></div></div>
+            <div class="career-intake-block-head"><span class="career-intake-symbol">↗</span><div><strong>Share the opportunity</strong><small>Job advert, internship, scholarship or placement</small></div></div>
             <div class="career-source-actions">
               <button type="button" class="career-source-tile" data-career-pick="opportunity"><span>＋</span><b>Upload advert</b><small>PDF, DOCX, image, TXT</small></button>
               <input id="careerOpportunityFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
               <label class="career-url-field"><span>Opportunity link</span><input id="careerOpportunityLink" type="url" maxlength="1000" placeholder="https://company.com/careers/job…"><small class="career-url-note">The link is kept as a reference. Upload the advert or paste its text so the AI can actually analyse its requirements.</small></label>
             </div>
-            <label class="career-long-field" for="careerDescription">Paste the advert or explain the opportunity<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the full job advert, requirements, instructions, or describe what you were told…"></textarea></label>
+            <label class="career-long-field" for="careerDescription">Or tell us about it<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the advert, describe the role, or tell us what you know so far. It is okay if some details are missing."></textarea></label>
             <div class="career-intake-status" id="careerOpportunityFilesStatus" role="status" aria-live="polite">You can add several files. Uploads are read for this session and are not saved as a profile.</div>
           </div>
           <div class="career-intake-block career-applicant-block">
-            <div class="career-intake-block-head"><span class="career-intake-symbol">◎</span><div><strong>Your evidence</strong><small>Optional now — add your real background when ready</small></div></div>
+            <div class="career-intake-block-head"><span class="career-intake-symbol">◎</span><div><strong>A little about you</strong><small>You can add this now or come back to it later</small></div></div>
             <button type="button" class="career-source-tile career-profile-upload" data-career-pick="applicant"><span>＋</span><b>Upload your CV or evidence</b><small>Existing CV, certificates, training records, portfolio</small></button>
             <input id="careerApplicantFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
-            <label class="career-long-field" for="careerApplicantEvidence">Add or explain your experience<textarea id="careerApplicantEvidence" rows="6" maxlength="8000" placeholder="Tell us what you have actually studied, done, built, supported or achieved. Separate training from employment."></textarea></label>
+            <label class="career-long-field" for="careerApplicantEvidence">Tell us a little about your experience<textarea id="careerApplicantEvidence" rows="6" maxlength="8000" placeholder="What have you studied, learned, worked on, helped with or achieved? A few notes are perfectly fine."></textarea></label>
             <div class="career-intake-status" id="careerApplicantFilesStatus" role="status" aria-live="polite">Your evidence stays separate from the employer's requirements. DocCraft will not treat the advert as proof of your skills.</div>
           </div>
         </div>
         <div class="career-goal-row">
-          <label class="career-long-field" for="careerGoal">What should we help you achieve? <span>(optional)</span><textarea id="careerGoal" rows="2" maxlength="1500" placeholder="e.g. Help me understand the requirements, identify what I need to improve, and prepare a strong, truthful application."></textarea></label>
+          <label class="career-long-field" for="careerGoal">What would you like help with? <span>(optional)</span><textarea id="careerGoal" rows="2" maxlength="1500" placeholder="e.g. Help me understand the requirements, identify what I need to improve, and prepare a strong, truthful application."></textarea></label>
           <div class="career-field-grid career-meta-fields">
             <div class="career-field"><label for="careerOpportunityType">Opportunity type</label><select id="careerOpportunityType"><option value="job">Job</option><option value="internship">Internship</option><option value="scholarship">Scholarship</option><option value="attachment">Industrial attachment</option><option value="other">Other opportunity</option></select></div>
             <div class="career-field"><label for="careerRole">Role / programme <span>(if known)</span></label><input id="careerRole" type="text" maxlength="160" placeholder="e.g. Fibre Technician"></div>
@@ -1717,8 +1741,8 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
           </div>
         </div>
         <div class="career-brief-actions">
-          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Analyse opportunity &amp; build my readiness plan <span aria-hidden="true">→</span></button>
-          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">Prepare a tailored cover letter</button>
+          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Let’s understand this opportunity <span aria-hidden="true">→</span></button>
+          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">I’m ready to create a cover letter</button>
         </div>
         <button type="button" class="career-clear-btn" onclick="clearCareerBrief()">Clear this session's opportunity and evidence</button>
       </section>
@@ -2153,8 +2177,10 @@ function switchProductMode(mode) {
   }
   const documentHome = document.getElementById('documentStudioHome');
   const careerHome = document.getElementById('careerLaunchHome');
+  const potentialHome = document.getElementById('potentialLabHome');
   if (documentHome) documentHome.hidden = nextMode !== 'documents';
-  if (careerHome) careerHome.hidden = nextMode !== 'career';
+  if (potentialHome) potentialHome.hidden = nextMode !== 'career';
+  if (careerHome) careerHome.hidden = true;
   document.querySelectorAll('[data-mode-choice]').forEach(button => {
     const active = button.dataset.modeChoice === nextMode;
     button.classList.toggle('is-active', active);
@@ -2187,6 +2213,10 @@ function returnToCareerLaunch() {
   document.getElementById('homeScreen').style.display = '';
   state.workspaceMode = 'career';
   switchProductMode('career');
+  const potentialHome = document.getElementById('potentialLabHome');
+  const careerHome = document.getElementById('careerLaunchHome');
+  if (potentialHome) potentialHome.hidden = true;
+  if (careerHome) careerHome.hidden = false;
   const banner = document.getElementById('careerSessionBanner');
   if (banner) banner.hidden = true;
 }
@@ -2473,7 +2503,13 @@ function startCareerResume() {
   if (chatButton) switchTab('chat', chatButton);
   const input = document.getElementById('userInput');
   if (input) {
-    input.value = 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\n\n' + careerLaunchContextText();
+    const discoveryIntent = state.careerLaunchIntent === 'potential' || state.careerLaunchIntent === 'roadmap';
+    input.value = discoveryIntent
+      ? (state.careerLaunchIntent === 'potential'
+        ? 'Help me discover my potential from the evidence and interests I provide. Begin by asking focused questions to understand my abilities, interests, experience, constraints and ambitions. Identify strengths and transferable abilities supported by my evidence, suggest realistic directions I may not have considered, explain why each could fit, and identify what remains unknown. Do not invent qualifications, experience or personality traits. Do not rush to generate a CV.\n\n'
+        : 'Help me build a realistic personal advancement roadmap from the evidence and goals I provide. Identify possible directions, strengths, gaps, practical learning resources, projects, experience and next steps. Separate verified facts from suggestions, explain trade-offs, and ask focused questions where needed. Do not invent qualifications or promise outcomes.\n\n')
+      : 'Help me understand this opportunity and prepare a truthful, tailored resume. First identify the key requirements, then compare them with the experience and qualifications I provide. Ask focused questions where evidence is missing. Do not assume I meet any requirement.\n\n';
+    input.value += careerLaunchContextText();
     input.focus();
   }
   addMsg('Career Launch is ready. The opportunity is reference material, not your personal experience. Share your actual background and we will check the fit before you approve generation.', 'ai');
@@ -3628,5 +3664,135 @@ body:has(#careerLaunchHome:not([hidden])) .career-availability-note{margin-top:1
   });
 })();
 </script>
+<style id="career-launch-warm-glass-ux">
+@media screen{
+body:has(#careerLaunchHome:not([hidden])){background:radial-gradient(ellipse at 8% 4%,rgba(229,177,194,.24),transparent 34rem),radial-gradient(ellipse at 92% 12%,rgba(153,126,205,.16),transparent 31rem),var(--bg)!important}
+body:has(#careerLaunchHome:not([hidden])) #homeScreen,body:has(#careerLaunchHome:not([hidden])) .career-launch-home{max-width:1120px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero{padding:clamp(28px,5vw,58px)!important;margin:18px 0 26px;border:1px solid rgba(255,255,255,.8)!important;border-radius:28px!important;background:linear-gradient(118deg,rgba(255,253,249,.86),rgba(250,239,246,.78) 54%,rgba(239,234,250,.8))!important;box-shadow:0 22px 60px rgba(85,62,99,.11),inset 0 1px 0 #fff!important;backdrop-filter:blur(22px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1{font-family:'Playfair Display',Georgia,serif!important;font-size:clamp(36px,5.2vw,62px)!important;line-height:1.06!important;color:#263d2e!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{background:linear-gradient(100deg,#8062b6,#b06f9b 62%,#71883c)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow{background:rgba(222,195,218,.34)!important;border:1px solid rgba(155,119,166,.2);color:#74547f!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intelligence-workspace{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:18px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card{border:1px solid rgba(255,255,255,.84)!important;border-radius:23px!important;background:linear-gradient(135deg,rgba(255,255,255,.84),rgba(250,241,248,.78) 58%,rgba(242,239,250,.8))!important;color:var(--text)!important;box-shadow:0 18px 48px rgba(69,57,78,.1),inset 0 1px 0 #fff!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel{padding:clamp(18px,3.2vw,34px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2{font-family:'Playfair Display',Georgia,serif!important;font-size:clamp(24px,3vw,31px)!important;color:#263d2e!important}
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p{color:#687565!important;line-height:1.75}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block{padding:18px!important;border-radius:17px!important;border:1px solid rgba(131,103,148,.15)!important;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(244,235,245,.62))!important}
+body:has(#careerLaunchHome:not([hidden])) .career-applicant-block{background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(237,239,225,.62))!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,body:has(#careerLaunchHome:not([hidden])) .career-field label{color:#344735!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,body:has(#careerLaunchHome:not([hidden])) .career-url-note,body:has(#careerLaunchHome:not([hidden])) .career-intake-status,body:has(#careerLaunchHome:not([hidden])) .career-availability-note{color:#718071!important;line-height:1.6}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile{border:1px dashed rgba(128,98,182,.4)!important;border-radius:14px!important;background:linear-gradient(120deg,rgba(238,225,241,.7),rgba(255,255,255,.82))!important;color:#263d2e!important;min-height:76px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile small{color:#687565!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,body:has(#careerLaunchHome:not([hidden])) .career-long-field{color:#425342!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select{background:rgba(255,255,255,.84)!important;border:1px solid rgba(107,93,120,.2)!important;border-radius:12px!important;color:#263d2e!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input:focus,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea:focus{border-color:#a77fb6!important;box-shadow:0 0 0 3px rgba(167,127,182,.16)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row{grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:16px;padding:17px;border-radius:17px;background:rgba(239,231,243,.48)!important;border:1px solid rgba(131,103,148,.13)}
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{min-height:50px;border-radius:13px!important;background:linear-gradient(110deg,#5d438f,#9670ad 58%,#a76f99)!important;box-shadow:0 10px 24px rgba(111,76,139,.22)!important;color:#fff!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn{border-radius:13px!important;background:rgba(255,255,255,.8)!important;border:1px solid rgba(128,98,182,.25)!important;color:#604b78!important}
+body:has(#careerLaunchHome:not([hidden])) .career-step-label{color:#8062b6!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps li{display:block;padding:12px;border:1px solid rgba(131,103,148,.14)!important;border-radius:13px;background:rgba(255,255,255,.6)}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps strong{color:#344735!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps p{color:#718071!important;line-height:1.55}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:rgba(229,237,220,.65)!important;border:1px solid rgba(113,136,60,.16)!important;border-radius:13px!important;color:#56664e!important}
+}
+@media(max-width:760px){
+body:has(#careerLaunchHome:not([hidden])) .career-intake-grid,body:has(#careerLaunchHome:not([hidden])) .career-goal-row{grid-template-columns:1fr!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+body:has(#careerLaunchHome:not([hidden])) .career-brief-actions{display:grid!important;grid-template-columns:1fr}
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn,body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn{width:100%}
+}
+@media(max-width:420px){body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{grid-template-columns:1fr}}
+</style>
+
+<style id="smart-potential-lab-styles">
+.potential-lab-home{max-width:1180px;margin:0 auto;padding:clamp(20px,4vw,42px) 0 56px;color:var(--text)}
+.potential-lab-layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(22px,4vw,48px);align-items:center;margin-bottom:36px}
+.potential-lab-visual{position:relative;min-height:350px;overflow:hidden;border:1px solid rgba(255,255,255,.9);border-radius:28px;background:linear-gradient(145deg,#e9e4f5,#f7eaf0);box-shadow:0 22px 58px rgba(73,59,86,.13),inset 0 1px 0 #fff}
+.potential-lab-visual>img{display:block;width:100%;height:100%;min-height:350px;object-fit:cover;object-position:center}
+.potential-image-caption{position:absolute;left:16px;right:16px;bottom:16px;display:flex;align-items:center;gap:11px;padding:13px 15px;border:1px solid rgba(255,255,255,.55);border-radius:15px;background:rgba(255,255,255,.76);backdrop-filter:blur(14px);color:#463852}
+.potential-image-caption>span{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#eee5f5;color:#8764a8;font-size:20px}
+.potential-image-caption strong,.potential-image-caption small{display:block}.potential-image-caption strong{font-size:10px;letter-spacing:.12em}.potential-image-caption small{margin-top:3px;color:#776e7d;font-size:11px}
+.potential-lab-intro{padding:10px 0}.potential-lab-eyebrow{font-size:10px;font-weight:900;letter-spacing:.16em;color:#8765a7}
+.potential-lab-intro h1{max-width:600px;margin-top:13px;font-family:'Playfair Display',Georgia,serif;font-size:clamp(38px,5vw,61px);font-weight:500;line-height:1.04;letter-spacing:-.045em;color:#293d32}
+.potential-lab-intro h1 span{background:linear-gradient(100deg,#7656a2,#b1749a 64%,#8b8b58);-webkit-background-clip:text;background-clip:text;color:transparent}
+.potential-lab-intro>p{max-width:570px;margin-top:17px;color:#697466;font-size:15px;line-height:1.8}
+.potential-lab-promise{display:flex;align-items:center;gap:11px;margin-top:24px;padding:13px 15px;border:1px solid rgba(139,105,167,.16);border-radius:13px;background:rgba(255,255,255,.62);color:#63586c;font-size:12px;line-height:1.5}
+.potential-lab-promise span{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px;border-radius:9px;background:#eee6f4;color:#8060a1;font-weight:900}
+.potential-capability-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin:0 0 15px}
+.potential-capability-heading>div>span{font-size:9px;font-weight:900;letter-spacing:.15em;color:#8a6c9c}
+.potential-capability-heading h2{margin-top:5px;font-family:'Playfair Display',Georgia,serif;font-size:clamp(23px,3vw,31px);font-weight:500;color:#293d32}
+.potential-capability-heading>p{max-width:300px;color:#778173;font-size:11px;line-height:1.5;text-align:right}
+.potential-capability-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.potential-capability-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:190px;padding:17px;border:1px solid rgba(255,255,255,.9);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(249,242,249,.78));box-shadow:0 10px 28px rgba(72,59,82,.07),inset 0 1px 0 #fff;text-align:left;color:#354436;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.potential-capability-card:hover,.potential-capability-card:focus-visible{transform:translateY(-3px);border-color:rgba(137,103,166,.4);box-shadow:0 16px 34px rgba(72,59,82,.12);outline:none}
+.potential-capability-card.is-featured{background:linear-gradient(145deg,rgba(250,245,252,.98),rgba(240,232,248,.88));border-color:rgba(137,103,166,.24)}
+.potential-capability-number{position:absolute;top:15px;right:16px;color:#a39aa8;font-size:10px;font-weight:900;letter-spacing:.08em}
+.potential-capability-icon{display:grid;place-items:center;width:38px;height:38px;margin-bottom:13px;border-radius:12px;background:#eee7f4;color:#795b9a;font-size:20px}
+.potential-capability-card strong{font-size:13px;font-weight:850;line-height:1.35;color:#344436}
+.potential-capability-card small{margin-top:7px;color:#748071;font-size:11px;line-height:1.55}
+.potential-capability-arrow{display:flex;justify-content:space-between;align-items:center;width:100%;margin-top:auto;padding-top:12px;color:#85689e;font-size:10px;font-weight:800}.potential-capability-arrow b{font-size:16px}
+.potential-action-panel{margin-top:22px;padding:clamp(18px,3vw,27px);border:1px solid rgba(255,255,255,.9);border-radius:22px;background:linear-gradient(125deg,rgba(255,255,255,.92),rgba(249,240,248,.86),rgba(240,237,250,.88));box-shadow:0 18px 45px rgba(72,59,82,.1),inset 0 1px 0 #fff}
+.potential-action-top{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.potential-action-top h2{margin-top:5px;font-family:'Playfair Display',Georgia,serif;font-size:27px;font-weight:500;color:#293d32}.potential-action-top p{max-width:740px;margin-top:7px;color:#728071;font-size:12px;line-height:1.6}
+.potential-close{width:34px;height:34px;border:1px solid rgba(126,99,146,.2);border-radius:10px;background:#fff;color:#6c587d;font-size:22px;cursor:pointer}
+.potential-action-fields{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(220px,.7fr);gap:13px;margin-top:18px}
+.potential-lab-field{display:grid;gap:7px;color:#3d4a3c;font-size:12px;font-weight:800}.potential-lab-field span{font-weight:500;color:#778173}
+.potential-lab-field textarea,.potential-lab-field input{width:100%;min-width:0;border:1px solid rgba(107,93,120,.2);border-radius:12px;background:rgba(255,255,255,.92);color:#293d32;padding:12px 13px;font:13px/1.55 'DM Sans',sans-serif;outline:none}
+.potential-lab-field textarea{resize:vertical;min-height:112px}.potential-lab-field textarea:focus,.potential-lab-field input:focus{border-color:#a77fb6;box-shadow:0 0 0 3px rgba(167,127,182,.15)}
+.potential-action-buttons{display:flex;flex-wrap:wrap;gap:10px;margin-top:15px}
+.potential-primary,.potential-secondary{min-height:43px;padding:10px 16px;border-radius:12px;font-size:11px;font-weight:850;cursor:pointer}
+.potential-primary{border:0;background:linear-gradient(110deg,#5d438f,#9670ad 58%,#a76f99);color:#fff;box-shadow:0 9px 22px rgba(111,76,139,.2)}
+.potential-secondary{border:1px solid rgba(128,98,182,.25);background:rgba(255,255,255,.85);color:#604b78}
+.potential-search-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:17px}
+.potential-result-card{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px;border:1px solid rgba(131,103,148,.16);border-radius:13px;background:rgba(255,255,255,.78);color:#354435;text-decoration:none}
+.potential-result-card strong{display:block;font-size:12px}.potential-result-card small{display:block;margin-top:4px;color:#748071;font-size:11px;line-height:1.45}.potential-result-card .potential-result-arrow{font-size:18px;color:#8062b6}
+.potential-source-note{margin-top:13px;color:#788174;font-size:10px;line-height:1.55}
+.potential-back-link{margin:10px 0 4px;padding:9px 13px;border:1px solid rgba(128,98,182,.2);border-radius:10px;background:rgba(255,255,255,.72);color:#6d5782;font-size:11px;font-weight:800;cursor:pointer}
+@media(max-width:850px){.potential-lab-layout{grid-template-columns:1fr}.potential-lab-visual,.potential-lab-visual>img{min-height:280px;max-height:390px}.potential-capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.potential-lab-home{padding-top:18px}.potential-lab-layout{gap:19px;margin-bottom:26px}.potential-lab-visual,.potential-lab-visual>img{min-height:230px}.potential-lab-intro h1{font-size:39px}.potential-capability-heading{display:block}.potential-capability-heading>p{margin-top:6px;text-align:left}.potential-capability-grid{grid-template-columns:1fr 1fr;gap:9px}.potential-capability-card{min-height:188px;padding:13px}.potential-capability-card strong{font-size:12px}.potential-capability-card small{font-size:10px}.potential-action-fields,.potential-search-results{grid-template-columns:1fr}.potential-action-buttons{display:grid}.potential-action-buttons button{width:100%}}
+</style>
+<script id="smart-potential-lab-actions">
+function openPotentialCapability(kind){
+  const panel=document.getElementById('potentialActionPanel'),title=document.getElementById('potentialActionTitle'),description=document.getElementById('potentialActionDescription'),primary=document.getElementById('potentialPrimaryAction'),secondary=document.getElementById('potentialOpportunityAction'),results=document.getElementById('potentialSearchResults');
+  if(!panel||!title||!description||!primary||!secondary||!results)return;
+  const copy={
+    potential:['Know Your Potential','Share your experience, interests and ambitions. DocCraft AI will ask focused questions, identify evidence-backed strengths and explore realistic directions.','Explore with DocCraft AI ↗',''],
+    opportunities:['Discover Opportunities','Search for jobs, internships, attachments, scholarships, graduate programmes and open calls relevant to your interests.','Search public opportunity sources ↗','Bring an advert into DocCraft'],
+    learning:['Find Courses & Resources','Explore courses, certifications, institutions and practical learning that may help you develop relevant skills.','Search courses and learning sources ↗',''],
+    people:['Connect With People','Find professional associations, mentorship programmes, industry communities and organisations through their public channels.','Search people and organisations ↗',''],
+    roadmap:['Build Your Advancement Path','Use your starting point and ambitions to develop a realistic roadmap with strengths, gaps, learning steps and practical experience.','Build my roadmap with DocCraft AI ↗',''],
+    action:['Turn Potential Into Action','Bring an advert, opportunity link or supporting evidence into the existing application-analysis workflow.','Open application workspace ↗',''],
+    ahead:['Stay Ahead','Explore new programmes, emerging fields, public calls and recent opportunity announcements. Ongoing alerts are a future capability.','Search recent developments ↗','']
+  };
+  const item=copy[kind]||copy.potential;title.textContent=item[0];description.textContent=item[1];primary.textContent=item[2];secondary.textContent=item[3]||'';
+  secondary.hidden=!item[3];panel.dataset.capability=kind;results.replaceChildren();results.hidden=true;panel.hidden=false;panel.scrollIntoView({behavior:'smooth',block:'start'});
+  primary.onclick=()=>runPotentialAction(kind);secondary.onclick=()=>openPotentialWorkflow();
+}
+function closePotentialCapability(){const p=document.getElementById('potentialActionPanel');if(p)p.hidden=true;}
+function openPotentialWorkflow(){const a=document.getElementById('potentialLabHome'),b=document.getElementById('careerLaunchHome');if(a)a.hidden=true;if(b)b.hidden=false;state.workspaceMode='career';state.careerLaunchIntent='application';b?.scrollIntoView({behavior:'smooth',block:'start'});}
+function returnToPotentialLab(){const a=document.getElementById('potentialLabHome'),b=document.getElementById('careerLaunchHome');if(b)b.hidden=true;if(a)a.hidden=false;state.careerLaunchActive=false;state.careerLaunchBrief=null;state.workspaceMode='career';a?.scrollIntoView({behavior:'smooth',block:'start'});}
+function runPotentialAction(kind){
+  const profile=(document.getElementById('potentialProfile')?.value||'').trim(),region=(document.getElementById('potentialRegion')?.value||'').trim(),results=document.getElementById('potentialSearchResults');
+  if(!profile){document.getElementById('potentialProfile')?.focus();showToast('Add a few details about your skills, interests or goals first.');return;}
+  if(kind==='potential'||kind==='roadmap'){
+    const evidence=document.getElementById('careerApplicantEvidence'),description=document.getElementById('careerDescription'),role=document.getElementById('careerRole'),goal=document.getElementById('careerGoal'),type=document.getElementById('careerOpportunityType');
+    if(evidence)evidence.value=profile;if(description)description.value=kind==='potential'?'Personal potential discovery. No specific vacancy or advert has been supplied.':'Personal advancement planning. No specific vacancy or advert has been supplied.';
+    if(role)role.value=kind==='potential'?'Potential discovery':'Personal advancement roadmap';
+    if(goal)goal.value=kind==='potential'?'Discover my evidence-backed strengths, transferable abilities, possible directions and the questions I should explore next.':'Build a realistic step-by-step advancement roadmap, including skills to develop, practical projects, useful courses and possible opportunities.';
+    if(type)type.value='other';state.careerLaunchIntent=kind;startCareerResume();return;
+  }
+  const terms={
+    opportunities:['current jobs internships graduate programmes attachments open applications','official employer careers vacancies recruitment graduate programme'],
+    learning:['courses certifications professional training practical learning','official universities colleges accredited training providers courses'],
+    people:['professional associations mentorship programmes industry communities organisations','official professional body membership mentorship public contact'],
+    ahead:['latest open calls new programmes scholarships competitions opportunities','recent opportunities official programmes deadlines applications']
+  }[kind]||['opportunities programmes courses official sources'];
+  results.replaceChildren();
+  terms.forEach((term,index)=>{const query=[term,profile,region].filter(Boolean).join(' '),a=document.createElement('a');a.className='potential-result-card';a.href='https://www.google.com/search?q='+encodeURIComponent(query);a.target='_blank';a.rel='noopener noreferrer';const span=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small'),arrow=document.createElement('span');strong.textContent=index===0?'Explore relevant sources':'Prioritise official sources';small.textContent=query;span.append(strong,small);arrow.className='potential-result-arrow';arrow.textContent='↗';a.append(span,arrow);results.appendChild(a);});
+  results.hidden=false;results.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+</script>
+
 </body>
 </html>
