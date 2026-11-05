@@ -66,9 +66,11 @@ def test_career_mode_switch_is_home_level_and_preserves_document_studio(client):
     response = client.get("/")
     assert response.status_code == 200
     page = response.data
-    assert b'id="modeChooser"' in page
-    assert b'id="modeChoiceA"' in page
-    assert b'id="modeChoiceB"' in page
+    assert b'class="nav-workspaces"' in page
+    assert b'data-mode-choice="documents"' in page
+    assert b'data-mode-choice="career"' in page
+    assert b'>Document Studio</b>' in page
+    assert b'>Smart Potential Lab</b>' in page
     assert b'id="documentStudioHome"' in page
     assert b'id="careerLaunchHome"' in page
     assert b'id="appScreen"' in page
