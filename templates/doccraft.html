@@ -1565,6 +1565,134 @@ body:has(#careerLaunchHome:not([hidden])) .career-source-tile:hover{background:v
 body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--border)!important}
 }
 </style>
+
+<style id="doccraft-professional-mode-system">
+/* Shared product language: both modes use the same DocCraft theme tokens. */
+.mode-chooser{
+  position:relative;display:grid;grid-template-columns:minmax(220px,.85fr) minmax(360px,1.15fr);
+  align-items:center;gap:24px;margin:0 0 24px;padding:18px 22px;
+  border:1px solid var(--border);border-radius:18px;
+  background:linear-gradient(135deg,var(--surface),color-mix(in srgb,var(--surface2) 72%,var(--surface)));
+  box-shadow:var(--shadow);backdrop-filter:blur(18px)
+}
+.mode-chooser-copy{gap:5px}
+.mode-chooser-kicker{color:var(--accent2);font-size:9px;letter-spacing:.17em}
+.mode-chooser-copy strong{font-family:'Inter',sans-serif;font-size:16px;font-weight:750;letter-spacing:-.02em;color:var(--text)}
+.mode-chooser-copy>span:last-child{font-size:11px;color:var(--text2)}
+.mode-chooser-control{width:100%;gap:8px;padding:5px;border:1px solid var(--border);border-radius:14px;background:var(--bg)}
+.mode-choice{
+  grid-template-columns:34px minmax(0,1fr) 20px;gap:10px;min-height:62px;padding:9px 12px;
+  border:1px solid transparent;border-radius:10px;color:var(--text2);font-family:'Inter',sans-serif
+}
+.mode-choice:hover{background:var(--surface2);color:var(--text);border-color:var(--border)}
+.mode-choice-icon{width:32px;height:32px;border-radius:10px;background:var(--surface2);color:var(--accent2);font-size:16px}
+.mode-choice b{font-size:11px;letter-spacing:.055em;color:inherit}
+.mode-choice small{font-size:11px;color:var(--text2)}
+.mode-choice-check{width:19px;height:19px;border:1px solid var(--border);background:transparent}
+.mode-choice.is-active{
+  background:linear-gradient(120deg,var(--accent),var(--accent2));border-color:transparent;
+  color:#fff;box-shadow:0 7px 18px rgba(99,102,241,.24)
+}
+.mode-choice.is-active small{color:rgba(255,255,255,.88)}
+.mode-choice.is-active .mode-choice-icon,.mode-choice.is-active .mode-choice-check{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.2);color:#fff}
+.mode-choice:focus-visible,.potential-capability-card:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 65%,white);outline-offset:3px}
+
+/* Mode B: same surfaces, contrast and accent family as Mode A; distinct information architecture. */
+#potentialLabHome{color:var(--text)}
+.potential-lab-home{max-width:1200px;padding:clamp(20px,3vw,36px) 0 64px}
+.potential-lab-layout{gap:clamp(24px,3.5vw,42px);margin-bottom:34px}
+.potential-lab-visual{
+  min-height:360px;border:1px solid var(--border);border-radius:22px;
+  background:linear-gradient(145deg,var(--surface2),var(--surface));
+  box-shadow:var(--shadow);overflow:hidden
+}
+.potential-lab-visual>img{min-height:360px}
+.potential-image-caption{
+  border:1px solid rgba(255,255,255,.22);border-radius:13px;
+  background:rgba(15,17,23,.78);backdrop-filter:blur(16px);color:#fff
+}
+.potential-image-caption>span{background:rgba(139,92,246,.2);color:#c4b5fd}
+.potential-image-caption small{color:#cbd5e1}
+.potential-lab-intro{padding:8px 0}
+.potential-lab-eyebrow,.potential-capability-heading>div>span{color:var(--accent2);font-family:'Inter',sans-serif;font-size:9px;letter-spacing:.16em}
+.potential-lab-intro h1,.potential-capability-heading h2,.potential-action-top h2{
+  font-family:'Inter',sans-serif;font-weight:750;letter-spacing:-.045em;color:var(--text)
+}
+.potential-lab-intro h1{font-size:clamp(36px,4.6vw,56px);line-height:1.06}
+.potential-lab-intro h1 span{
+  background:linear-gradient(110deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent
+}
+.potential-lab-intro>p{color:var(--text2);font-size:14px;line-height:1.75}
+.potential-lab-promise{
+  border:1px solid var(--border);border-radius:12px;
+  background:color-mix(in srgb,var(--surface2) 78%,transparent);color:var(--text2)
+}
+.potential-lab-promise span{background:color-mix(in srgb,var(--accent) 18%,var(--surface));color:var(--accent2)}
+.potential-capability-heading{align-items:center;margin-bottom:16px}
+.potential-capability-heading h2{font-size:clamp(22px,2.6vw,29px)}
+.potential-capability-heading>p{color:var(--text2)}
+.potential-capability-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.potential-capability-card{
+  min-height:174px;padding:18px;border:1px solid var(--border);border-radius:16px;
+  background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--surface2) 72%,var(--surface)));
+  box-shadow:0 7px 22px rgba(0,0,0,.12),inset 0 1px 0 rgba(255,255,255,.035);
+  color:var(--text);font-family:'Inter',sans-serif;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease
+}
+.potential-capability-card:hover{
+  transform:translateY(-2px);border-color:color-mix(in srgb,var(--accent) 55%,var(--border));
+  box-shadow:0 13px 28px rgba(0,0,0,.2)
+}
+.potential-capability-card.is-featured{
+  border-color:color-mix(in srgb,var(--accent2) 48%,var(--border));
+  background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 14%,var(--surface)),var(--surface))
+}
+.potential-capability-number{color:var(--text3);font-size:9px;letter-spacing:.1em}
+.potential-capability-icon{
+  width:36px;height:36px;margin-bottom:12px;border-radius:10px;
+  background:color-mix(in srgb,var(--accent) 16%,var(--surface2));color:var(--accent2);font-size:18px
+}
+.potential-capability-card strong{font-size:12px;font-weight:750;color:var(--text)}
+.potential-capability-card small{color:var(--text2);font-size:10.5px;line-height:1.55}
+.potential-capability-arrow{color:var(--accent2);font-size:10px}
+.potential-action-panel{
+  border:1px solid var(--border);border-radius:18px;
+  background:linear-gradient(135deg,var(--surface),color-mix(in srgb,var(--surface2) 76%,var(--surface)));
+  box-shadow:var(--shadow)
+}
+.potential-action-top h2{font-size:24px}
+.potential-action-top p,.potential-source-note{color:var(--text2)}
+.potential-close{border:1px solid var(--border);background:var(--surface2);color:var(--text)}
+.potential-lab-field{color:var(--text);font-family:'Inter',sans-serif}
+.potential-lab-field span{color:var(--text2)}
+.potential-lab-field textarea,.potential-lab-field input{
+  border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif
+}
+.potential-lab-field textarea:focus,.potential-lab-field input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(99,102,241,.16)}
+.potential-primary{background:linear-gradient(120deg,var(--accent),var(--accent2));box-shadow:0 7px 18px rgba(99,102,241,.2)}
+.potential-secondary,.potential-back-link{
+  border:1px solid var(--border);background:var(--surface2);color:var(--text)
+}
+.potential-result-card{border:1px solid var(--border);background:var(--surface2);color:var(--text)}
+.potential-result-card small{color:var(--text2)}
+.potential-result-card .potential-result-arrow{color:var(--accent2)}
+@media(max-width:760px){
+  .mode-chooser{grid-template-columns:1fr;gap:13px;padding:15px}
+  .mode-chooser-control{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .potential-capability-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .mode-choice{grid-template-columns:29px minmax(0,1fr) 16px;gap:7px;padding:8px}
+  .mode-choice-icon{width:28px;height:28px}
+  .potential-lab-intro h1{font-size:clamp(31px,9vw,40px)}
+  .potential-capability-card{min-height:176px;padding:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .mode-choice,.potential-capability-card{transition:none}
+  .potential-capability-card:hover{transform:none}
+}
+</style>
+
 </head>
 <body>
 
