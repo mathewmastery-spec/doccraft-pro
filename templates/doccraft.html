@@ -1601,7 +1601,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     </div>
     <div class="mode-chooser-control" role="group" aria-label="Operating mode">
       <button type="button" class="mode-choice is-active" id="modeChoiceA" data-mode-choice="documents" aria-pressed="true" onclick="switchProductMode('documents')"><span class="mode-choice-icon" aria-hidden="true">▤</span><span><b>Mode A</b><small>Document Studio</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
-      <button type="button" class="mode-choice" id="modeChoiceB" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span class="mode-choice-icon" aria-hidden="true">↗</span><span><b>Mode B</b><small>Career Launch</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
+      <button type="button" class="mode-choice" id="modeChoiceB" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span class="mode-choice-icon" aria-hidden="true">↗</span><span><b>Mode B</b><small>Smart Potential Lab</small></span><span class="mode-choice-check" aria-hidden="true">✓</span></button>
     </div>
   </section>
   <div id="documentStudioHome">
@@ -1698,9 +1698,10 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     </section>
   </section>
   <section id="careerLaunchHome" class="career-launch-home" hidden aria-labelledby="careerLaunchTitle">
+    <button type="button" class="potential-back-link" onclick="returnToPotentialLab()">← Back to Smart Potential Lab</button>
     <div class="career-hero">
       <div class="career-hero-copy">
-        <div class="career-eyebrow"><span aria-hidden="true">✦</span> YOUR NEXT STEP STARTS HERE</div>
+        <div class="career-eyebrow"><span aria-hidden="true">✦</span> OPPORTUNITY &amp; APPLICATION WORKSPACE</div>
         <h1 id="careerLaunchTitle">You do not have to figure it all out <span>alone.</span></h1>
         <p>Whether you have a job advert, an old CV, or just an idea, start where you are. We will break the process into clear steps and help you build an honest, confident application.</p>
       </div>
