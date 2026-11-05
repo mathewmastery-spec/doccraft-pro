@@ -3969,5 +3969,92 @@ function runPotentialAction(kind){
 
 
 
+
+<style id="doccraft-final-workspace-theme-parity">
+/* Final parity layer: both workspaces use the exact active Document Studio theme tokens.
+   Preserve Smart Potential Lab's layout and glass treatment, not its former separate palette. */
+body:has(#careerLaunchHome:not([hidden])),
+body:has(#potentialLabHome:not([hidden])){background:var(--bg)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card,
+body:has(#careerLaunchHome:not([hidden])) .career-brief-card,
+body:has(#potentialLabHome:not([hidden])) .potential-action-panel,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-card,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-visual,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-promise,
+body:has(#potentialLabHome:not([hidden])) .potential-result-card{background:var(--surface)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:var(--shadow)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block,
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row,
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile,
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-icon,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-promise span{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1,
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
+body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
+body:has(#careerLaunchHome:not([hidden])) .career-field label,
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field,
+body:has(#careerLaunchHome:not([hidden])) .career-steps strong,
+body:has(#careerLaunchHome:not([hidden])) .career-steps p,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-intro h1,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-intro h1 span,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-intro>p,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-heading h2,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-heading>p,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-card strong,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-card small,
+body:has(#potentialLabHome:not([hidden])) .potential-action-top h2,
+body:has(#potentialLabHome:not([hidden])) .potential-action-top p,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field span,
+body:has(#potentialLabHome:not([hidden])) .potential-source-note,
+body:has(#potentialLabHome:not([hidden])) .potential-result-card,
+body:has(#potentialLabHome:not([hidden])) .potential-result-card small{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important;background-image:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p,
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,
+body:has(#careerLaunchHome:not([hidden])) .career-steps p,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-intro>p,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-heading>p,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-card small,
+body:has(#potentialLabHome:not([hidden])) .potential-action-top p,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field span,
+body:has(#potentialLabHome:not([hidden])) .potential-source-note,
+body:has(#potentialLabHome:not([hidden])) .potential-result-card small{color:var(--text2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow,
+body:has(#careerLaunchHome:not([hidden])) .career-step-label,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-eyebrow,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-heading>div>span,
+body:has(#potentialLabHome:not([hidden])) .potential-capability-arrow,
+body:has(#potentialLabHome:not([hidden])) .potential-result-card .potential-result-arrow{color:var(--accent2)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn,
+body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--accent)!important;background-image:none!important;border-color:var(--accent)!important;color:#fff!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn,
+body:has(#careerLaunchHome:not([hidden])) .career-clear-btn,
+body:has(#potentialLabHome:not([hidden])) .potential-secondary,
+body:has(#potentialLabHome:not([hidden])) .potential-close,
+body:has(#potentialLabHome:not([hidden])) .potential-back-link{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,
+body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select,
+body:has(#careerLaunchHome:not([hidden])) .career-field input,
+body:has(#careerLaunchHome:not([hidden])) .career-field select,
+body:has(#careerLaunchHome:not([hidden])) .career-field textarea,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field textarea,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field input{background:var(--surface2)!important;background-image:none!important;border-color:var(--border)!important;color:var(--text)!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input::placeholder,
+body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea::placeholder,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field textarea::placeholder,
+body:has(#potentialLabHome:not([hidden])) .potential-lab-field input::placeholder{color:var(--text3)!important}
+</style>
+
 </body>
 </html>
