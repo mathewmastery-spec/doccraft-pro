@@ -1677,39 +1677,39 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   <section id="careerLaunchHome" class="career-launch-home" hidden aria-labelledby="careerLaunchTitle">
     <div class="career-hero">
       <div class="career-hero-copy">
-        <div class="career-eyebrow"><span aria-hidden="true">✦</span> MODE B · CAREER LAUNCH STUDIO</div>
-        <h1 id="careerLaunchTitle">Move from opportunity to <span>application.</span></h1>
-        <p>Bring an opportunity you are considering. DocCraft helps you understand what it asks for, connect it to your real experience, and prepare the right application documents.</p>
+        <div class="career-eyebrow"><span aria-hidden="true">✦</span> YOUR NEXT STEP STARTS HERE</div>
+        <h1 id="careerLaunchTitle">You do not have to figure it all out <span>alone.</span></h1>
+        <p>Whether you have a job advert, an old CV, or just an idea, start where you are. We will break the process into clear steps and help you build an honest, confident application.</p>
       </div>
       <div class="career-hero-mark" aria-hidden="true"><span>CL</span><i>✦</i></div>
     </div>
     <div class="career-intelligence-workspace">
       <section class="career-intake-panel" aria-labelledby="careerIntakeTitle">
         <div class="career-card-heading">
-          <div><div class="career-step-label">01 · BRING THE OPPORTUNITY</div><h2 id="careerIntakeTitle">Start with what you have.</h2><p>Upload an advert, add a link, paste its contents, or explain it in your own words. You do not need to complete every field.</p></div>
+          <div><div class="career-step-label">STEP 1 · START ANYWHERE</div><h2 id="careerIntakeTitle">What opportunity are you thinking about?</h2><p>No perfect documents needed. Share whatever you have — even a short description is enough to begin.</p></div>
           <span class="career-card-icon" aria-hidden="true">⌁</span>
         </div>
         <div class="career-intake-grid">
           <div class="career-intake-block">
-            <div class="career-intake-block-head"><span class="career-intake-symbol">↗</span><div><strong>Opportunity source</strong><small>Job advert, internship, scholarship or placement</small></div></div>
+            <div class="career-intake-block-head"><span class="career-intake-symbol">↗</span><div><strong>Share the opportunity</strong><small>Job advert, internship, scholarship or placement</small></div></div>
             <div class="career-source-actions">
               <button type="button" class="career-source-tile" data-career-pick="opportunity"><span>＋</span><b>Upload advert</b><small>PDF, DOCX, image, TXT</small></button>
               <input id="careerOpportunityFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
               <label class="career-url-field"><span>Opportunity link</span><input id="careerOpportunityLink" type="url" maxlength="1000" placeholder="https://company.com/careers/job…"><small class="career-url-note">The link is kept as a reference. Upload the advert or paste its text so the AI can actually analyse its requirements.</small></label>
             </div>
-            <label class="career-long-field" for="careerDescription">Paste the advert or explain the opportunity<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the full job advert, requirements, instructions, or describe what you were told…"></textarea></label>
+            <label class="career-long-field" for="careerDescription">Or tell us about it<textarea id="careerDescription" rows="6" maxlength="14000" placeholder="Paste the advert, describe the role, or tell us what you know so far. It is okay if some details are missing."></textarea></label>
             <div class="career-intake-status" id="careerOpportunityFilesStatus" role="status" aria-live="polite">You can add several files. Uploads are read for this session and are not saved as a profile.</div>
           </div>
           <div class="career-intake-block career-applicant-block">
-            <div class="career-intake-block-head"><span class="career-intake-symbol">◎</span><div><strong>Your evidence</strong><small>Optional now — add your real background when ready</small></div></div>
+            <div class="career-intake-block-head"><span class="career-intake-symbol">◎</span><div><strong>A little about you</strong><small>You can add this now or come back to it later</small></div></div>
             <button type="button" class="career-source-tile career-profile-upload" data-career-pick="applicant"><span>＋</span><b>Upload your CV or evidence</b><small>Existing CV, certificates, training records, portfolio</small></button>
             <input id="careerApplicantFiles" type="file" accept=".pdf,.docx,.txt,.md,.csv,.png,.jpg,.jpeg,.webp" multiple hidden>
-            <label class="career-long-field" for="careerApplicantEvidence">Add or explain your experience<textarea id="careerApplicantEvidence" rows="6" maxlength="8000" placeholder="Tell us what you have actually studied, done, built, supported or achieved. Separate training from employment."></textarea></label>
+            <label class="career-long-field" for="careerApplicantEvidence">Tell us a little about your experience<textarea id="careerApplicantEvidence" rows="6" maxlength="8000" placeholder="What have you studied, learned, worked on, helped with or achieved? A few notes are perfectly fine."></textarea></label>
             <div class="career-intake-status" id="careerApplicantFilesStatus" role="status" aria-live="polite">Your evidence stays separate from the employer's requirements. DocCraft will not treat the advert as proof of your skills.</div>
           </div>
         </div>
         <div class="career-goal-row">
-          <label class="career-long-field" for="careerGoal">What should we help you achieve? <span>(optional)</span><textarea id="careerGoal" rows="2" maxlength="1500" placeholder="e.g. Help me understand the requirements, identify what I need to improve, and prepare a strong, truthful application."></textarea></label>
+          <label class="career-long-field" for="careerGoal">What would you like help with? <span>(optional)</span><textarea id="careerGoal" rows="2" maxlength="1500" placeholder="e.g. Help me understand the requirements, identify what I need to improve, and prepare a strong, truthful application."></textarea></label>
           <div class="career-field-grid career-meta-fields">
             <div class="career-field"><label for="careerOpportunityType">Opportunity type</label><select id="careerOpportunityType"><option value="job">Job</option><option value="internship">Internship</option><option value="scholarship">Scholarship</option><option value="attachment">Industrial attachment</option><option value="other">Other opportunity</option></select></div>
             <div class="career-field"><label for="careerRole">Role / programme <span>(if known)</span></label><input id="careerRole" type="text" maxlength="160" placeholder="e.g. Fibre Technician"></div>
@@ -1717,8 +1717,8 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
           </div>
         </div>
         <div class="career-brief-actions">
-          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Analyse opportunity &amp; build my readiness plan <span aria-hidden="true">→</span></button>
-          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">Prepare a tailored cover letter</button>
+          <button type="button" class="career-primary-btn" onclick="startCareerResume()">Let’s understand this opportunity <span aria-hidden="true">→</span></button>
+          <button type="button" class="career-secondary-btn" onclick="startCareerCoverLetter()">I’m ready to create a cover letter</button>
         </div>
         <button type="button" class="career-clear-btn" onclick="clearCareerBrief()">Clear this session's opportunity and evidence</button>
       </section>
@@ -3628,5 +3628,46 @@ body:has(#careerLaunchHome:not([hidden])) .career-availability-note{margin-top:1
   });
 })();
 </script>
+<style id="career-launch-warm-glass-ux">
+@media screen{
+body:has(#careerLaunchHome:not([hidden])){background:radial-gradient(ellipse at 8% 4%,rgba(229,177,194,.24),transparent 34rem),radial-gradient(ellipse at 92% 12%,rgba(153,126,205,.16),transparent 31rem),var(--bg)!important}
+body:has(#careerLaunchHome:not([hidden])) #homeScreen,body:has(#careerLaunchHome:not([hidden])) .career-launch-home{max-width:1120px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero{padding:clamp(28px,5vw,58px)!important;margin:18px 0 26px;border:1px solid rgba(255,255,255,.8)!important;border-radius:28px!important;background:linear-gradient(118deg,rgba(255,253,249,.86),rgba(250,239,246,.78) 54%,rgba(239,234,250,.8))!important;box-shadow:0 22px 60px rgba(85,62,99,.11),inset 0 1px 0 #fff!important;backdrop-filter:blur(22px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1{font-family:'Playfair Display',Georgia,serif!important;font-size:clamp(36px,5.2vw,62px)!important;line-height:1.06!important;color:#263d2e!important}
+body:has(#careerLaunchHome:not([hidden])) .career-hero h1 span{background:linear-gradient(100deg,#8062b6,#b06f9b 62%,#71883c)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important}
+body:has(#careerLaunchHome:not([hidden])) .career-eyebrow{background:rgba(222,195,218,.34)!important;border:1px solid rgba(155,119,166,.2);color:#74547f!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intelligence-workspace{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:18px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card{border:1px solid rgba(255,255,255,.84)!important;border-radius:23px!important;background:linear-gradient(135deg,rgba(255,255,255,.84),rgba(250,241,248,.78) 58%,rgba(242,239,250,.8))!important;color:var(--text)!important;box-shadow:0 18px 48px rgba(69,57,78,.1),inset 0 1px 0 #fff!important;backdrop-filter:blur(20px)!important;-webkit-backdrop-filter:blur(20px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-panel{padding:clamp(18px,3.2vw,34px)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading h2,body:has(#careerLaunchHome:not([hidden])) .career-guidance-card h2{font-family:'Playfair Display',Georgia,serif!important;font-size:clamp(24px,3vw,31px)!important;color:#263d2e!important}
+body:has(#careerLaunchHome:not([hidden])) .career-card-heading p,body:has(#careerLaunchHome:not([hidden])) .career-hero-copy>p{color:#687565!important;line-height:1.75}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block{padding:18px!important;border-radius:17px!important;border:1px solid rgba(131,103,148,.15)!important;background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(244,235,245,.62))!important}
+body:has(#careerLaunchHome:not([hidden])) .career-applicant-block{background:linear-gradient(145deg,rgba(255,255,255,.78),rgba(237,239,225,.62))!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head strong,body:has(#careerLaunchHome:not([hidden])) .career-field label{color:#344735!important}
+body:has(#careerLaunchHome:not([hidden])) .career-intake-block-head small,body:has(#careerLaunchHome:not([hidden])) .career-url-note,body:has(#careerLaunchHome:not([hidden])) .career-intake-status,body:has(#careerLaunchHome:not([hidden])) .career-availability-note{color:#718071!important;line-height:1.6}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile{border:1px dashed rgba(128,98,182,.4)!important;border-radius:14px!important;background:linear-gradient(120deg,rgba(238,225,241,.7),rgba(255,255,255,.82))!important;color:#263d2e!important;min-height:76px!important}
+body:has(#careerLaunchHome:not([hidden])) .career-source-tile small{color:#687565!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field,body:has(#careerLaunchHome:not([hidden])) .career-long-field{color:#425342!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields input,body:has(#careerLaunchHome:not([hidden])) .career-meta-fields select{background:rgba(255,255,255,.84)!important;border:1px solid rgba(107,93,120,.2)!important;border-radius:12px!important;color:#263d2e!important;box-shadow:none!important}
+body:has(#careerLaunchHome:not([hidden])) .career-url-field input:focus,body:has(#careerLaunchHome:not([hidden])) .career-long-field textarea:focus{border-color:#a77fb6!important;box-shadow:0 0 0 3px rgba(167,127,182,.16)!important}
+body:has(#careerLaunchHome:not([hidden])) .career-goal-row{grid-template-columns:minmax(0,1.2fr) minmax(260px,.8fr);gap:16px;padding:17px;border-radius:17px;background:rgba(239,231,243,.48)!important;border:1px solid rgba(131,103,148,.13)}
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn{min-height:50px;border-radius:13px!important;background:linear-gradient(110deg,#5d438f,#9670ad 58%,#a76f99)!important;box-shadow:0 10px 24px rgba(111,76,139,.22)!important;color:#fff!important}
+body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn{border-radius:13px!important;background:rgba(255,255,255,.8)!important;border:1px solid rgba(128,98,182,.25)!important;color:#604b78!important}
+body:has(#careerLaunchHome:not([hidden])) .career-step-label{color:#8062b6!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps li{display:block;padding:12px;border:1px solid rgba(131,103,148,.14)!important;border-radius:13px;background:rgba(255,255,255,.6)}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps strong{color:#344735!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps p{color:#718071!important;line-height:1.55}
+body:has(#careerLaunchHome:not([hidden])) .career-truth-note{background:rgba(229,237,220,.65)!important;border:1px solid rgba(113,136,60,.16)!important;border-radius:13px!important;color:#56664e!important}
+}
+@media(max-width:760px){
+body:has(#careerLaunchHome:not([hidden])) .career-intake-grid,body:has(#careerLaunchHome:not([hidden])) .career-goal-row{grid-template-columns:1fr!important}
+body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{grid-template-columns:repeat(2,minmax(0,1fr))}
+body:has(#careerLaunchHome:not([hidden])) .career-brief-actions{display:grid!important;grid-template-columns:1fr}
+body:has(#careerLaunchHome:not([hidden])) .career-primary-btn,body:has(#careerLaunchHome:not([hidden])) .career-secondary-btn{width:100%}
+}
+@media(max-width:420px){body:has(#careerLaunchHome:not([hidden])) .career-guidance-card .career-steps{grid-template-columns:1fr}}
+</style>
 </body>
 </html>
