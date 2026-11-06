@@ -1695,16 +1695,8 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 
 
 <style id="doccraft-homepage-restoration">
-/* Restore the original DocCraft homepage layout. Reuse the approved Mode B image as a quiet page backdrop. */
+/* Restore the original DocCraft homepage layout without a photographic backdrop. */
 #homeScreen{position:relative;isolation:isolate;max-width:1200px;margin:0 auto;padding:40px 24px 80px;overflow:hidden}
-#homeScreen:before{
-  content:"";position:absolute;z-index:-1;pointer-events:none;left:0;right:0;top:0;height:640px;
-  background-image:
-    linear-gradient(90deg,rgba(15,17,23,.97) 0%,rgba(15,17,23,.88) 34%,rgba(15,17,23,.38) 72%,rgba(15,17,23,.2) 100%),
-    linear-gradient(0deg,var(--bg) 0%,rgba(15,17,23,.08) 38%,rgba(15,17,23,.08) 100%),
-    url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000");
-  background-size:cover;background-position:center right;background-repeat:no-repeat;opacity:.96
-}
 .nav-workspaces{display:flex;align-items:center;gap:5px;flex:0 0 auto;margin-left:auto;padding:4px;border:1px solid var(--border);border-radius:11px;background:rgba(15,17,23,.55)}
 .nav-workspace-choice{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:7px 11px;border:1px solid transparent;border-radius:8px;background:transparent;color:var(--text2);font:600 11px/1.2 'Inter',sans-serif;white-space:nowrap;cursor:pointer;transition:background .16s,border-color .16s,color .16s}
 .nav-workspace-choice>span{font-size:14px;color:var(--accent2)}
@@ -1729,10 +1721,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   .nav-tools{order:4;flex:1 0 100%;display:none;flex-wrap:wrap;padding:4px 0}
   .nav-tools[style*="flex"]{display:flex}
   #homeScreen{padding:26px 16px 60px}
-  #homeScreen:before{height:520px;background-position:62% center;background-image:
-    linear-gradient(90deg,rgba(15,17,23,.96) 0%,rgba(15,17,23,.78) 48%,rgba(15,17,23,.42) 100%),
-    linear-gradient(0deg,var(--bg) 0%,rgba(15,17,23,.08) 48%,rgba(15,17,23,.12) 100%),
-    url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000")}
+
 }
 @media(max-width:420px){
   .nav-workspace-choice{gap:5px;padding:7px 5px;font-size:9px}
@@ -1776,15 +1765,6 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 <!-- ── HOME SCREEN ────────────────────────────────── -->
 <div id="homeScreen">
   <div id="documentStudioHome">
-  <div class="mode-a-hero-image" aria-label="Document Studio introduction">
-    <img src="https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="A polished professional workspace for creating and refining documents" loading="eager" fetchpriority="high">
-    <div class="mode-a-image-shade" aria-hidden="true"></div>
-    <div class="mode-a-image-label">
-      <span class="mode-a-image-mark" aria-hidden="true">✦</span>
-      <span class="mode-a-image-copy"><strong>DOC CRAFT</strong><small>DOCUMENT STUDIO <i>·</i> PROFESSIONAL CREATION</small></span>
-      <span class="mode-a-image-index" aria-hidden="true">01 <i>/</i> 03</span>
-    </div>
-  </div>
   <section class="hero">
     <div class="hero-left">
       <div class="hero-badge">DOCUMENT STUDIO <span aria-hidden="true">·</span> PROFESSIONAL CREATION</div>
@@ -4074,140 +4054,9 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
 </style>
 
 
-<style id="doccraft-bright-mode-a-background">@media screen{ :root{color-scheme:light;--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--text3:#738171}body{background:var(--bg)!important;color:var(--text)!important}.navbar{background:#fffef9!important;color:#263d2e!important}.wallet-palette{background:linear-gradient(145deg,#fffefb,#f2f3e9)!important;color:#263d2e!important;border-color:#dce2d3!important}.wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div div:last-child{color:#263d2e!important}.wallet-palette .wallet-close{background:#fff!important;color:#52634f!important;border:1px solid #dce2d3!important;box-shadow:none!important}#creditPackages .credit-package-card{background:linear-gradient(145deg,#fff,#f2f4eb)!important;color:#263d2e!important;border-color:#dce2d3!important}#creditPackages .credit-package-name{color:#586b59!important}#creditPackages .credit-package-credits{color:#263d2e!important}#creditPackages .credit-package-price{color:#65509a!important}}#homeScreen{position:relative;isolation:isolate}#homeScreen:before{content:"";position:absolute;z-index:-1;inset:0 calc((1200px - 100vw)/2);background:linear-gradient(180deg,rgba(255,254,249,.82),rgba(247,247,240,.91)),url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000") center/cover no-repeat;pointer-events:none}#potentialLabHome{background:transparent!important}</style>
+<style id="doccraft-bright-mode-a-background">@media screen{ :root{color-scheme:light;--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--text3:#738171}body{background:var(--bg)!important;color:var(--text)!important}.navbar{background:#fffef9!important;color:#263d2e!important}.wallet-palette{background:linear-gradient(145deg,#fffefb,#f2f3e9)!important;color:#263d2e!important;border-color:#dce2d3!important}.wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div div:last-child{color:#263d2e!important}.wallet-palette .wallet-close{background:#fff!important;color:#52634f!important;border:1px solid #dce2d3!important;box-shadow:none!important}#creditPackages .credit-package-card{background:linear-gradient(145deg,#fff,#f2f4eb)!important;color:#263d2e!important;border-color:#dce2d3!important}#creditPackages .credit-package-name{color:#586b59!important}#creditPackages .credit-package-credits{color:#263d2e!important}#creditPackages .credit-package-price{color:#65509a!important}}#homeScreen{position:relative;isolation:isolate}#potentialLabHome{background:transparent!important}</style>
 
-<style id="doccraft-mode-a-background-brightness">
-/* Mode A uses a dedicated editorial hero image, never a page wallpaper. */
-@media screen {
-  #homeScreen:before,
-  #documentStudioHome:before {
-    display: none !important;
-    content: none !important;
-    background: none !important;
-  }
-  #documentStudioHome {
-    position: relative;
-    isolation: isolate;
-    background: transparent !important;
-  }
-  .mode-a-hero-image {
-    position: relative;
-    width: 100%;
-    height: clamp(270px, 35vw, 420px);
-    margin: 0 0 clamp(30px, 4.2vw, 50px);
-    overflow: hidden;
-    isolation: isolate;
-    border: 1px solid rgba(255,255,255,.92);
-    border-radius: 28px;
-    background: linear-gradient(145deg,#e9e4f5,#f7eaf0);
-    box-shadow: 0 24px 64px rgba(43,55,46,.15), 0 5px 18px rgba(43,55,46,.07), inset 0 1px 0 rgba(255,255,255,.9);
-  }
-  .mode-a-hero-image:after {
-    content: "";
-    position: absolute;
-    inset: 10px;
-    border: 1px solid rgba(255,255,255,.26);
-    border-radius: 20px;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .mode-a-hero-image img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center 48%;
-    filter: saturate(1.06) contrast(1.025);
-    transform: scale(1.005);
-  }
-  .mode-a-image-shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(100deg,rgba(22,35,29,.30),rgba(22,35,29,.05) 58%,transparent 100%),
-                linear-gradient(0deg,rgba(14,25,20,.30),transparent 52%);
-    pointer-events: none;
-  }
-  .mode-a-image-label {
-    position: absolute;
-    left: clamp(18px,3vw,34px);
-    right: clamp(18px,3vw,34px);
-    bottom: clamp(18px,2.6vw,28px);
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    width: fit-content;
-    max-width: calc(100% - 36px);
-    padding: 13px 17px;
-    border: 1px solid rgba(255,255,255,.62);
-    border-radius: 16px;
-    background: rgba(255,255,255,.82);
-    color: #344638;
-    box-shadow: 0 12px 32px rgba(17,31,23,.17), inset 0 1px 0 rgba(255,255,255,.8);
-    backdrop-filter: blur(18px) saturate(1.2);
-    -webkit-backdrop-filter: blur(18px) saturate(1.2);
-  }
-  .mode-a-image-mark {
-    display: grid;
-    place-items: center;
-    flex: 0 0 40px;
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(145deg,#eee5f5,#e4eee7);
-    color: #7658a6;
-    font-size: 21px;
-  }
-  .mode-a-image-copy { display: grid; gap: 4px; }
-  .mode-a-image-copy strong {
-    color: #294333;
-    font: 800 11px/1.1 'DM Sans',sans-serif;
-    letter-spacing: .15em;
-  }
-  .mode-a-image-copy small {
-    color: #6e796f;
-    font: 700 9px/1.2 'DM Sans',sans-serif;
-    letter-spacing: .12em;
-  }
-  .mode-a-image-copy i { color: #987a42; font-style: normal; padding: 0 2px; }
-  .mode-a-image-index {
-    margin-left: 14px;
-    padding-left: 15px;
-    border-left: 1px solid rgba(75,91,77,.18);
-    color: #637568;
-    font: 800 10px/1 'DM Sans',sans-serif;
-    letter-spacing: .1em;
-    white-space: nowrap;
-  }
-  .mode-a-image-index i { color: #a99b83; font-style: normal; padding: 0 3px; }
-  #potentialLabHome,
-  #careerLaunchHome { background: transparent !important; }
-}
-@media(max-width:680px) {
-  .mode-a-hero-image {
-    height: clamp(230px, 62vw, 310px);
-    margin-bottom: 27px;
-    border-radius: 20px;
-  }
-  .mode-a-hero-image:after { inset: 7px; border-radius: 14px; }
-  .mode-a-hero-image img { object-position: 56% center; }
-  .mode-a-image-label {
-    left: 14px; right: 14px; bottom: 14px;
-    max-width: calc(100% - 28px);
-    gap: 10px; padding: 10px 12px; border-radius: 13px;
-  }
-  .mode-a-image-mark { flex-basis: 34px; width: 34px; height: 34px; font-size: 18px; }
-  .mode-a-image-copy strong { font-size: 9px; }
-  .mode-a-image-copy small { font-size: 7px; letter-spacing: .08em; }
-  .mode-a-image-index { margin-left: auto; padding-left: 9px; font-size: 8px; }
-}
-@media(max-width:390px) {
-  .mode-a-image-index { display: none; }
-}
-@media(prefers-reduced-motion:reduce) {
-  .mode-a-hero-image { scroll-behavior: auto; }
-}
-</style>
+
 
 
 <style id="doccraft-living-headline">
