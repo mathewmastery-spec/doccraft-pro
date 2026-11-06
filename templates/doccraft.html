@@ -1758,6 +1758,16 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   #documentStudioHome .hero-visual{order:-1;width:100%;max-width:none;margin:0 auto}
   #documentStudioHome .hero-left{order:0;width:100%}
 }
+
+@media(max-width:700px){
+  #documentStudioHome .hero-left{display:contents}
+  #documentStudioHome .hero-badge{order:0;align-self:flex-start;margin:0 0 2px}
+  #documentStudioHome .hero-visual{order:1;width:100%;max-width:none;margin:0 auto}
+  #documentStudioHome .hero-title{order:2;width:100%;margin-top:2px}
+  #documentStudioHome .hero-sub{order:3;width:100%}
+  #documentStudioHome .hero-btns{order:4;width:100%}
+  #documentStudioHome .hero-stats{order:5;width:100%}
+}
 </style>
 
 </head>
