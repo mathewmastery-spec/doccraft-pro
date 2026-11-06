@@ -48,6 +48,57 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nav-menu-btn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
 .nav-menu-btn span{display:block;width:22px;height:2px;background:var(--text2);border-radius:2px}
 
+
+/* Unified Workspace Hub — compact navigation with responsive panel. */
+.nav-workspaces{position:relative;flex:0 0 auto;z-index:120}
+.workspace-hub-trigger{display:flex;align-items:center;gap:10px;min-height:42px;padding:6px 12px;border:1px solid rgba(129,140,248,.35);border-radius:13px;background:linear-gradient(135deg,rgba(79,70,229,.18),rgba(14,165,233,.09));color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
+.workspace-hub-trigger:hover{border-color:rgba(165,180,252,.75);background:linear-gradient(135deg,rgba(79,70,229,.28),rgba(14,165,233,.14));transform:translateY(-1px)}
+.workspace-hub-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;font-size:18px}
+.workspace-hub-trigger strong,.workspace-hub-trigger small{display:block}
+.workspace-hub-trigger strong{font-size:12px;font-weight:800}
+.workspace-hub-trigger small{font-size:10px;color:var(--text2);margin-top:2px}
+.workspace-hub-chevron{color:#a5b4fc;margin-left:5px}
+.workspace-hub-panel{position:absolute;top:calc(100% + 12px);right:0;width:min(760px,calc(100vw - 32px));max-height:min(78vh,720px);overflow:auto;padding:20px;border:1px solid rgba(129,140,248,.34);border-radius:22px;background:linear-gradient(145deg,rgba(24,30,49,.98),rgba(13,19,34,.985));box-shadow:0 26px 80px rgba(0,0,0,.48),inset 0 1px 0 rgba(255,255,255,.07);backdrop-filter:blur(24px) saturate(145%);-webkit-backdrop-filter:blur(24px) saturate(145%)}
+.workspace-hub-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:17px;padding-bottom:14px;border-bottom:1px solid rgba(148,163,184,.16)}
+.workspace-hub-heading span,.workspace-hub-group h3{display:block;color:#a5b4fc;font-size:10px;font-weight:850;letter-spacing:1.2px;text-transform:uppercase}
+.workspace-hub-heading strong{display:block;margin-top:4px;font-size:18px;color:#f8fafc}
+.workspace-hub-heading>button{width:34px;height:34px;border:1px solid rgba(148,163,184,.22);border-radius:10px;background:rgba(255,255,255,.05);color:#e2e8f0;font-size:22px;cursor:pointer}
+.workspace-hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.workspace-hub-group{min-width:0}
+.workspace-hub-group h3{margin-bottom:10px}
+.workspace-hub-tile,.workspace-hub-link{width:100%;display:flex;align-items:center;gap:11px;margin-bottom:8px;padding:11px;border:1px solid rgba(148,163,184,.15);border-radius:13px;background:rgba(255,255,255,.045);color:#e2e8f0;text-align:left;font:inherit;cursor:pointer;transition:.16s}
+.workspace-hub-tile:hover,.workspace-hub-link:hover,.workspace-hub-docs button:hover{border-color:rgba(129,140,248,.62);background:rgba(99,102,241,.12)}
+.workspace-hub-tile[aria-pressed="true"]{border-color:rgba(129,140,248,.7);background:linear-gradient(110deg,rgba(79,70,229,.22),rgba(14,165,233,.08))}
+.hub-tile-icon{display:grid;place-items:center;flex:0 0 36px;height:36px;border-radius:11px;background:rgba(99,102,241,.18);color:#c7d2fe;font-size:19px}
+.workspace-hub-tile b,.workspace-hub-link b{display:block;font-size:12px}
+.workspace-hub-tile small,.workspace-hub-link small{display:block;margin-top:3px;color:#9eabc0;font-size:10px;line-height:1.4}
+.hub-arrow{margin-left:auto;color:#a5b4fc}
+.workspace-hub-docs{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.workspace-hub-docs button{display:flex;align-items:center;gap:8px;min-height:43px;padding:8px;border:1px solid rgba(148,163,184,.15);border-radius:11px;background:rgba(255,255,255,.04);color:#e2e8f0;text-align:left;font:inherit;font-size:11px;cursor:pointer}
+.workspace-hub-docs button span{color:#a5b4fc;font-size:16px}
+.workspace-hub-link>span:first-child{display:grid;place-items:center;flex:0 0 32px;height:32px;border-radius:9px;background:rgba(99,102,241,.15);color:#c7d2fe}
+.workspace-hub-link>span:last-child{margin-left:auto;color:#a5b4fc}
+.workspace-hub-settings{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:14px;padding:13px;border:1px solid rgba(129,140,248,.3);border-radius:12px;background:rgba(99,102,241,.09)}
+.workspace-hub-settings b,.workspace-hub-settings small{display:block}
+.workspace-hub-settings b{font-size:12px}.workspace-hub-settings small{font-size:10px;color:#aab6c9;margin-top:3px}
+.workspace-hub-settings label{display:flex;align-items:center;gap:6px;color:#dbeafe;font-size:11px}
+body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccraft-reduced-motion *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.nav-tools{display:none!important}
+@media(max-width:768px){
+  .navbar{gap:9px;padding:0 12px}
+  .nav-workspaces{position:static}
+  .workspace-hub-trigger{padding:5px 9px;gap:7px}
+  .workspace-hub-trigger strong{font-size:11px}
+  .workspace-hub-trigger small{font-size:9px}
+  .workspace-hub-panel{position:fixed;top:auto;bottom:10px;left:10px;right:10px;width:auto;max-height:min(82vh,760px);padding:16px;border-radius:22px;z-index:1000}
+}
+@media(max-width:520px){
+  .workspace-hub-grid{grid-template-columns:1fr;gap:14px}
+  .workspace-hub-docs{grid-template-columns:1fr 1fr}
+  .workspace-hub-trigger .workspace-hub-chevron{display:none}
+  .workspace-hub-heading strong{font-size:16px}
+}
+
 /* HOME */
 #homeScreen{max-width:1200px;margin:0 auto;padding:40px 24px 80px}
 #appScreen{display:none;height:calc(100vh - 60px)}
@@ -1787,17 +1838,51 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
   </div>
 
-  <div class="nav-workspaces" role="group" aria-label="Switch DocCraft workspace">
-    <button type="button" class="nav-workspace-choice is-active" data-mode-choice="documents" aria-pressed="true" onclick="switchProductMode('documents')"><span aria-hidden="true">▤</span><b>Document Studio</b></button>
-    <button type="button" class="nav-workspace-choice" data-mode-choice="career" aria-pressed="false" onclick="switchProductMode('career')"><span aria-hidden="true">↗</span><b>Smart Potential Lab</b></button>
-  </div>
+
 
   <div class="nav-right">
     <button type="button" id="careProfile" class="care-profile" aria-label="Open account wallet" title="Account profile" onclick="openWalletPalette()"><span id="careProfileInitial">?</span></button>
     <button class="btn btn-ghost" id="installAppBtn" type="button" hidden style="padding:7px 12px;font-size:12px;margin-right:8px" onclick="installDocCraftApp()">Install App</button>
-    <button class="nav-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
-      <span></span><span></span><span></span>
+
+  </div>
+
+  <div class="nav-workspaces" id="workspaceHub" role="group" aria-label="Workspace navigation">
+    <button type="button" class="workspace-hub-trigger" id="workspaceHubTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceHubPanel" onclick="toggleWorkspaceHub()">
+      <span class="workspace-hub-mark" aria-hidden="true">▦</span>
+      <span><strong>Workspace Hub</strong><small id="workspaceHubActive">Document Studio</small></span>
+      <span class="workspace-hub-chevron" aria-hidden="true">⌄</span>
     </button>
+    <section class="workspace-hub-panel" id="workspaceHubPanel" hidden aria-label="DocCraft navigation">
+      <div class="workspace-hub-heading"><div><span>DOC CRAFT PRO</span><strong>Everything in one place</strong></div><button type="button" aria-label="Close navigation" onclick="closeWorkspaceHub()">×</button></div>
+      <div class="workspace-hub-grid">
+        <section class="workspace-hub-group workspace-hub-workspaces"><h3>Workspaces</h3>
+          <button type="button" class="workspace-hub-tile" data-mode-choice="documents" aria-pressed="true" onclick="openHubWorkspace('documents')"><span class="hub-tile-icon">▤</span><span><b>Document Studio</b><small>Create professional documents</small></span><span class="hub-arrow">→</span></button>
+          <button type="button" class="workspace-hub-tile" data-mode-choice="career" aria-pressed="false" onclick="openHubWorkspace('career')"><span class="hub-tile-icon">✧</span><span><b>Smart Potential Lab</b><small>Explore potential and opportunities</small></span><span class="hub-arrow">→</span></button>
+        </section>
+        <section class="workspace-hub-group"><h3>Documents</h3>
+          <div class="workspace-hub-docs">
+            <button type="button" onclick="openHubDocument('resume','resume')"><span>▤</span><b>Resume</b></button>
+            <button type="button" onclick="openHubDocument('resume','cv')"><span>▧</span><b>Professional CV</b></button>
+            <button type="button" onclick="openHubDocument('resume','academic_cv')"><span>▥</span><b>Academic CV</b></button>
+            <button type="button" onclick="openHubDocument('cover_letter')"><span>✉</span><b>Cover Letter</b></button>
+            <button type="button" onclick="openHubDocument('portfolio')"><span>▣</span><b>Portfolio</b></button>
+            <button type="button" onclick="openHubDocument('org_letter')"><span>▤</span><b>Organisation Letter</b></button>
+          </div>
+        </section>
+        <section class="workspace-hub-group"><h3>Account</h3>
+          <button type="button" class="workspace-hub-link" onclick="closeWorkspaceHub();openWalletPalette()"><span>◉</span><span><b>Profile &amp; Wallet</b><small>Account email, balance and credits</small></span><span>→</span></button>
+          <button type="button" class="workspace-hub-link" onclick="toggleHubSettings()"><span>⚙</span><span><b>Settings</b><small>Display and accessibility</small></span><span>→</span></button>
+        </section>
+        <section class="workspace-hub-group"><h3>Assistance</h3>
+          <button type="button" class="workspace-hub-link" onclick="openHubCare()"><span>✦</span><span><b>DocCraft Care</b><small>Helpful AI support in your workspace</small></span><span>→</span></button>
+          <button type="button" class="workspace-hub-link" onclick="openHubCare()"><span>?</span><span><b>Help &amp; Support</b><small>Ask a question or get guidance</small></span><span>→</span></button>
+        </section>
+      </div>
+      <section class="workspace-hub-settings" id="workspaceHubSettings" hidden>
+        <div><b>Reduced motion</b><small>Minimise decorative movement and transitions.</small></div>
+        <label><input id="hubReducedMotion" type="checkbox" onchange="setHubReducedMotion(this.checked)"><span>On</span></label>
+      </section>
+    </section>
   </div>
 </nav>
 
@@ -2365,6 +2450,67 @@ async function verifyReturnedPayment() {
   }
 }
 
+
+function closeWorkspaceHub() {
+  const panel = document.getElementById('workspaceHubPanel');
+  const trigger = document.getElementById('workspaceHubTrigger');
+  if (panel) panel.hidden = true;
+  if (trigger) trigger.setAttribute('aria-expanded', 'false');
+}
+function toggleWorkspaceHub() {
+  const panel = document.getElementById('workspaceHubPanel');
+  const trigger = document.getElementById('workspaceHubTrigger');
+  if (!panel || !trigger) return;
+  panel.hidden = !panel.hidden;
+  trigger.setAttribute('aria-expanded', String(!panel.hidden));
+}
+function openHubWorkspace(mode) {
+  closeWorkspaceHub();
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('homeScreen').style.display = '';
+  showHome();
+  switchProductMode(mode);
+}
+function openHubDocument(tool, subtype) {
+  closeWorkspaceHub();
+  switchProductMode('documents');
+  openTool(tool);
+  if (subtype) {
+    const subtypeButton = document.querySelector('#docTypePills [data-sub="' + subtype + '"]');
+    if (subtypeButton) setSubType(subtype, subtypeButton);
+  }
+}
+function toggleHubSettings() {
+  const settings = document.getElementById('workspaceHubSettings');
+  if (!settings) return;
+  settings.hidden = !settings.hidden;
+  let saved = false;
+  try { saved = localStorage.getItem('doccraftReducedMotion') === 'true'; } catch (_) {}
+  const input = document.getElementById('hubReducedMotion');
+  if (input) input.checked = saved;
+}
+function setHubReducedMotion(enabled) {
+  document.body.classList.toggle('doccraft-reduced-motion', Boolean(enabled));
+  try { localStorage.setItem('doccraftReducedMotion', String(Boolean(enabled))); } catch (_) {}
+}
+function openHubCare() {
+  closeWorkspaceHub();
+  const opener = document.getElementById('careOpen');
+  if (opener && opener.offsetParent !== null) { opener.click(); return; }
+  openTool('resume');
+  window.setTimeout(() => document.getElementById('careOpen')?.click(), 80);
+}
+document.addEventListener('click', event => {
+  const hub = document.getElementById('workspaceHub');
+  if (hub && !hub.contains(event.target)) closeWorkspaceHub();
+});
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape') closeWorkspaceHub();
+});
+try {
+  if (localStorage.getItem('doccraftReducedMotion') === 'true') document.body.classList.add('doccraft-reduced-motion');
+} catch (_) {}
+
 function switchProductMode(mode) {
   const nextMode = mode === 'career' ? 'career' : 'documents';
   state.workspaceMode = nextMode;
@@ -2387,6 +2533,13 @@ function switchProductMode(mode) {
   if (navTools) navTools.style.display = nextMode === 'career' ? 'none' : '';
   const workspaceNav = document.querySelector('.nav-workspaces');
   if (workspaceNav) workspaceNav.dataset.activeWorkspace = nextMode;
+  const activeLabel = document.getElementById('workspaceHubActive');
+  if (activeLabel) activeLabel.textContent = nextMode === 'career' ? 'Smart Potential Lab' : 'Document Studio';
+  document.querySelectorAll('#workspaceHubPanel [data-mode-choice]').forEach(button => {
+    const active = button.dataset.modeChoice === nextMode;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
 }
 
 function showHome() {
