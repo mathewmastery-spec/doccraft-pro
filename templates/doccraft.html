@@ -1731,6 +1731,47 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 @media(prefers-reduced-motion:reduce){.nav-workspace-choice{transition:none}}
 </style>
 
+
+<style id="mode-a-achievement-image">
+/* Mode A only: replace the decorative document tiles with the selected achievement photograph. */
+#documentStudioHome .hero-visual{
+  flex:0 1 48%;
+  width:48%;
+  max-width:560px;
+  min-width:0;
+  margin-left:auto;
+  display:block;
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:1.72 / 1;
+  border:1px solid rgba(58,48,76,.12);
+  border-radius:20px;
+  background:#f1eee9;
+  box-shadow:0 22px 55px rgba(35,30,48,.13);
+}
+#documentStudioHome .hero-achievement-image{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+}
+@media screen and (max-width:900px){
+  #documentStudioHome .hero-visual{flex-basis:46%;width:46%}
+}
+@media screen and (max-width:700px){
+  #documentStudioHome .hero-visual{
+    flex:0 0 auto;
+    width:100%;
+    max-width:none;
+    margin:0;
+    aspect-ratio:1.72 / 1;
+    border-radius:16px;
+  }
+  #documentStudioHome .hero-achievement-image{object-position:center 45%}
+}
+</style>
+
 </head>
 <body>
 
@@ -1783,19 +1824,14 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
       </div>
     </div>
     <div class="hero-visual">
-      <div class="hero-cheer">DOCUMENTS THAT MOVE YOU FORWARD</div>
-      <div class="doc-float">
-        <div class="df-line w100"></div><div class="df-line w70"></div><div class="df-line w50"></div>
-        <div class="df-chip">Resume</div>
-      </div>
-      <div class="doc-float">
-        <div class="df-line w70"></div><div class="df-line w100"></div><div class="df-line w50"></div>
-        <div class="df-chip g">Cover Letter</div>
-      </div>
-      <div class="doc-float">
-        <div class="df-line w50"></div><div class="df-line w70"></div><div class="df-line w100"></div>
-        <div class="df-chip p">Portfolio</div>
-      </div>
+      <img
+        class="hero-achievement-image"
+        src="https://images.openai.com/static-rsc-4/vnsngBj5ETlC8htEus46wFp_548DilhiskvmtblL3xTyfxNNqUds32dMgVfGeXGnWpl_I4N2lr7I1G_ZQWiI79i2zbTHk08uWMl922NTizXP7PmwJqwRgwdjTcatfd-ZIr-KbO1zA6XCacxXfoLmk9QuzlSZSUqTti_qEDs22iE?purpose=inline"
+        alt="A smiling young professional reviewing a completed CV on his laptop in a bright, modern workspace"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      >
     </div>
   </section>
 
