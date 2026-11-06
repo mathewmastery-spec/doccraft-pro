@@ -4066,5 +4066,35 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
 
 
 <style id="doccraft-bright-mode-a-background">@media screen{ :root{color-scheme:light;--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--text3:#738171}body{background:var(--bg)!important;color:var(--text)!important}.navbar{background:#fffef9!important;color:#263d2e!important}.wallet-palette{background:linear-gradient(145deg,#fffefb,#f2f3e9)!important;color:#263d2e!important;border-color:#dce2d3!important}.wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div div:last-child{color:#263d2e!important}.wallet-palette .wallet-close{background:#fff!important;color:#52634f!important;border:1px solid #dce2d3!important;box-shadow:none!important}#creditPackages .credit-package-card{background:linear-gradient(145deg,#fff,#f2f4eb)!important;color:#263d2e!important;border-color:#dce2d3!important}#creditPackages .credit-package-name{color:#586b59!important}#creditPackages .credit-package-credits{color:#263d2e!important}#creditPackages .credit-package-price{color:#65509a!important}}#homeScreen{position:relative;isolation:isolate}#homeScreen:before{content:"";position:absolute;z-index:-1;inset:0 calc((1200px - 100vw)/2);background:linear-gradient(180deg,rgba(255,254,249,.82),rgba(247,247,240,.91)),url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000") center/cover no-repeat;pointer-events:none}#potentialLabHome{background:transparent!important}</style>
+
+<style id="doccraft-mode-a-background-brightness">
+/* Bright, contained Mode A backdrop: ends with the Document Studio / All Tools section. */
+@media screen {
+  #homeScreen:before {
+    display: none !important;
+    content: none !important;
+  }
+  #documentStudioHome {
+    position: relative;
+    isolation: isolate;
+  }
+  #documentStudioHome:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.52) 0%, rgba(255,254,249,.64) 54%, rgba(247,247,240,.78) 100%),
+      url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000") center top/cover no-repeat;
+    filter: brightness(1.16) saturate(1.08) contrast(.97);
+    pointer-events: none;
+  }
+  #potentialLabHome,
+  #careerLaunchHome {
+    background: transparent !important;
+  }
+}
+</style>
+
 </body>
 </html>
