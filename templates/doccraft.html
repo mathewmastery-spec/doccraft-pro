@@ -1846,7 +1846,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 
   </div>
 
-  <div class="workspace-hub" id="workspaceHub">
+  <div class="workspace-hub nav-workspaces" id="workspaceHub" role="group" aria-label="Workspace navigation">
     <button type="button" class="workspace-hub-trigger" id="workspaceHubTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceHubPanel" onclick="toggleWorkspaceHub()">
       <span class="workspace-hub-mark" aria-hidden="true">▦</span>
       <span><strong>Workspace Hub</strong><small id="workspaceHubActive">Document Studio</small></span>
@@ -2484,7 +2484,8 @@ function toggleHubSettings() {
   const settings = document.getElementById('workspaceHubSettings');
   if (!settings) return;
   settings.hidden = !settings.hidden;
-  const saved = localStorage.getItem('doccraftReducedMotion') === 'true';
+  let saved = false;
+  try { saved = localStorage.getItem('doccraftReducedMotion') === 'true'; } catch (_) {}
   const input = document.getElementById('hubReducedMotion');
   if (input) input.checked = saved;
 }
