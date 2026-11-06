@@ -51,7 +51,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 /* Workspace selector — a native DocCraft navbar tab. */
 .nav-workspaces{position:relative;display:inline-flex;align-items:center}
-.nav-tools .nav-workspaces{position:relative;display:inline-flex;align-items:center;flex:0 0 auto;margin:0;padding:0;border:0;border-radius:0;background:transparent}
+.navbar>.nav-workspaces{position:relative;display:inline-flex;align-items:center;flex:0 0 auto;margin:0;padding:0;border:0;border-radius:0;background:transparent}
 .workspace-nav-trigger{display:inline-flex;align-items:center;gap:7px}
 .workspace-nav-trigger .workspace-chevron{font-size:11px;color:var(--text3);transition:transform .16s}
 .workspace-nav-trigger[aria-expanded="true"] .workspace-chevron{transform:rotate(180deg)}
@@ -64,9 +64,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nav-tools[data-mode="career"]>.nav-tool:not(.nav-workspaces){display:none}
 @media(max-width:900px){.workspace-nav-menu{left:auto;right:0}}
 @media(max-width:680px){
-  .nav-tools .nav-workspaces{display:flex;flex:1 0 100%}
+  .navbar>.nav-workspaces{display:flex;order:3;flex:1 0 100%;margin:0;justify-content:stretch;padding:0;border:0;background:transparent}
+  .nav-right{order:2}
+  .nav-tools{order:4}
   .nav-menu-btn{display:flex}
-  .nav-workspaces{display:flex;flex:1 0 100%}
   .workspace-nav-trigger{width:100%;justify-content:space-between}
   .workspace-nav-menu{position:static;width:100%;margin-top:5px;box-shadow:none}
   .nav-workspaces{flex-wrap:wrap}
@@ -1809,12 +1810,13 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     <button class="nav-tool" onclick="openTool('cover_letter')">Cover Letter</button>
     <button class="nav-tool" onclick="openTool('portfolio')">Portfolio</button>
     <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
-    <div class="nav-workspaces">
-      <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">Workspace <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
-      <div class="workspace-nav-menu" id="workspaceNavMenu" hidden>
-        <button type="button" data-mode-choice="documents" class="is-active" aria-pressed="true" onclick="selectWorkspace('documents')">Document Studio</button>
-        <button type="button" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')">Smart Potential Lab</button>
-      </div>
+  </div>
+
+  <div class="nav-workspaces">
+    <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">Workspace <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
+    <div class="workspace-nav-menu" id="workspaceNavMenu" hidden>
+      <button type="button" data-mode-choice="documents" class="is-active" aria-pressed="true" onclick="selectWorkspace('documents')">Document Studio</button>
+      <button type="button" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')">Smart Potential Lab</button>
     </div>
   </div>
 
