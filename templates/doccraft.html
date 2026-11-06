@@ -59,6 +59,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .workspace-nav-menu[hidden]{display:none!important}
 .workspace-nav-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:10px 11px;border:0;border-radius:8px;background:transparent;color:var(--text2);font:500 12px 'Inter',sans-serif;text-align:left;cursor:pointer}
 .workspace-nav-menu button:hover,.workspace-nav-menu button.is-active{background:var(--surface2);color:var(--text)}
+.workspace-nav-menu button b{font-weight:500}
 .workspace-nav-menu button.is-active:before{content:'';width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--accent)}
 .workspace-nav-menu button:not(.is-active):before{content:'';width:6px;height:6px;flex:0 0 6px;border-radius:50%;background:var(--border)}
 .nav-tools[data-mode="career"]>.nav-tool{display:none}
@@ -1815,8 +1816,8 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   <div class="nav-workspaces">
     <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">Workspace <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
     <div class="workspace-nav-menu" id="workspaceNavMenu" hidden>
-      <button type="button" data-mode-choice="documents" class="is-active" aria-pressed="true" onclick="selectWorkspace('documents')">Document Studio</button>
-      <button type="button" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')">Smart Potential Lab</button>
+      <button type="button" data-mode-choice="documents" class="is-active" aria-pressed="true" onclick="selectWorkspace('documents')"><b>Document Studio</b></button>
+      <button type="button" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')"><b>Smart Potential Lab</b></button>
     </div>
   </div>
 
