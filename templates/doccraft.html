@@ -50,7 +50,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 
 
 /* Unified Workspace Hub — compact navigation with responsive panel. */
-.workspace-hub{position:relative;flex:0 0 auto;z-index:120}
+.nav-workspaces{position:relative;flex:0 0 auto;z-index:120}
 .workspace-hub-trigger{display:flex;align-items:center;gap:10px;min-height:42px;padding:6px 12px;border:1px solid rgba(129,140,248,.35);border-radius:13px;background:linear-gradient(135deg,rgba(79,70,229,.18),rgba(14,165,233,.09));color:var(--text);font:inherit;text-align:left;cursor:pointer;transition:border-color .18s,background .18s,transform .18s}
 .workspace-hub-trigger:hover{border-color:rgba(165,180,252,.75);background:linear-gradient(135deg,rgba(79,70,229,.28),rgba(14,165,233,.14));transform:translateY(-1px)}
 .workspace-hub-mark{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;font-size:18px}
@@ -86,7 +86,7 @@ body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccr
 .nav-tools{display:none!important}
 @media(max-width:768px){
   .navbar{gap:9px;padding:0 12px}
-  .workspace-hub{position:static}
+  .nav-workspaces{position:static}
   .workspace-hub-trigger{padding:5px 9px;gap:7px}
   .workspace-hub-trigger strong{font-size:11px}
   .workspace-hub-trigger small{font-size:9px}
@@ -1846,7 +1846,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 
   </div>
 
-  <div class="workspace-hub nav-workspaces" id="workspaceHub" role="group" aria-label="Workspace navigation">
+  <div class="nav-workspaces" id="workspaceHub" role="group" aria-label="Workspace navigation">
     <button type="button" class="workspace-hub-trigger" id="workspaceHubTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceHubPanel" onclick="toggleWorkspaceHub()">
       <span class="workspace-hub-mark" aria-hidden="true">▦</span>
       <span><strong>Workspace Hub</strong><small id="workspaceHubActive">Document Studio</small></span>
