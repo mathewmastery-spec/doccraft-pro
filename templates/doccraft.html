@@ -2403,7 +2403,14 @@ function toggleWorkspaceMenu() {
 }
 function selectWorkspace(mode) {
   closeWorkspaceMenu();
-  switchProductMode(mode);
+  const nextMode = mode === 'career' ? 'career' : 'documents';
+  const home = document.getElementById('homeScreen');
+  const app = document.getElementById('appScreen');
+  if (home) home.style.display = '';
+  if (app) app.style.display = 'none';
+  state.careerLaunchActive = false;
+  state.careerLaunchBrief = null;
+  switchProductMode(nextMode);
   const nav = document.getElementById('navTools');
   if (nav && window.matchMedia('(max-width: 680px)').matches) nav.style.display = 'none';
   const menuButton = document.getElementById('mobileMenuBtn');
