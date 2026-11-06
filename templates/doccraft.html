@@ -1776,6 +1776,11 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 <!-- ── HOME SCREEN ────────────────────────────────── -->
 <div id="homeScreen">
   <div id="documentStudioHome">
+  <div class="mode-a-hero-image" aria-label="Document Studio introduction">
+    <img src="https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="A polished professional workspace for creating and refining documents" loading="eager" fetchpriority="high">
+    <div class="mode-a-image-shade" aria-hidden="true"></div>
+    <div class="mode-a-image-label"><span class="mode-a-image-mark">✦</span><span>DOC CRAFT <i>·</i> DOCUMENT STUDIO</span></div>
+  </div>
   <section class="hero">
     <div class="hero-left">
       <div class="hero-badge">DOCUMENT STUDIO <span aria-hidden="true">·</span> PROFESSIONAL CREATION</div>
@@ -4068,31 +4073,80 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
 <style id="doccraft-bright-mode-a-background">@media screen{ :root{color-scheme:light;--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--text3:#738171}body{background:var(--bg)!important;color:var(--text)!important}.navbar{background:#fffef9!important;color:#263d2e!important}.wallet-palette{background:linear-gradient(145deg,#fffefb,#f2f3e9)!important;color:#263d2e!important;border-color:#dce2d3!important}.wallet-palette #walletTitle,.wallet-palette [data-billing-heading] div div:last-child{color:#263d2e!important}.wallet-palette .wallet-close{background:#fff!important;color:#52634f!important;border:1px solid #dce2d3!important;box-shadow:none!important}#creditPackages .credit-package-card{background:linear-gradient(145deg,#fff,#f2f4eb)!important;color:#263d2e!important;border-color:#dce2d3!important}#creditPackages .credit-package-name{color:#586b59!important}#creditPackages .credit-package-credits{color:#263d2e!important}#creditPackages .credit-package-price{color:#65509a!important}}#homeScreen{position:relative;isolation:isolate}#homeScreen:before{content:"";position:absolute;z-index:-1;inset:0 calc((1200px - 100vw)/2);background:linear-gradient(180deg,rgba(255,254,249,.82),rgba(247,247,240,.91)),url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000") center/cover no-repeat;pointer-events:none}#potentialLabHome{background:transparent!important}</style>
 
 <style id="doccraft-mode-a-background-brightness">
-/* Bright, contained Mode A backdrop: ends with the Document Studio / All Tools section. */
+/* Mode A uses a dedicated editorial hero image, never a page wallpaper. */
 @media screen {
-  #homeScreen:before {
+  #homeScreen:before,
+  #documentStudioHome:before {
     display: none !important;
     content: none !important;
+    background: none !important;
   }
   #documentStudioHome {
     position: relative;
     isolation: isolate;
-  }
-  #documentStudioHome:before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    background:
-      linear-gradient(180deg, rgba(255,255,255,.52) 0%, rgba(255,254,249,.64) 54%, rgba(247,247,240,.78) 100%),
-      url("https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000") center top/cover no-repeat;
-    filter: brightness(1.16) saturate(1.08) contrast(.97);
-    pointer-events: none;
-  }
-  #potentialLabHome,
-  #careerLaunchHome {
     background: transparent !important;
   }
+  .mode-a-hero-image {
+    position: relative;
+    width: 100%;
+    height: clamp(210px, 29vw, 350px);
+    margin: 0 0 clamp(28px, 4vw, 48px);
+    overflow: hidden;
+    isolation: isolate;
+    border: 1px solid rgba(255,255,255,.78);
+    border-radius: 24px;
+    background: #e9e8df;
+    box-shadow: 0 22px 54px rgba(38,61,46,.13), 0 3px 12px rgba(38,61,46,.06);
+  }
+  .mode-a-hero-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 48%;
+    filter: saturate(1.04) contrast(1.02);
+  }
+  .mode-a-image-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,rgba(17,29,25,.34),rgba(17,29,25,.04) 58%,transparent 100%),
+                linear-gradient(0deg,rgba(17,29,25,.20),transparent 46%);
+    pointer-events: none;
+  }
+  .mode-a-image-label {
+    position: absolute;
+    left: clamp(16px,3vw,30px);
+    bottom: clamp(16px,2.5vw,25px);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border: 1px solid rgba(255,255,255,.34);
+    border-radius: 999px;
+    background: rgba(255,255,255,.88);
+    color: #294333;
+    box-shadow: 0 8px 24px rgba(12,24,18,.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    font: 800 10px/1 'DM Sans',sans-serif;
+    letter-spacing: .16em;
+  }
+  .mode-a-image-label i { color: #987a42; font-style: normal; padding: 0 2px; }
+  .mode-a-image-mark { color: #7658a6; font-size: 14px; }
+  #potentialLabHome,
+  #careerLaunchHome { background: transparent !important; }
+}
+@media(max-width:680px) {
+  .mode-a-hero-image {
+    height: clamp(190px, 57vw, 270px);
+    margin-bottom: 26px;
+    border-radius: 17px;
+  }
+  .mode-a-hero-image img { object-position: 56% center; }
+  .mode-a-image-label { left: 13px; bottom: 13px; padding: 9px 12px; font-size: 9px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .mode-a-hero-image { scroll-behavior: auto; }
 }
 </style>
 
