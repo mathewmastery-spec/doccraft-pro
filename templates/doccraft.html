@@ -1779,7 +1779,11 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   <div class="mode-a-hero-image" aria-label="Document Studio introduction">
     <img src="https://images.pexels.com/photos/6694540/pexels-photo-6694540.jpeg?auto=compress&cs=tinysrgb&w=2000" alt="A polished professional workspace for creating and refining documents" loading="eager" fetchpriority="high">
     <div class="mode-a-image-shade" aria-hidden="true"></div>
-    <div class="mode-a-image-label"><span class="mode-a-image-mark">✦</span><span>DOC CRAFT <i>·</i> DOCUMENT STUDIO</span></div>
+    <div class="mode-a-image-label">
+      <span class="mode-a-image-mark" aria-hidden="true">✦</span>
+      <span class="mode-a-image-copy"><strong>DOC CRAFT</strong><small>DOCUMENT STUDIO <i>·</i> PROFESSIONAL CREATION</small></span>
+      <span class="mode-a-image-index" aria-hidden="true">01 <i>/</i> 03</span>
+    </div>
   </div>
   <section class="hero">
     <div class="hero-left">
@@ -4089,14 +4093,23 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
   .mode-a-hero-image {
     position: relative;
     width: 100%;
-    height: clamp(210px, 29vw, 350px);
-    margin: 0 0 clamp(28px, 4vw, 48px);
+    height: clamp(270px, 35vw, 420px);
+    margin: 0 0 clamp(30px, 4.2vw, 50px);
     overflow: hidden;
     isolation: isolate;
-    border: 1px solid rgba(255,255,255,.78);
-    border-radius: 24px;
-    background: #e9e8df;
-    box-shadow: 0 22px 54px rgba(38,61,46,.13), 0 3px 12px rgba(38,61,46,.06);
+    border: 1px solid rgba(255,255,255,.92);
+    border-radius: 28px;
+    background: linear-gradient(145deg,#e9e4f5,#f7eaf0);
+    box-shadow: 0 24px 64px rgba(43,55,46,.15), 0 5px 18px rgba(43,55,46,.07), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .mode-a-hero-image:after {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid rgba(255,255,255,.26);
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 1;
   }
   .mode-a-hero-image img {
     display: block;
@@ -4104,46 +4117,92 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
     height: 100%;
     object-fit: cover;
     object-position: center 48%;
-    filter: saturate(1.04) contrast(1.02);
+    filter: saturate(1.06) contrast(1.025);
+    transform: scale(1.005);
   }
   .mode-a-image-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg,rgba(17,29,25,.34),rgba(17,29,25,.04) 58%,transparent 100%),
-                linear-gradient(0deg,rgba(17,29,25,.20),transparent 46%);
+    background: linear-gradient(100deg,rgba(22,35,29,.30),rgba(22,35,29,.05) 58%,transparent 100%),
+                linear-gradient(0deg,rgba(14,25,20,.30),transparent 52%);
     pointer-events: none;
   }
   .mode-a-image-label {
     position: absolute;
-    left: clamp(16px,3vw,30px);
-    bottom: clamp(16px,2.5vw,25px);
-    display: inline-flex;
+    left: clamp(18px,3vw,34px);
+    right: clamp(18px,3vw,34px);
+    bottom: clamp(18px,2.6vw,28px);
+    z-index: 2;
+    display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 15px;
-    border: 1px solid rgba(255,255,255,.34);
-    border-radius: 999px;
-    background: rgba(255,255,255,.88);
-    color: #294333;
-    box-shadow: 0 8px 24px rgba(12,24,18,.12);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    font: 800 10px/1 'DM Sans',sans-serif;
-    letter-spacing: .16em;
+    gap: 13px;
+    width: fit-content;
+    max-width: calc(100% - 36px);
+    padding: 13px 17px;
+    border: 1px solid rgba(255,255,255,.62);
+    border-radius: 16px;
+    background: rgba(255,255,255,.82);
+    color: #344638;
+    box-shadow: 0 12px 32px rgba(17,31,23,.17), inset 0 1px 0 rgba(255,255,255,.8);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
   }
-  .mode-a-image-label i { color: #987a42; font-style: normal; padding: 0 2px; }
-  .mode-a-image-mark { color: #7658a6; font-size: 14px; }
+  .mode-a-image-mark {
+    display: grid;
+    place-items: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(145deg,#eee5f5,#e4eee7);
+    color: #7658a6;
+    font-size: 21px;
+  }
+  .mode-a-image-copy { display: grid; gap: 4px; }
+  .mode-a-image-copy strong {
+    color: #294333;
+    font: 800 11px/1.1 'DM Sans',sans-serif;
+    letter-spacing: .15em;
+  }
+  .mode-a-image-copy small {
+    color: #6e796f;
+    font: 700 9px/1.2 'DM Sans',sans-serif;
+    letter-spacing: .12em;
+  }
+  .mode-a-image-copy i { color: #987a42; font-style: normal; padding: 0 2px; }
+  .mode-a-image-index {
+    margin-left: 14px;
+    padding-left: 15px;
+    border-left: 1px solid rgba(75,91,77,.18);
+    color: #637568;
+    font: 800 10px/1 'DM Sans',sans-serif;
+    letter-spacing: .1em;
+    white-space: nowrap;
+  }
+  .mode-a-image-index i { color: #a99b83; font-style: normal; padding: 0 3px; }
   #potentialLabHome,
   #careerLaunchHome { background: transparent !important; }
 }
 @media(max-width:680px) {
   .mode-a-hero-image {
-    height: clamp(190px, 57vw, 270px);
-    margin-bottom: 26px;
-    border-radius: 17px;
+    height: clamp(230px, 62vw, 310px);
+    margin-bottom: 27px;
+    border-radius: 20px;
   }
+  .mode-a-hero-image:after { inset: 7px; border-radius: 14px; }
   .mode-a-hero-image img { object-position: 56% center; }
-  .mode-a-image-label { left: 13px; bottom: 13px; padding: 9px 12px; font-size: 9px; }
+  .mode-a-image-label {
+    left: 14px; right: 14px; bottom: 14px;
+    max-width: calc(100% - 28px);
+    gap: 10px; padding: 10px 12px; border-radius: 13px;
+  }
+  .mode-a-image-mark { flex-basis: 34px; width: 34px; height: 34px; font-size: 18px; }
+  .mode-a-image-copy strong { font-size: 9px; }
+  .mode-a-image-copy small { font-size: 7px; letter-spacing: .08em; }
+  .mode-a-image-index { margin-left: auto; padding-left: 9px; font-size: 8px; }
+}
+@media(max-width:390px) {
+  .mode-a-image-index { display: none; }
 }
 @media(prefers-reduced-motion:reduce) {
   .mode-a-hero-image { scroll-behavior: auto; }
