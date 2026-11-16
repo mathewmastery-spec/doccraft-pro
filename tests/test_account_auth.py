@@ -1,4 +1,5 @@
 from models import User, Wallet
+from extensions import db
 import auth_routes
 
 
@@ -12,11 +13,11 @@ def test_registration_verifies_existing_wallet_and_ignores_submitted_email(clien
     monkeypatch.setattr(auth_routes, "_send_verification", lambda email, token: sent.update(email=email, token=token))
     with app.app_context():
         user = User(email="owner@example.com", full_name="Wallet Owner", country_code="KE")
-        app.extensions["sqlalchemy"].session.add(user)
-        app.extensions["sqlalchemy"].session.flush()
+        db.session.add(user)
+        db.session.flush()
         wallet = Wallet(user_id=user.id, currency="KES", balance_credits=27)
-        app.extensions["sqlalchemy"].session.add(wallet)
-        app.extensions["sqlalchemy"].session.commit()
+        db.session.add(wallet)
+        db.session.commit()
 
     response = client.post("/api/auth/register", json={
         "email": "owner@example.com",
