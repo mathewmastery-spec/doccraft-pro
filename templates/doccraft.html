@@ -26,6 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -60,6 +61,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .workspace-choice-explore:not(.is-active) .workspace-choice-mark{color:var(--accent2)}
 .workspace-live-dot{width:5px;height:5px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 3px rgba(99,102,241,.12);opacity:.8}
 .workspace-nav-trigger{display:inline-flex;align-items:center;gap:7px;padding-inline:10px}
+.workspace-more-label{font-family:"Caveat",cursive;font-size:22px;font-weight:700;line-height:1;color:#111!important;letter-spacing:.15px;transform:rotate(-2deg);display:inline-block}
+.workspace-nav-trigger .workspace-chevron{font-family:"Inter",sans-serif}
 .workspace-nav-trigger .workspace-chevron{font-size:11px;color:var(--text3);transition:transform .16s}
 .workspace-nav-trigger[aria-expanded="true"] .workspace-chevron{transform:rotate(180deg)}
 .workspace-nav-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:150;width:min(420px,calc(100vw - 32px));padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
@@ -82,7 +85,7 @@ body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccr
 .nav-tools[data-mode="career"]>.nav-tool{display:none}
 .workspace-home-enter{animation:workspaceHomeEnter .48s cubic-bezier(.2,.75,.25,1) both}
 @keyframes workspaceHomeEnter{from{opacity:.35;transform:translateY(9px) scale(.996);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
-.workspace-discovery{position:fixed;right:24px;bottom:24px;z-index:120;display:flex;align-items:center;gap:12px;width:min(355px,calc(100vw - 32px));padding:14px 15px;border:1px solid rgba(96,165,250,.3);border-radius:17px;background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 94%,#2563eb 6%),var(--surface2));box-shadow:0 16px 48px rgba(15,23,42,.2),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px);color:var(--text);transition:transform .25s ease,opacity .25s ease,border-color .25s ease}
+.workspace-discovery{position:fixed;right:22px;bottom:96px;z-index:120;max-height:calc(100dvh - 120px);overflow:auto;display:flex;align-items:center;gap:12px;width:min(355px,calc(100vw - 32px));padding:14px 15px;border:1px solid rgba(96,165,250,.3);border-radius:17px;background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 94%,#2563eb 6%),var(--surface2));box-shadow:0 16px 48px rgba(15,23,42,.2),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px);color:var(--text);transition:transform .25s ease,opacity .25s ease,border-color .25s ease}
 .workspace-discovery[hidden]{display:none!important}
 .workspace-discovery-copy{min-width:0;flex:1}
 .workspace-discovery-kicker{display:flex;align-items:center;gap:6px;margin-bottom:4px;color:var(--accent);font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
@@ -92,7 +95,7 @@ body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccr
 .workspace-discovery-go{border:0;border-radius:9px;padding:9px 11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font:700 11px 'Inter',sans-serif;white-space:nowrap;cursor:pointer;box-shadow:0 5px 14px rgba(37,99,235,.2)}
 .workspace-discovery-dismiss{display:grid;place-items:center;width:27px;height:27px;border:0;border-radius:8px;background:transparent;color:var(--text3);font-size:17px;cursor:pointer}
 .workspace-discovery-dismiss:hover{background:var(--surface);color:var(--text)}
-.workspace-discovery-minimized{position:fixed;right:24px;bottom:24px;z-index:120;display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(96,165,250,.32);border-radius:999px;background:var(--surface);color:var(--text2);font:650 11px 'Inter',sans-serif;box-shadow:var(--shadow);cursor:pointer}
+.workspace-discovery-minimized{position:fixed;right:22px;bottom:96px;z-index:120;display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(96,165,250,.32);border-radius:999px;background:var(--surface);color:var(--text2);font:650 11px 'Inter',sans-serif;box-shadow:var(--shadow);cursor:pointer}
 .workspace-discovery-minimized[hidden]{display:none!important}
 .workspace-discovery-minimized span{color:var(--accent2)}
 @media(max-width:900px){.workspace-nav-menu{right:0}}
@@ -107,8 +110,8 @@ body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccr
   .workspace-nav-menu{position:absolute;top:calc(100% + 5px);right:0;width:min(420px,calc(100vw - 28px));max-height:min(62dvh,480px);overflow:auto;grid-template-columns:1fr;margin-top:0;padding:10px;box-shadow:var(--shadow)}
   .workspace-nav-group{padding-bottom:4px}
   .workspace-nav-menu button{min-height:46px}
-  .workspace-discovery{right:12px;bottom:14px;width:calc(100vw - 24px);padding:12px}
-  .workspace-discovery-minimized{right:14px;bottom:14px}
+  .workspace-discovery{right:12px;bottom:94px;width:calc(100vw - 24px);padding:12px;max-height:calc(100dvh - 112px)}
+  .workspace-discovery-minimized{right:14px;bottom:94px}
 }
 @media(prefers-reduced-motion:reduce){.workspace-home-enter{animation:none}.workspace-discovery{transition:none}}
 /* HOME */
@@ -1855,7 +1858,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
       <button type="button" class="workspace-choice is-active" data-mode-choice="documents" aria-pressed="true" onclick="selectWorkspace('documents')"><span class="workspace-choice-mark">▤</span><span>Active</span></button>
       <button type="button" class="workspace-choice workspace-choice-explore" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')"><span class="workspace-choice-mark">✧</span><span>Exploration</span><i class="workspace-live-dot" aria-hidden="true"></i></button>
     </div>
-    <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">More <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
+    <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()"><span class="workspace-more-label">More</span> <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
     <div class="workspace-nav-menu workspace-nav-panel" id="workspaceNavMenu" hidden aria-label="Account and assistance">
       <section class="workspace-nav-group">
         <h3>Accounts</h3>
