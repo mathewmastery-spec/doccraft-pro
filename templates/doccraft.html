@@ -4292,5 +4292,28 @@ body:has(#potentialLabHome:not([hidden])) .potential-primary{background:var(--ac
 })();
 </script>
 
+
+<script id="doccraft-auth-actions">
+async function logoutDocCraft(){
+  const button=document.querySelector('#billingPanel button[onclick="logoutDocCraft()"]');
+  if(button){button.disabled=true;button.textContent='Signing out…';}
+  try{
+    const response=await fetch('/api/auth/logout',{
+      method:'POST',
+      credentials:'same-origin',
+      headers:{'Accept':'application/json','X-Requested-With':'XMLHttpRequest'}
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.success)throw new Error(data.error||'Sign out failed. Please try again.');
+    try{sessionStorage.removeItem('doccraftBillingEmail');}catch(_){}
+    window.location.replace('/auth');
+  }catch(error){
+    if(button){button.disabled=false;button.textContent='Sign out';}
+    const status=document.getElementById('billingStatus');
+    if(status)status.textContent=error.message||'Could not sign out. Please try again.';
+  }
+}
+</script>
+
 </body>
 </html>
