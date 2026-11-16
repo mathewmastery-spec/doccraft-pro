@@ -3847,7 +3847,7 @@ async function loadSignedInAccount(){
     if(input){input.value=email;try{sessionStorage.setItem('doccraftBillingEmail',email);}catch(_){} }
     const profile=document.getElementById('careProfileInitial');
     const name=window.doccraftAccountName;
-    if(profile){const initials=name.split(/\\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('').toUpperCase();profile.textContent=initials||(email.charAt(0).toUpperCase()||'?');}
+    if(profile){const initials=name.split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('').toUpperCase();profile.textContent=initials||(email.charAt(0).toUpperCase()||'?');}
     const button=document.getElementById('careProfile');
     if(button)button.title=(name?name+' · ':'')+email;
     if(status)status.textContent='Signed in as '+email+'. Your wallet is linked to this verified account.';
