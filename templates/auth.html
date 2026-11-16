@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0f1117"><title>Sign in · DocCraft Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#0f1117;color:#e2e8f0;font-family:Inter,Arial,sans-serif}
+main{width:min(100%,440px);padding:32px;border:1px solid #2e3248;border-radius:20px;background:#1a1d27;box-shadow:0 24px 70px #0006}
+.brand{font-size:14px;font-weight:800;letter-spacing:.3px;color:#a5b4fc}.brand span{color:#c4b5fd}
+h1{font-size:27px;margin:22px 0 8px}p{color:#94a3b8;font-size:13px;line-height:1.65;margin:0 0 22px}
+.tabs{display:flex;gap:6px;padding:5px;border-radius:11px;background:#22263a;margin-bottom:20px}
+.tabs button{flex:1;padding:10px;border:0;border-radius:8px;background:transparent;color:#94a3b8;font:600 13px Inter;cursor:pointer}
+.tabs button.active{background:#363b59;color:#fff}
+label{display:block;margin:14px 0 7px;font-size:12px;font-weight:650;color:#cbd5e1}
+input{width:100%;padding:13px;border:1px solid #3a405a;border-radius:10px;background:#10131d;color:#fff;font:14px Inter;outline:none}
+input:focus{border-color:#818cf8;box-shadow:0 0 0 3px #6366f133}
+.primary{width:100%;margin-top:20px;padding:13px;border:0;border-radius:10px;background:linear-gradient(110deg,#6366f1,#8b5cf6);color:#fff;font:700 14px Inter;cursor:pointer}
+.secondary{width:100%;margin-top:10px;padding:10px;border:1px solid #3a405a;border-radius:10px;background:transparent;color:#cbd5e1;font:600 12px Inter;cursor:pointer}
+.note{min-height:36px;margin-top:14px;color:#a5b4fc;font-size:12px;line-height:1.5}
+.hidden{display:none!important}.foot{margin-top:18px;color:#64748b;font-size:11px;text-align:center}
+</style></head><body><main>
+<div class="brand">✦ DOCCRAFT <span>PRO</span></div>
+<h1 id="heading">Welcome back</h1><p id="intro">Sign in to access your documents and your protected credit wallet.</p>
+<div class="tabs"><button id="loginTab" class="active" type="button">Sign in</button><button id="registerTab" type="button">Create account</button></div>
+<form id="authForm">
+<div id="nameWrap" class="hidden"><label for="fullName">Full name</label><input id="fullName" autocomplete="name" maxlength="255"></div>
+<label for="email">Email address</label><input id="email" type="email" autocomplete="email" required maxlength="254">
+<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128">
+<button class="primary" id="submit" type="submit">Sign in securely</button>
+</form>
+<button id="resend" class="secondary hidden" type="button">Resend verification email</button>
+<div class="note" id="status" role="status" aria-live="polite"></div>
+<div class="foot">Your wallet is tied to your verified account, not an email typed into a form.</div>
+</main>
+<script>
+(()=>{let mode='login';const $=id=>document.getElementById(id);function setMode(next){mode=next;const registering=mode==='register';$('loginTab').classList.toggle('active',!registering);$('registerTab').classList.toggle('active',registering);$('nameWrap').classList.toggle('hidden',!registering);$('fullName').required=registering;$('heading').textContent=registering?'Create your account':'Welcome back';$('intro').textContent=registering?'Verify your email address to protect your account and existing wallet.':'Sign in to access your documents and your protected credit wallet.';$('submit').textContent=registering?'Create account & verify email':'Sign in securely';$('password').autocomplete=registering?'new-password':'current-password';$('resend').classList.add('hidden');$('status').textContent='';}
+$('loginTab').onclick=()=>setMode('login');$('registerTab').onclick=()=>setMode('register');
+$('authForm').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit');btn.disabled=true;$('status').textContent='Please wait…';try{const payload={email:$('email').value.trim(),password:$('password').value,full_name:$('fullName').value.trim()};const r=await fetch(mode==='register'?'/api/auth/register':'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Could not complete this request.');if(mode==='register'){$('status').textContent=d.message;$('resend').classList.remove('hidden');}else{window.location.assign('/');}}catch(err){$('status').textContent=err.message;$('resend').classList.toggle('hidden',!err.message.toLowerCase().includes('verify'));}finally{btn.disabled=false;}});
+$('resend').onclick=async()=>{const r=await fetch('/api/auth/resend-verification',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('email').value.trim()})});const d=await r.json();$('status').textContent=d.message||d.error||'Please try again later.';};
+fetch('/api/auth/session').then(r=>r.json()).then(d=>{if(d.authenticated)location.replace('/');}).catch(()=>{});
+})();
+</script></body></html>
