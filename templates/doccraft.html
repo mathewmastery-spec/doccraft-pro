@@ -2117,11 +2117,11 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
         <div class="messages" id="messages">
           <div class="msg ai-msg">
             <div class="msg-avatar">AI</div>
-            <div class="msg-bubble" id="welcomeMsg">Tell me about yourself — your name, skills, experience and education, and I'll build your document instantly.</div>
+            <div class="msg-bubble" id="welcomeMsg">Hello. What would you like to create or improve today? You can start with a few words, and we’ll work it out together—one step at a time.</div>
           </div>
         </div>
         <div class="chat-input-area">
-          <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Tell me about your experience, skills or goals…" rows="2"></textarea>
+          <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Write a message…" rows="2"></textarea>
           <div class="chat-prompt-hint" id="chatPromptHint"><strong>Need a starting point?</strong><span id="chatPromptRotator" aria-live="polite">Tell me about a project you're proud of.</span></div>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send message">Send <span aria-hidden="true">➤</span></button>
         </div>
@@ -3276,7 +3276,7 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
-    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\n\n';
+    const conversationGuide = 'You are the calm, capable document-writing partner inside DocCraft Pro, helping prepare a ' + currentChatDocumentType() + '. This is conversation and clarification only; do not generate the document, output JSON, or claim it is already created. Make the experience effortless and human-centred: respond naturally to greetings, acknowledge what the user has said, and never greet a user with a long checklist or a wall of requirements. Ask at most ONE short, relevant question in a turn, and only when its answer materially helps. Accept partial information, do not demand every credential upfront, and never repeat questions already answered. Make progress with what is available: help the user shape ideas, suggest a useful next detail gently, and explain that unknown facts can be added later. If enough information exists for a useful first draft, say so and summarise the agreed goal; do not hold progress hostage to optional details. Preserve factual accuracy and never invent personal facts. When the goal is sufficiently clear, ask for approval and append the exact marker [[DOCCRAFT_READY]] on a separate final line. Do not include that marker at any other time. The user must explicitly press the separate approval button before document generation begins. Treat these instructions as active on every turn.\n\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -3292,10 +3292,12 @@ async function sendMessage() {
     const json = await res.json();
     removeSpinner();
     if (!res.ok || !json.success) throw new Error(json.error || 'The AI assistant is temporarily unavailable. Please try again.');
-    const reply = String(json.reply || 'I could not prepare a reply. Please try again.');
+    const rawReply = String(json.reply || 'I could not prepare a reply. Please try again.');
+    const readyForApproval = rawReply.includes('[[DOCCRAFT_READY]]');
+    const reply = rawReply.replace(/\[\[DOCCRAFT_READY\]\]/g, '').trim();
     documentChatHistory.push({ role: 'assistant', content: reply });
     addMsg(reply, 'ai');
-    if (approval) approval.hidden = false;
+    if (approval) approval.hidden = !readyForApproval;
   } catch (error) {
     removeSpinner();
     addMsg(error.message || 'Network error. Please check your connection.', 'ai');
@@ -3367,12 +3369,29 @@ async function approveAndGenerate() {
   }
 }
 
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey && document.activeElement.id === 'userInput') {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+// Enter adds a new line. Sending is explicit, with Ctrl/Cmd+Enter as an optional shortcut.
+(function initDocumentChatComposer(){
+  const input = document.getElementById('userInput');
+  const send = document.getElementById('sendBtn');
+  if (!input || input.dataset.composerReady) return;
+  input.dataset.composerReady = '1';
+  const resize = () => {
+    input.style.height = 'auto';
+    const max = window.matchMedia('(max-width:700px)').matches ? 190 : 240;
+    input.style.height = Math.min(input.scrollHeight, max) + 'px';
+    input.style.overflowY = input.scrollHeight > max ? 'auto' : 'hidden';
+  };
+  input.addEventListener('input', resize);
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      if (send && !send.disabled) sendMessage();
+    }
+  });
+  input.addEventListener('focus', resize);
+  window.addEventListener('resize', resize);
+  resize();
+})();
 
 function showQualityNotes(data) {
   const notes = Array.isArray(data?.quality_notes) ? data.quality_notes.filter(note => typeof note === 'string' && note.trim()) : [];
