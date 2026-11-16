@@ -2122,7 +2122,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
         </div>
         <div class="chat-input-area">
           <textarea id="userInput" aria-label="Describe the document you want to create" aria-describedby="chatPromptHint" placeholder="Write a message…" rows="2"></textarea>
-          <div class="chat-prompt-hint" id="chatPromptHint"><strong>Need a starting point?</strong><span id="chatPromptRotator" aria-live="polite">Tell me about a project you're proud of.</span></div>
+          <div class="chat-prompt-hint" id="chatPromptHint"><strong>Quick tip</strong><span>Enter adds a new line · Ctrl + Enter sends</span></div>
           <button class="send-btn" id="sendBtn" onclick="sendMessage()" aria-label="Send message">Send <span aria-hidden="true">➤</span></button>
         </div>
           <div class="chat-approval" id="chatApproval" hidden>
@@ -3230,32 +3230,6 @@ function collectOrgData() {
   return { ...base, ...(extra[t] || {}) };
 }
 
-// Rotate gentle, practical writing prompts without inserting text into the user's message.
-(function initChatPromptRotator(){
-  const input=document.getElementById('userInput');
-  const hint=document.getElementById('chatPromptRotator');
-  if(!input||!hint)return;
-  const prompts=[
-    "Tell me about a project you're proud of.",
-    "What have you learned through work, school or volunteering?",
-    "Which skills do people rely on you for?",
-    "What achievement would you like an employer to notice?",
-    "Describe a challenge you helped solve.",
-    "What role, course or opportunity are you aiming for?",
-    "Share any training, practical work or community contribution.",
-    "What would make this CV reflect you more accurately?"
-  ];
-  let index=0;
-  const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(reduceMotion)return;
-  window.setInterval(()=>{
-    if(document.activeElement===input||input.value.trim())return;
-    index=(index+1)%prompts.length;
-    hint.textContent=prompts[index];
-    input.placeholder=prompts[index];
-  },4800);
-})();
-
 let documentChatHistory = [];
 
 function currentChatDocumentType() {
@@ -3269,6 +3243,7 @@ async function sendMessage() {
   if (!msg) return;
   addMsg(msg, 'user');
   input.value = '';
+  input.dispatchEvent(new Event('input', { bubbles: true }));
   const btn = document.getElementById('sendBtn');
   const approval = document.getElementById('chatApproval');
   if (approval) approval.hidden = true;
@@ -3301,6 +3276,8 @@ async function sendMessage() {
     if (approval) approval.hidden = !readyForApproval;
   } catch (error) {
     removeSpinner();
+    input.value = msg;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
     addMsg(error.message || 'Network error. Please check your connection.', 'ai');
   } finally {
     btn.disabled = false;
