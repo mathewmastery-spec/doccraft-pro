@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - feature/billing-credit-system
+      - feature/secure-account-auth
   pull_request:
     branches:
       - main
