@@ -377,7 +377,6 @@ Disallow: /health
         request_key = "usage:" + action_id
         fingerprint = _request_fingerprint("usage:" + action, action_id, {})
         try:
-            user = ensure_user(email, country_code="KE")
             if not user.is_active:
                 return jsonify({"success": False, "error": "This account is inactive."}), 403
 
