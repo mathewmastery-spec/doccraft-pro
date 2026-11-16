@@ -218,6 +218,11 @@ def create_app(test_config=None):
             or path.startswith("/api/profile")
             or path.startswith("/auth/google")
         )
+        if request.method == "POST" and path != "/api/payments/webhook":
+            fetch_site = request.headers.get("Sec-Fetch-Site", "").lower()
+            origin = request.headers.get("Origin")
+            if fetch_site == "cross-site" or (origin and urlparse(origin).netloc != request.host):
+                return jsonify({"success": False, "error": "Cross-site request rejected."}), 403
         if protected and authenticated_user() is None:
             return jsonify({"success": False, "error": "Sign in with your verified account to continue."}), 401
 
@@ -300,7 +305,6 @@ Disallow: /health
             return jsonify({"success": True, "preview_only": False, "wallet_balance": None})
         fingerprint = _request_fingerprint(doc_type, json.dumps(content, sort_keys=True, ensure_ascii=False, default=str), {})
         try:
-            user = ensure_user(email, country_code="KE")
             if not user.is_active:
                 return jsonify({"success": False, "error": "This account is inactive."}), 403
             existing = GenerationRequest.query.filter_by(request_key=request_key).first()
@@ -577,7 +581,6 @@ Disallow: /health
             return jsonify({"success": False, "error": "The request ID is too long."}), 400
 
         fingerprint = _request_fingerprint(doc_type, user_input.strip(), extra)
-        user = None
         wallet = None
         try:
             if not user.is_active:
