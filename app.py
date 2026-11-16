@@ -640,19 +640,12 @@ def create_app(test_config=None):
 
             context = ""
             if extra.get("currentData"):
-                context = "
-
-Existing data to merge with:
-" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
+                context = "\n\nExisting data to merge with:\n" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
             if document_tips.strip():
                 context += (
-                    "
-
-ADDITIONAL USER TIPS FOR THIS DOCUMENT (user-supplied; optional):
-"
+                    "\n\nADDITIONAL USER TIPS FOR THIS DOCUMENT (user-supplied; optional):\n"
                     + document_tips.strip()
-                    + "
-Use relevant details or instructions where they fit the selected document. "
+                    + "\nUse relevant details or instructions where they fit the selected document. "
                     "Do not treat suggestions as verified facts, do not invent missing information, "
                     "and flag material conflicts or missing facts in quality_notes."
                 )
