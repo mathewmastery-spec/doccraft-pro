@@ -1,41 +1,171 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#0f1117"><title>Sign in · DocCraft Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#0f1117;color:#e2e8f0;font-family:Inter,Arial,sans-serif}
-main{width:min(100%,440px);padding:32px;border:1px solid #2e3248;border-radius:20px;background:#1a1d27;box-shadow:0 24px 70px #0006}
-.brand{font-size:14px;font-weight:800;letter-spacing:.3px;color:#a5b4fc}.brand span{color:#c4b5fd}
-h1{font-size:27px;margin:22px 0 8px}p{color:#94a3b8;font-size:13px;line-height:1.65;margin:0 0 22px}
-.tabs{display:flex;gap:6px;padding:5px;border-radius:11px;background:#22263a;margin-bottom:20px}
-.tabs button{flex:1;padding:10px;border:0;border-radius:8px;background:transparent;color:#94a3b8;font:600 13px Inter;cursor:pointer}
-.tabs button.active{background:#363b59;color:#fff}
-label{display:block;margin:14px 0 7px;font-size:12px;font-weight:650;color:#cbd5e1}
-input{width:100%;padding:13px;border:1px solid #3a405a;border-radius:10px;background:#10131d;color:#fff;font:14px Inter;outline:none}
-input:focus{border-color:#818cf8;box-shadow:0 0 0 3px #6366f133}
-.primary{width:100%;margin-top:20px;padding:13px;border:0;border-radius:10px;background:linear-gradient(110deg,#6366f1,#8b5cf6);color:#fff;font:700 14px Inter;cursor:pointer}
-.secondary{width:100%;margin-top:10px;padding:10px;border:1px solid #3a405a;border-radius:10px;background:transparent;color:#cbd5e1;font:600 12px Inter;cursor:pointer}
-.note{min-height:36px;margin-top:14px;color:#a5b4fc;font-size:12px;line-height:1.5}
-.hidden{display:none!important}.foot{margin-top:18px;color:#64748b;font-size:11px;text-align:center}
-</style></head><body><main>
-<div class="brand">✦ DOCCRAFT <span>PRO</span></div>
-<h1 id="heading">Welcome back</h1><p id="intro">Sign in to access your documents and your protected credit wallet.</p>
-<div class="tabs"><button id="loginTab" class="active" type="button">Sign in</button><button id="registerTab" type="button">Create account</button></div>
-<form id="authForm">
-<div id="nameWrap" class="hidden"><label for="fullName">Full name</label><input id="fullName" autocomplete="name" maxlength="255"></div>
-<label for="email">Email address</label><input id="email" type="email" autocomplete="email" required maxlength="254">
-<label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128">
-<button class="primary" id="submit" type="submit">Sign in securely</button>
-</form>
-<button id="resend" class="secondary hidden" type="button">Resend verification email</button>
-<div class="note" id="status" role="status" aria-live="polite"></div>
-<div class="foot">Your wallet is tied to your verified account, not an email typed into a form.</div>
-</main>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f7f7f0">
+  <meta name="description" content="Securely access your DocCraft Pro document studio and account.">
+  <title>Account access · DocCraft Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{color-scheme:light;--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--text3:#738171;--accent:#65509a;--accent2:#8062b6;--shadow:0 18px 48px rgba(49,64,47,.09}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% 5%,rgba(229,177,194,.19),transparent 34rem),radial-gradient(ellipse at 92% 8%,rgba(153,126,205,.13),transparent 31rem),var(--bg);color:var(--text);font-family:'DM Sans',Arial,sans-serif}
+    a{color:inherit}
+    .page{width:min(1160px,100% - 44px);margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+    .topbar{height:82px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(120,135,112,.15)}
+    .brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-weight:800;letter-spacing:.035em;font-size:15px}
+    .brand-mark{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(145deg,#65509a,#a16f9e);color:white;font-size:17px;box-shadow:0 7px 18px rgba(101,80,154,.2)}
+    .brand-pro{color:var(--accent);margin-left:3px}
+    .top-note{font-size:12px;color:var(--text2)}
+    .layout{flex:1;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(370px,.92fr);gap:clamp(36px,7vw,100px);align-items:center;padding:58px 0 68px}
+    .story{max-width:560px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid rgba(128,98,182,.2);border-radius:999px;background:rgba(238,225,241,.55);color:#745a91;font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+    .eyebrow:before{content:"";width:7px;height:7px;border-radius:50%;background:#8d70b4}
+    h1{max-width:540px;margin:23px 0 16px;font:700 clamp(38px,5.2vw,62px)/1.04 'Playfair Display',Georgia,serif;letter-spacing:-.04em;color:#263d2e}
+    h1 span{color:var(--accent)}
+    .story-copy{max-width:480px;margin:0;color:var(--text2);font-size:15px;line-height:1.8}
+    .feature-list{display:grid;gap:14px;margin:34px 0 0;padding:0;list-style:none}
+    .feature{display:flex;gap:13px;align-items:flex-start}
+    .feature-icon{width:34px;height:34px;flex:0 0 34px;border:1px solid var(--border);border-radius:11px;background:var(--surface);display:grid;place-items:center;color:var(--accent);font-weight:800}
+    .feature strong{display:block;font-size:12px;margin:1px 0 3px}
+    .feature small{display:block;color:var(--text2);font-size:11px;line-height:1.55}
+    .preview{margin-top:36px;padding:16px 18px;border:1px solid rgba(128,98,182,.15);border-radius:17px;background:linear-gradient(120deg,rgba(255,255,255,.76),rgba(244,238,247,.66));max-width:460px}
+    .preview-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;font-size:10px;color:var(--text2)}
+    .preview-pill{padding:5px 8px;border-radius:999px;background:#e9e4f0;color:#68528c;font-weight:700}
+    .preview-lines{display:grid;gap:7px}
+    .preview-lines i{height:6px;border-radius:99px;background:#dfe4d8;display:block}
+    .preview-lines i:nth-child(1){width:62%;background:#cfc3df}.preview-lines i:nth-child(2){width:92%}.preview-lines i:nth-child(3){width:78%}
+    .auth-card{width:100%;max-width:470px;justify-self:end;padding:clamp(25px,4vw,38px);border:1px solid rgba(255,255,255,.92);border-radius:24px;background:rgba(255,254,249,.94);box-shadow:0 24px 65px rgba(49,64,47,.11),inset 0 1px 0 #fff}
+    .card-kicker{color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+    .card-heading{margin:9px 0 6px;font-size:25px;letter-spacing:-.035em}
+    .card-copy{margin:0 0 23px;color:var(--text2);font-size:12px;line-height:1.65}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;margin-bottom:22px;border:1px solid var(--border);border-radius:12px;background:var(--surface2)}
+    .tabs button{min-height:39px;border:0;border-radius:8px;background:transparent;color:var(--text2);font:700 12px 'DM Sans',sans-serif;cursor:pointer}
+    .tabs button.active{background:var(--surface);color:var(--text);box-shadow:0 2px 8px rgba(40,55,38,.08)}
+    .field{margin:0 0 15px}
+    label{display:block;margin:0 0 7px;color:#40533f;font-size:11px;font-weight:800}
+    input{width:100%;height:47px;padding:0 13px;border:1px solid #d8dfd2;border-radius:11px;background:#fff;color:#263d2e;font:13px 'DM Sans',sans-serif;outline:none;transition:border-color .15s,box-shadow .15s}
+    input::placeholder{color:#98a293}
+    input:focus{border-color:#967bb4;box-shadow:0 0 0 3px rgba(128,98,182,.13)}
+    .password-wrap{position:relative}
+    .password-wrap input{padding-right:68px}
+    .reveal{position:absolute;right:9px;top:8px;height:31px;padding:0 8px;border:0;border-radius:7px;background:var(--surface2);color:var(--text2);font:700 10px 'DM Sans',sans-serif;cursor:pointer}
+    .primary{width:100%;min-height:48px;margin-top:7px;border:0;border-radius:11px;background:linear-gradient(110deg,#5d438f,#9670ad 58%,#a76f99);color:#fff;font:800 12px 'DM Sans',sans-serif;letter-spacing:.02em;cursor:pointer;box-shadow:0 9px 22px rgba(111,76,139,.18);transition:transform .15s,filter .15s}
+    .primary:hover{filter:brightness(1.04);transform:translateY(-1px)}
+    .primary:disabled,.secondary:disabled{opacity:.6;cursor:wait;transform:none}
+    .secondary{width:100%;min-height:42px;margin-top:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text2);font:700 11px 'DM Sans',sans-serif;cursor:pointer}
+    .status{min-height:20px;margin:14px 0 0;color:var(--accent);font-size:11px;line-height:1.6;overflow-wrap:anywhere}
+    .status.error{color:#a23d42}.status.success{color:#42734b}
+    .security-note{display:flex;gap:9px;align-items:flex-start;margin-top:17px;padding:12px;border:1px solid #e1e6d9;border-radius:11px;background:#f6f7ef;color:var(--text2);font-size:10px;line-height:1.55}
+    .security-note b{color:var(--text)}
+    .hidden{display:none!important}
+    .foot{padding:17px 0 24px;border-top:1px solid rgba(120,135,112,.15);display:flex;justify-content:space-between;gap:12px;color:var(--text3);font-size:10px}
+    @media(max-width:850px){.layout{grid-template-columns:1fr;gap:28px;padding:34px 0 42px}.story{max-width:650px}.story h1{max-width:650px}.feature-list{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.feature{display:block}.feature-icon{margin-bottom:8px}.preview{display:none}.auth-card{justify-self:start;max-width:600px}}
+    @media(max-width:560px){.page{width:min(100% - 28px,520px)}.topbar{height:66px}.top-note{font-size:10px}.layout{padding:28px 0 32px;gap:22px}.eyebrow{font-size:9px}h1{font-size:39px;margin:17px 0 10px}.story-copy{font-size:13px}.feature-list{grid-template-columns:1fr;gap:11px;margin-top:22px}.feature{display:flex}.feature-icon{margin:0}.auth-card{padding:23px 19px;border-radius:19px}.card-heading{font-size:23px}.foot{flex-direction:column}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="DocCraft Pro home"><span class="brand-mark">✦</span><span>DOCCRAFT<span class="brand-pro"> PRO</span></span></a>
+      <span class="top-note">Your documents. Your work. Protected.</span>
+    </header>
+    <main class="layout">
+      <section class="story" aria-labelledby="storyTitle">
+        <div class="eyebrow">Your professional workspace</div>
+        <h1 id="storyTitle">Make every document <span>count.</span></h1>
+        <p class="story-copy">Create, refine and manage professional documents in one focused studio. Sign in to continue your work and access the credits attached securely to your account.</p>
+        <ul class="feature-list">
+          <li class="feature"><span class="feature-icon">✓</span><span><strong>Your work stays yours</strong><small>Access your workspace through your own verified account.</small></span></li>
+          <li class="feature"><span class="feature-icon">✦</span><span><strong>Professional document tools</strong><small>Build resumes, CVs, letters and portfolios with care.</small></span></li>
+          <li class="feature"><span class="feature-icon">◈</span><span><strong>Protected credit wallet</strong><small>Your balance is linked to your account, not a typed email.</small></span></li>
+        </ul>
+        <div class="preview" aria-hidden="true"><div class="preview-top"><strong>DOCUMENT STUDIO</strong><span class="preview-pill">Workspace preview</span></div><div class="preview-lines"><i></i><i></i><i></i></div></div>
+      </section>
+      <section class="auth-card" aria-labelledby="heading">
+        <div class="card-kicker">Account access</div>
+        <h2 class="card-heading" id="heading">Welcome back</h2>
+        <p class="card-copy" id="intro">Sign in to continue to your DocCraft Pro workspace.</p>
+        <div class="tabs" role="tablist" aria-label="Account access">
+          <button id="loginTab" class="active" type="button" role="tab" aria-selected="true">Sign in</button>
+          <button id="registerTab" type="button" role="tab" aria-selected="false">Create account</button>
+        </div>
+        <form id="authForm" novalidate>
+          <div id="nameWrap" class="field hidden"><label for="fullName">Full name</label><input id="fullName" autocomplete="name" maxlength="255" placeholder="Your full name"></div>
+          <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div>
+          <div class="field"><label for="password">Password</label><div class="password-wrap"><input id="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128" placeholder="At least 10 characters"><button class="reveal" id="reveal" type="button" aria-label="Show password">Show</button></div></div>
+          <button class="primary" id="submit" type="submit">Sign in securely</button>
+        </form>
+        <button id="resend" class="secondary hidden" type="button">Resend verification email</button>
+        <div class="status" id="status" role="status" aria-live="polite"></div>
+        <div class="security-note"><span aria-hidden="true">◈</span><span><b>Account protection.</b> Email verification confirms ownership before sign-in. Your wallet access is checked on the server.</span></div>
+      </section>
+    </main>
+    <footer class="foot"><span>© DocCraft Pro · Document Studio</span><span>Secure account access</span></footer>
+  </div>
 <script>
-(()=>{let mode='login';const $=id=>document.getElementById(id);function setMode(next){mode=next;const registering=mode==='register';$('loginTab').classList.toggle('active',!registering);$('registerTab').classList.toggle('active',registering);$('nameWrap').classList.toggle('hidden',!registering);$('fullName').required=registering;$('heading').textContent=registering?'Create your account':'Welcome back';$('intro').textContent=registering?'Verify your email address to protect your account and existing wallet.':'Sign in to access your documents and your protected credit wallet.';$('submit').textContent=registering?'Create account & verify email':'Sign in securely';$('password').autocomplete=registering?'new-password':'current-password';$('resend').classList.add('hidden');$('status').textContent='';}
-$('loginTab').onclick=()=>setMode('login');$('registerTab').onclick=()=>setMode('register');
-$('authForm').addEventListener('submit',async e=>{e.preventDefault();const btn=$('submit');btn.disabled=true;$('status').textContent='Please wait…';try{const payload={email:$('email').value.trim(),password:$('password').value,full_name:$('fullName').value.trim()};const r=await fetch(mode==='register'?'/api/auth/register':'/api/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok||!d.success)throw new Error(d.error||'Could not complete this request.');if(mode==='register'){$('status').textContent=d.message;$('resend').classList.remove('hidden');}else{window.location.assign('/');}}catch(err){$('status').textContent=err.message;$('resend').classList.toggle('hidden',!err.message.toLowerCase().includes('verify'));}finally{btn.disabled=false;}});
-$('resend').onclick=async()=>{const r=await fetch('/api/auth/resend-verification',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:$('email').value.trim()})});const d=await r.json();$('status').textContent=d.message||d.error||'Please try again later.';};
-fetch('/api/auth/session').then(r=>r.json()).then(d=>{if(d.authenticated)location.replace('/');}).catch(()=>{});
+(()=> {
+  let mode='login';
+  const $=id=>document.getElementById(id);
+  const status=(message,kind='')=>{$('status').textContent=message;$('status').className='status'+(kind?' '+kind:'');};
+  function setMode(next){
+    mode=next;const registering=mode==='register';
+    $('loginTab').classList.toggle('active',!registering);$('registerTab').classList.toggle('active',registering);
+    $('loginTab').setAttribute('aria-selected',String(!registering));$('registerTab').setAttribute('aria-selected',String(registering));
+    $('nameWrap').classList.toggle('hidden',!registering);$('fullName').required=registering;
+    $('heading').textContent=registering?'Create your account':'Welcome back';
+    $('intro').textContent=registering?'Create your account. We will send a one-time verification link to confirm your email address.':'Sign in to continue to your DocCraft Pro workspace.';
+    $('submit').textContent=registering?'Create account & verify email':'Sign in securely';
+    $('password').autocomplete=registering?'new-password':'current-password';
+    $('resend').classList.add('hidden');status('');
+  }
+  $('loginTab').onclick=()=>setMode('login');$('registerTab').onclick=()=>setMode('register');
+  $('reveal').onclick=()=>{const show=$('password').type==='password';$('password').type=show?'text':'password';$('reveal').textContent=show?'Hide':'Show';$('reveal').setAttribute('aria-label',show?'Hide password':'Show password');};
+  $('authForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const email=$('email').value.trim(),password=$('password').value;
+    if(!$('email').checkValidity()){status('Enter a valid email address.','error');$('email').focus();return;}
+    if(password.length<10){status('Your password must contain at least 10 characters.','error');$('password').focus();return;}
+    if(mode==='register'&&!$('fullName').value.trim()){status('Enter your full name.','error');$('fullName').focus();return;}
+    const btn=$('submit');btn.disabled=true;status('Securely processing your request…');
+    try{
+      const endpoint=mode==='register'?'/api/auth/register':'/api/auth/login';
+      const response=await fetch(endpoint,{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email,password,full_name:$('fullName').value.trim()})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.success){
+        const message=data.error||'We could not complete your request. Please try again.';
+        status(message,'error');
+        $('resend').classList.toggle('hidden',!(response.status===403&&message.toLowerCase().includes('verify')));
+        return;
+      }
+      if(mode==='register'){
+        status(data.message||'Account created. Check your inbox for the verification link.','success');
+        $('resend').classList.remove('hidden');
+      }else{
+        status('Signed in. Opening your workspace…','success');
+        window.location.assign('/');
+      }
+    }catch(error){status('A connection problem prevented the request. Check your internet connection and try again.','error');}
+    finally{btn.disabled=false;}
+  });
+  $('resend').onclick=async()=>{
+    const email=$('email').value.trim();
+    if(!$('email').checkValidity()){status('Enter the email address used to create your account.','error');$('email').focus();return;}
+    const btn=$('resend');btn.disabled=true;status('Requesting a new verification link…');
+    try{
+      const response=await fetch('/api/auth/resend-verification',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.success)throw new Error(data.error||'Could not resend the verification link.');
+      status(data.message||'If the account needs verification, a new link has been sent.','success');
+    }catch(error){status(error.message||'Could not resend the verification link.','error');}
+    finally{btn.disabled=false;}
+  };
+  fetch('/api/auth/session',{credentials:'same-origin',headers:{'Accept':'application/json'}}).then(r=>r.json()).then(data=>{if(data.authenticated)location.replace('/');}).catch(()=>{});
 })();
-</script></body></html>
+</script>
+</body>
+</html>
