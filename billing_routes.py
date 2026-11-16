@@ -19,7 +19,8 @@ from models import (
     get_or_create_wallet,
     seed_default_credit_packages,
 )
-from payment_provider import PaymentProviderError, get_provider_adapter\nfrom auth_routes import authenticated_user
+from payment_provider import PaymentProviderError, get_provider_adapter
+from auth_routes import authenticated_user
 
 billing_bp = Blueprint("billing_bp", __name__, url_prefix="/api")
 
