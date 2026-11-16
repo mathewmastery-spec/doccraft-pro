@@ -3771,7 +3771,7 @@ verifyReturnedPayment();
  if(!opener||!backdrop||!close||!min||!form||!input||!send||!messages)return;
  const history=[];let attachmentText='',attachmentName='';
  const profileInitial=$('careProfileInitial'),profileButton=$('careProfile'),walletEmail=$('billingEmail');
- function syncProfile(){const email=String(walletEmail?.value||'').trim();const local=email.split('@')[0].replace(/[._-]+/g,' ').trim();const initial=(local||email).charAt(0).toLocaleUpperCase();if(profileInitial)profileInitial.textContent=initial||'?';if(profileButton)profileButton.title=email?'Account: '+email:'Open wallet to set your account email';}
+ function syncProfile(){const email=String(walletEmail?.value||'').trim();const name=String(window.doccraftAccountName||'').trim();const source=name||email.split('@')[0].replace(/[._-]+/g,' ').trim()||email;const initial=source.split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('').toLocaleUpperCase();if(profileInitial)profileInitial.textContent=initial||'?';if(profileButton)profileButton.title=email?(name?name+' · '+email:'Account: '+email):'Opening your account profile';}
  walletEmail?.addEventListener('input',syncProfile);walletEmail?.addEventListener('change',syncProfile);syncProfile();
  function show(){backdrop.hidden=false;backdrop.classList.remove('is-minimized');min.textContent='−';input.focus();requestAnimationFrame(()=>messages.scrollTop=messages.scrollHeight);}
  function hide(){backdrop.hidden=true;backdrop.classList.remove('is-minimized');opener.focus();}
@@ -3794,7 +3794,8 @@ async function refreshGoogleProfile(){
   const email=(document.getElementById('billingEmail')?.value||'').trim().toLowerCase();
   const button=document.getElementById('googleProfileBtn'),status=document.getElementById('googleProfileStatus'),avatar=document.getElementById('careProfile');
   if(!button||!avatar)return;
-  const fallback=(email.split('@')[0].replace(/[._-]+/g,' ').trim().charAt(0)||'?').toUpperCase();
+  const accountName=String(window.doccraftAccountName||'').trim();
+  const fallback=(accountName.split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('')||email.split('@')[0].replace(/[._-]+/g,' ').trim().charAt(0)||'?').toUpperCase();
   avatar.replaceChildren(document.createTextNode(fallback));
   button.textContent='Connect Google profile';
   if(!email){if(status)status.textContent='Enter your wallet email to connect your Google profile.';return;}
@@ -3831,6 +3832,30 @@ async function toggleGoogleProfile(){
     window.location.assign('/auth/google/start');
   }catch(error){if(status)status.textContent=error.message||'Google connection is unavailable.';button.disabled=false;}
 }
+async function loadSignedInAccount(){
+  const input=document.getElementById('billingEmail');
+  const status=document.getElementById('billingStatus');
+  try{
+    const response=await fetch('/api/auth/session',{credentials:'same-origin',headers:{'Accept':'application/json','Cache-Control':'no-cache'}});
+    const data=await response.json();
+    if(!response.ok||!data.authenticated||!data.user?.email){
+      if(status)status.textContent='Your verified account could not be loaded. Please sign in again.';
+      return;
+    }
+    const email=String(data.user.email).trim().toLowerCase();
+    window.doccraftAccountName=String(data.user.full_name||'').trim();
+    if(input){input.value=email;try{sessionStorage.setItem('doccraftBillingEmail',email);}catch(_){} }
+    const profile=document.getElementById('careProfileInitial');
+    const name=window.doccraftAccountName;
+    if(profile){const initials=name.split(/\\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('').toUpperCase();profile.textContent=initials||(email.charAt(0).toUpperCase()||'?');}
+    const button=document.getElementById('careProfile');
+    if(button)button.title=(name?name+' · ':'')+email;
+    if(status)status.textContent='Signed in as '+email+'. Your wallet is linked to this verified account.';
+    await refreshCreditBalance();
+    await refreshGoogleProfile();
+  }catch(_){if(status)status.textContent='Could not load your signed-in account. Refresh the page to retry.';}
+}
+loadSignedInAccount();
 document.getElementById('billingEmail')?.addEventListener('input',refreshGoogleProfile);
 document.getElementById('billingEmail')?.addEventListener('change',refreshGoogleProfile);
 window.addEventListener('DOMContentLoaded',refreshGoogleProfile);
