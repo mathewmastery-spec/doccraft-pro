@@ -3275,6 +3275,8 @@ async function sendMessage() {
     if (approval) approval.hidden = !readyForApproval;
   } catch (error) {
     removeSpinner();
+    const lastMessage = documentChatHistory[documentChatHistory.length - 1];
+    if (lastMessage?.role === 'user' && lastMessage.content === msg) documentChatHistory.pop();
     input.value = msg;
     input.dispatchEvent(new Event('input', { bubbles: true }));
     addMsg(error.message || 'Network error. Please check your connection.', 'ai');
