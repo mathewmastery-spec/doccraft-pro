@@ -13,7 +13,16 @@ from extensions import db
 from models import AuthAccount, AuthToken, User
 
 auth_bp = Blueprint("auth_bp", __name__)
-TOKEN_MINUTES = 30\n\n\ndef authenticated_user():\n    user_id = session.get("doccraft_user_id")\n    user = db.session.get(User, user_id) if user_id else None\n    account = AuthAccount.query.filter_by(user_id=user.id).first() if user else None\n    if not user or not user.is_active or not account or not account.email_verified:\n        return None\n    return user
+TOKEN_MINUTES = 30
+
+
+def authenticated_user():
+    user_id = session.get("doccraft_user_id")
+    user = db.session.get(User, user_id) if user_id else None
+    account = AuthAccount.query.filter_by(user_id=user.id).first() if user else None
+    if not user or not user.is_active or not account or not account.email_verified:
+        return None
+    return user
 
 
 def _valid_email(value):
