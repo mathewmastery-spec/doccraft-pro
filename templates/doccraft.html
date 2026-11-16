@@ -4427,8 +4427,13 @@ async function logoutDocCraft(){
 #dcFocusStudio .dc-focus-work{display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;min-height:0}
 #dcFocusStudio .dc-focus-hint{flex:0 0 auto}
 #dcFocusStudio #dcFocusEditor{display:block;box-sizing:border-box;flex:0 1 auto;height:300px;min-height:0;max-height:100%;margin-top:auto;resize:none;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:18px;}
-#dcFocusStudio.dc-keyboard-open .dc-focus-work{min-height:0}
-#dcFocusStudio.dc-keyboard-open #dcFocusEditor{max-height:100%;}
+/* Reclaim vertical space on phones when the keyboard is open so the editor can use the larger writing area. */
+#dcFocusStudio.dc-keyboard-open .dc-focus-head,
+#dcFocusStudio.dc-keyboard-open .dc-focus-progress,
+#dcFocusStudio.dc-keyboard-open .dc-focus-steps{display:none!important}
+#dcFocusStudio.dc-keyboard-open .dc-focus-body{flex:1 1 auto;min-height:0}
+#dcFocusStudio.dc-keyboard-open .dc-focus-work{min-height:0;padding:6px 10px}
+#dcFocusStudio.dc-keyboard-open #dcFocusEditor{height:300px;min-height:180px;max-height:100%;flex:1 1 auto}
 
 </style>
 
