@@ -4391,6 +4391,18 @@ async function logoutDocCraft(){
 #formContent .dc-focus-launch{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:7px 10px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--text2);font:600 11px Inter,sans-serif;cursor:pointer}
 #formContent .dc-focus-launch:hover{border-color:var(--accent);color:var(--text)}
 #dcFocusStudio[hidden]{display:none!important}
+/* Focus Studio follows DocCraft's ivory, forest and plum palette. */
+#dcFocusStudio{--bg:#f7f7f0;--surface:#fffef9;--surface2:#f0f1e7;--border:#dce2d3;--text:#263d2e;--text2:#586b59;--accent:#4b328d;--accent2:#8062b6;}
+#dcFocusStudio .dc-focus-foot{flex:0 0 auto;position:relative;z-index:5;background:var(--surface);padding-bottom:max(10px,env(safe-area-inset-bottom))}
+#dcFocusStudio .dc-focus-body{overflow:hidden;flex:1 1 0;min-height:0}
+#dcFocusStudio .dc-focus-work{overflow:hidden;flex:1 1 0}
+#dcFocusStudio #dcFocusEditor{flex:1 1 0;min-height:0;overflow-y:auto}
+#dcFocusStudio .dc-focus-foot button{background:var(--surface2);color:var(--text);border-color:var(--border)}
+#dcFocusStudio .dc-focus-foot .dc-focus-done{background:linear-gradient(135deg,#4b328d,#8062b6);color:#fff}
+#dcFocusStudio.dc-keyboard-open .dc-focus-hint{display:none}
+#dcFocusStudio.dc-keyboard-open .dc-focus-work{padding-top:6px;padding-bottom:6px}
+#dcFocusStudio.dc-keyboard-open .dc-focus-foot{padding-top:6px;padding-bottom:max(6px,env(safe-area-inset-bottom))}
+#dcFocusStudio.dc-keyboard-open .dc-focus-foot button{min-height:34px;padding:6px 10px}
 #dcFocusStudio{position:fixed;inset:0;z-index:1200;display:flex;flex-direction:column;background:var(--bg);color:var(--text);padding:clamp(12px,3vw,28px);padding-bottom:max(12px,env(safe-area-inset-bottom))}
 #dcFocusStudio .dc-focus-shell{width:min(100%,920px);height:100%;min-height:0;margin:auto;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:20px;background:var(--surface);box-shadow:0 24px 80px rgba(15,23,42,.22);overflow:hidden}
 .dc-focus-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border)}
@@ -4450,7 +4462,7 @@ async function logoutDocCraft(){
  }
  function init(){const root=$('formContent');if(!root)return;enhance(root);if(observer)observer.disconnect();observer=new MutationObserver(()=>enhance(root));observer.observe(root,{childList:true,subtree:true});}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
- function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;o.style.height=(v?v.height:window.innerHeight)+'px';o.style.top=(v?v.offsetTop:0)+'px';}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
+ function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;const h=v?v.height:window.innerHeight;o.style.height=h+'px';o.style.top=(v?v.offsetTop:0)+'px';o.classList.toggle('dc-keyboard-open',!!v&&window.innerHeight-h>100);}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
 })();
 </script>
 </body>
