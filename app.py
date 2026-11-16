@@ -455,20 +455,17 @@ def create_app(test_config=None):
                 reader = PdfReader(io.BytesIO(raw))
                 if len(reader.pages) > 25:
                     return jsonify({"success": False, "error": "PDFs are limited to 25 pages."}), 413
-                extracted = "
-".join((page.extract_text() or "") for page in reader.pages)
+                extracted = "\n".join((page.extract_text() or "") for page in reader.pages)
                 if not extracted.strip():
                     return jsonify({"success": False, "error": "No selectable text was found in this PDF. Try a text-based PDF or paste the relevant information."}), 422
             elif extension == "docx":
                 from docx import Document
                 import io
                 document = Document(io.BytesIO(raw))
-                extracted = "
-".join(p.text for p in document.paragraphs if p.text.strip())
+                extracted = "\n".join(p.text for p in document.paragraphs if p.text.strip())
                 for table in document.tables:
                     for row in table.rows:
-                        extracted += "
-" + " | ".join(cell.text for cell in row.cells)
+                        extracted += "\n" + " | ".join(cell.text for cell in row.cells)
             else:
                 provider = str(app.config.get("AI_PROVIDER") or os.getenv("AI_PROVIDER") or "openai").strip().lower()
                 if provider != "gemini":
