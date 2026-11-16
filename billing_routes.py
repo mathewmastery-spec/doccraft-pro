@@ -15,7 +15,6 @@ from models import (
     PaymentTransaction,
     User,
     Wallet,
-    ensure_user,
     get_or_create_wallet,
     seed_default_credit_packages,
 )
@@ -170,7 +169,7 @@ def checkout():
             })
         return _json_error("A checkout with this reference is already being processed. Please retry with a new checkout reference.", 409)
 
-    user = ensure_user(email, full_name=body.get("full_name"), country_code=body.get("country_code") or "KE")
+    user = authenticated_user()
     currency = (package.currency or "KES").upper()
     amount_cents = int(package.price_cents)
     if amount_cents <= 0 or int(package.credit_units) <= 0:
