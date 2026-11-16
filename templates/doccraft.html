@@ -4419,7 +4419,7 @@ async function logoutDocCraft(){
  const $=id=>document.getElementById(id);
  function fields(){const root=$('formContent');return root?[...root.querySelectorAll('input:not([type=file]):not([type=hidden]),textarea,select')].filter(e=>!e.disabled&&!e.closest('[hidden]')&&e.offsetParent!==null):[];}
  function visible(el){if(!el)return;requestAnimationFrame(()=>setTimeout(()=>{const h=window.visualViewport?.height||innerHeight,r=el.getBoundingClientRect();if(r.bottom>h-24||r.top<12)el.scrollIntoView({block:'center',behavior:'smooth'});},180));}
- function grow(el){el.style.height='auto';el.style.height=Math.max(88,el.scrollHeight)+'px';}
+ function grow(el){const base=88;el.style.height='auto';const h=Math.max(base,el.scrollHeight);el.style.height=h+'px';if(el===document.activeElement){el.style.marginTop=Math.min(0,base-h)+'px';el.style.marginBottom='0px';}else{el.style.marginTop='';el.style.marginBottom='';}}
  function quickNext(el){const a=fields(),n=a[a.indexOf(el)+1];if(n){n.focus({preventScroll:true});visible(n);}else el.blur();}
  function ensure(){
   if($('dcFocusStudio'))return;
@@ -4445,7 +4445,7 @@ async function logoutDocCraft(){
  function move(d){sync();const n=studioIndex+d;if(n<0)return;if(n>=studioFields.length){close();return;}studioIndex=n;paint();}
  function close(){sync();$('dcFocusStudio').hidden=true;document.body.style.overflow='';const el=studioField;studioField=null;if(el){el.focus({preventScroll:true});visible(el);}}
  function enhance(root){
-  root.querySelectorAll('textarea').forEach(el=>{if(el.dataset.dcAdaptive)return;el.dataset.dcAdaptive='1';el.classList.add('dc-auto-grow');grow(el);el.addEventListener('input',()=>grow(el));el.addEventListener('focus',()=>visible(el));const g=el.closest('.form-group');if(g&&!g.querySelector('.dc-focus-launch')){const b=document.createElement('button');b.type='button';b.className='dc-focus-launch';b.innerHTML='<span aria-hidden="true">↗</span> Open writing space';b.onclick=()=>open(el);g.appendChild(b);}});
+  root.querySelectorAll('textarea').forEach(el=>{if(el.dataset.dcAdaptive)return;el.dataset.dcAdaptive='1';el.classList.add('dc-auto-grow');grow(el);el.addEventListener('input',()=>grow(el));el.addEventListener('focus',()=>{grow(el);visible(el);});el.addEventListener('blur',()=>{el.style.marginTop='';el.style.marginBottom='';});const g=el.closest('.form-group');if(g&&!g.querySelector('.dc-focus-launch')){const b=document.createElement('button');b.type='button';b.className='dc-focus-launch';b.innerHTML='<span aria-hidden="true">↗</span> Open writing space';b.onclick=()=>open(el);g.appendChild(b);}});
   root.querySelectorAll('input:not([type=file]):not([type=hidden]),select').forEach(el=>{if(el.dataset.dcAdaptive)return;el.dataset.dcAdaptive='1';el.addEventListener('focus',()=>visible(el));if(el.tagName==='INPUT'&&!['checkbox','radio','button','submit'].includes(el.type))el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();quickNext(el);}});});
  }
  function init(){const root=$('formContent');if(!root)return;enhance(root);if(observer)observer.disconnect();observer=new MutationObserver(()=>enhance(root));observer.observe(root,{childList:true,subtree:true});}
