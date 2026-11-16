@@ -212,7 +212,7 @@ def create_app(test_config=None):
         path = request.path
         protected = (
             path.startswith("/api/wallet/")
-            or path in {"/api/payments/checkout", "/api/payments/verify", "/api/generate"}
+            or path in {"/api/payments/checkout", "/api/payments/verify", "/api/generate", "/api/document-tips/extract"}
             or path.startswith("/api/profile")
             or path.startswith("/auth/google")
         )
@@ -268,19 +268,15 @@ def create_app(test_config=None):
         from models import GenerationRequest, ensure_user, get_or_create_wallet
 
         payload = request.get_json(silent=True) or {}
-        email_value = payload.get("email") or ""
-        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        user = authenticated_user()
+        if user is None:
+            return jsonify({"success": False, "error": "Sign in with your verified account first."}), 401
+        email = user.email
         doc_type = payload.get("doc_type") or "resume"
         request_key = str(payload.get("request_id") or uuid.uuid4()).strip()
         content = payload.get("document")
         if not isinstance(content, dict) or doc_type not in SYSTEM_PROMPTS:
             return jsonify({"success": False, "error": "Invalid document request."}), 400
-        if not email:
-            if app.config.get("BILLING_ENABLED", False):
-                return jsonify({"success": False, "error": "Open Wallet and enter your account email before generating a document."}), 400
-            return jsonify({"success": True, "preview_only": True, "wallet_balance": None})
-        if "@" not in email or len(email) > 254:
-            return jsonify({"success": False, "error": "Enter a valid email address in the Wallet to use document credits."}), 400
         if not app.config.get("BILLING_ENABLED", False):
             production_runtime = (
                 str(os.getenv("RENDER", "")).strip().lower() == "true"
@@ -339,15 +335,15 @@ def create_app(test_config=None):
         from models import GenerationRequest, Wallet, ensure_user, get_or_create_wallet
 
         payload = request.get_json(silent=True) or {}
-        email_value = payload.get("email") or ""
-        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        user = authenticated_user()
+        if user is None:
+            return jsonify({"success": False, "error": "Sign in with your verified account first."}), 401
+        email = user.email
         action = str(payload.get("action") or "").strip().lower()
         action_id = str(payload.get("action_id") or "").strip()
         allowed_actions = {"preview", "copy", "download", "template"}
         if action not in allowed_actions:
             return jsonify({"success": False, "error": "Invalid document action."}), 400
-        if not email or "@" not in email or len(email) > 254:
-            return jsonify({"success": False, "error": "Open Wallet and enter your account email to use document credits."}), 400
         if not action_id or len(action_id) > 180:
             return jsonify({"success": False, "error": "A valid action reference is required. Please retry."}), 400
 
@@ -522,8 +518,10 @@ def create_app(test_config=None):
         if not isinstance(document_tips, str) or len(document_tips) > 5000:
             return jsonify({"success": False, "error": "Additional document tips must be text of 5,000 characters or fewer."}), 400
 
-        email_value = payload.get("email") or payload.get("user_email") or ""
-        email = email_value.strip().lower() if isinstance(email_value, str) else ""
+        user = authenticated_user()
+        if user is None:
+            return jsonify({"success": False, "error": "Sign in with your verified account first."}), 401
+        email = user.email
         billing_enabled = bool(app.config.get("BILLING_ENABLED", False))
         # Fail closed on Render/production: a missing or false billing flag must
         # never silently turn paid document generation into a free service.
@@ -537,15 +535,6 @@ def create_app(test_config=None):
                 "success": False,
                 "error": "Paid document generation is temporarily unavailable. Please try again later.",
             }), 503
-        if billing_enabled and not email:
-            return jsonify({
-                "success": False,
-                "error": "Open Wallet and enter your account email before generating a document.",
-            }), 400
-        if email and ("@" not in email or len(email) > 254):
-            return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
-        if email and ("@" not in email or len(email) > 254):
-            return jsonify({"success": False, "error": "Please enter a valid email address."}), 400
 
         ai_provider = str(app.config.get("AI_PROVIDER") or os.getenv("AI_PROVIDER") or "openai").strip().lower()
         if ai_provider == "gemini":
@@ -576,15 +565,9 @@ def create_app(test_config=None):
         user = None
         wallet = None
         try:
-            if email:
-                user = ensure_user(
-                    email,
-                    full_name=payload.get("full_name"),
-                    country_code=payload.get("country_code") or "KE",
-                )
-                if not user.is_active:
-                    return jsonify({"success": False, "error": "This account is inactive."}), 403
-                if billing_enabled:
+            if not user.is_active:
+                return jsonify({"success": False, "error": "This account is inactive."}), 403
+            if billing_enabled:
                     wallet = get_or_create_wallet(user.id, currency="KES")
                     if (wallet.status or "active").lower() != "active":
                         return jsonify({"success": False, "error": "Your credit wallet is inactive."}), 403
