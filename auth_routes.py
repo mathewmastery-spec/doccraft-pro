@@ -4,6 +4,9 @@ import hashlib
 import os
 import secrets
 import smtplib
+import json
+import urllib.error
+import urllib.request
 from datetime import datetime, timedelta, timezone
 from email.message import EmailMessage
 
@@ -32,23 +35,65 @@ def _valid_email(value):
 
 
 def _send_verification(email, token):
+    """Send a single-use verification link through the configured transactional provider."""
     cfg = current_app.config
-    username = cfg.get("MAIL_USERNAME")
-    password = cfg.get("MAIL_PASSWORD")
-    sender = cfg.get("MAIL_DEFAULT_SENDER") or username
-    if not username or not password or not sender:
-        raise RuntimeError("Email delivery is not configured.")
-    base = str(os.getenv("APP_BASE_URL") or request.url_root).rstrip("/")
+    base = str(cfg.get("APP_BASE_URL") or os.getenv("APP_BASE_URL") or request.url_root).rstrip("/")
     link = base + url_for("auth_bp.verify_email", token=token)
-    message = EmailMessage()
-    message["Subject"] = "Verify your DocCraft Pro account"
-    message["From"] = sender
-    message["To"] = email
-    message.set_content(
+    subject = "Verify your DocCraft Pro account"
+    text_body = (
         "Welcome to DocCraft Pro. Verify that you own this email address using the link below.\n\n"
         + link + "\n\nThis link expires in 30 minutes and can only be used once. "
         "If you did not request this, you can ignore this message."
     )
+
+    provider = str(cfg.get("EMAIL_PROVIDER") or "resend").strip().lower()
+    if provider == "resend":
+        api_key = cfg.get("RESEND_API_KEY")
+        sender = cfg.get("MAIL_DEFAULT_SENDER")
+        if not api_key or not sender:
+            raise RuntimeError("Resend email delivery is not configured. Set RESEND_API_KEY and MAIL_DEFAULT_SENDER.")
+        payload = json.dumps({
+            "from": sender,
+            "to": [email],
+            "subject": subject,
+            "text": text_body,
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            "https://api.resend.com/emails",
+            data=payload,
+            headers={
+                "Authorization": "Bearer " + str(api_key),
+                "Content-Type": "application/json",
+                "User-Agent": "DocCraft-Pro/1.0",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=20) as response:
+                if response.status < 200 or response.status >= 300:
+                    raise RuntimeError("Email provider rejected the verification message.")
+        except urllib.error.HTTPError as exc:
+            # Do not log request headers or credentials.
+            detail = exc.read(1000).decode("utf-8", "replace")
+            current_app.logger.error("Resend rejected verification email (HTTP %s): %s", exc.code, detail)
+            raise RuntimeError("The email provider rejected the verification message.") from None
+        except urllib.error.URLError as exc:
+            current_app.logger.error("Resend verification request failed: %s", getattr(exc, "reason", "network error"))
+            raise RuntimeError("Could not reach the email provider over HTTPS.") from None
+        return
+
+    if provider != "smtp":
+        raise RuntimeError("EMAIL_PROVIDER must be set to 'resend' or 'smtp'.")
+    username = cfg.get("MAIL_USERNAME")
+    password = cfg.get("MAIL_PASSWORD")
+    sender = cfg.get("MAIL_DEFAULT_SENDER") or username
+    if not username or not password or not sender:
+        raise RuntimeError("SMTP email delivery is not configured.")
+    message = EmailMessage()
+    message["Subject"] = subject
+    message["From"] = sender
+    message["To"] = email
+    message.set_content(text_body)
     with smtplib.SMTP(cfg.get("MAIL_SERVER", "smtp.gmail.com"), int(cfg.get("MAIL_PORT", 587)), timeout=20) as smtp:
         if cfg.get("MAIL_USE_TLS", True):
             smtp.starttls()
