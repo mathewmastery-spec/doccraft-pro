@@ -121,11 +121,12 @@ def verify_email():
     account = AuthAccount.query.filter_by(user_id=record.user_id).first()
     if account is None:
         return "This account could not be verified. Please register again.", 400
+    verified_user_id = record.user_id
     account.email_verified = True
     db.session.delete(record)
     db.session.commit()
     session.clear()
-    session["doccraft_user_id"] = record.user_id
+    session["doccraft_user_id"] = verified_user_id
     session.permanent = True
     return redirect("/?account_verified=1")
 
