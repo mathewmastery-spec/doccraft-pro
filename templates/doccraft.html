@@ -4426,7 +4426,7 @@ async function logoutDocCraft(){
 /* Writing canvas grows upward from its lower edge; long entries scroll inside the canvas, never under the controls. */
 #dcFocusStudio .dc-focus-work{display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;min-height:0}
 #dcFocusStudio .dc-focus-hint{flex:0 0 auto}
-#dcFocusStudio #dcFocusEditor{display:block;box-sizing:border-box;flex:0 0 auto;width:100%;height:112px;min-height:112px;max-height:100%;margin-top:auto;resize:none;overflow-y:hidden;overscroll-behavior:contain;scroll-padding-block:14px;line-height:1.65;}
+#dcFocusStudio #dcFocusEditor{display:block;box-sizing:border-box;flex:0 0 auto;width:100%;height:336px;min-height:112px;max-height:100%;margin-top:auto;resize:none;overflow-y:hidden;overscroll-behavior:contain;scroll-padding-block:14px;line-height:1.65;}
 /* Reclaim vertical space on phones when the keyboard is open so the editor can use the larger writing area. */
 #dcFocusStudio.dc-keyboard-open .dc-focus-head,
 #dcFocusStudio.dc-keyboard-open .dc-focus-progress,
@@ -4460,10 +4460,11 @@ async function logoutDocCraft(){
   if(!e||!w)return;
   const hint=$('dcFocusHint');
   const available=Math.max(112,w.clientHeight-(hint&&!hint.hidden?hint.offsetHeight+12:0));
+  const startingHeight=336; // Three times the previous 112px starting canvas.
   e.style.maxHeight=available+'px';
   e.style.height='auto';
   const contentHeight=e.scrollHeight;
-  const target=Math.min(Math.max(contentHeight,112),available);
+  const target=Math.min(Math.max(contentHeight,startingHeight),available);
   e.style.height=target+'px';
   const overflowing=contentHeight>available;
   e.style.overflowY=overflowing?'auto':'hidden';
