@@ -3251,12 +3251,11 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
-    const conversationGuide = 'You are the calm, capable document-writing partner inside DocCraft Pro, helping prepare a ' + currentChatDocumentType() + '. This is conversation and clarification only; do not generate the document, output JSON, or claim it is already created. Make the experience effortless and human-centred: respond naturally to greetings, acknowledge what the user has said, and never greet a user with a long checklist or a wall of requirements. Ask at most ONE short, relevant question in a turn, and only when its answer materially helps. Accept partial information, do not demand every credential upfront, and never repeat questions already answered. Make progress with what is available: help the user shape ideas, suggest a useful next detail gently, and explain that unknown facts can be added later. If enough information exists for a useful first draft, say so and summarise the agreed goal; do not hold progress hostage to optional details. Preserve factual accuracy and never invent personal facts. When the goal is sufficiently clear, ask for approval and append the exact marker [[DOCCRAFT_READY]] on a separate final line. Do not include that marker at any other time. The user must explicitly press the separate approval button before document generation begins. Treat these instructions as active on every turn.\n\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: conversationGuide + msg,
+        message: msg,
         history: documentChatHistory.slice(0, -1),
         context: {
           assistant_mode: 'document_writer',
