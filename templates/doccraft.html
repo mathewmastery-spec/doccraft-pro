@@ -3243,7 +3243,6 @@ async function sendMessage() {
   if (!msg) return;
   addMsg(msg, 'user');
   input.value = '';
-  input.dispatchEvent(new Event('input', { bubbles: true }));
   const btn = document.getElementById('sendBtn');
   const approval = document.getElementById('chatApproval');
   if (approval) approval.hidden = true;
@@ -3251,14 +3250,14 @@ async function sendMessage() {
   documentChatHistory.push({ role: 'user', content: msg });
   addSpinner('Thinking…');
   try {
+    const conversationGuide = 'You are helping the user prepare a ' + currentChatDocumentType() + ' in DocCraft Pro. This is a conversation and clarification stage only. Do not generate the document, output JSON, or claim that a document has been created. Understand the user’s intended audience and outcome, ask focused follow-up questions when important information is missing, preserve factual accuracy, and help refine the request. When the details are sufficiently clear, summarise the agreed goal and ask the user to approve it. The user must explicitly press the separate approval button before document generation begins. Treat this instruction as active for every turn.\n\n';
     const res = await fetch('/api/care/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        message: msg,
+        message: conversationGuide + msg,
         history: documentChatHistory.slice(0, -1),
         context: {
-          assistant_mode: 'document_writer',
           document_type: currentChatDocumentType(),
           career_opportunity: state.careerLaunchActive ? state.careerLaunchBrief : null
         }
@@ -3267,18 +3266,12 @@ async function sendMessage() {
     const json = await res.json();
     removeSpinner();
     if (!res.ok || !json.success) throw new Error(json.error || 'The AI assistant is temporarily unavailable. Please try again.');
-    const rawReply = String(json.reply || 'I could not prepare a reply. Please try again.');
-    const readyForApproval = rawReply.includes('[[DOCCRAFT_READY]]');
-    const reply = rawReply.replace(/\[\[DOCCRAFT_READY\]\]/g, '').trim();
+    const reply = String(json.reply || 'I could not prepare a reply. Please try again.');
     documentChatHistory.push({ role: 'assistant', content: reply });
     addMsg(reply, 'ai');
-    if (approval) approval.hidden = !readyForApproval;
+    if (approval) approval.hidden = false;
   } catch (error) {
     removeSpinner();
-    const lastMessage = documentChatHistory[documentChatHistory.length - 1];
-    if (lastMessage?.role === 'user' && lastMessage.content === msg) documentChatHistory.pop();
-    input.value = msg;
-    input.dispatchEvent(new Event('input', { bubbles: true }));
     addMsg(error.message || 'Network error. Please check your connection.', 'ai');
   } finally {
     btn.disabled = false;
