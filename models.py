@@ -210,6 +210,35 @@ def ensure_user(email: str, full_name: str | None = None, country_code: str | No
     return user
 
 
+
+class AuthAccount(db.Model):
+    """Authentication state kept separately so legacy wallet rows need no destructive migration."""
+    __tablename__ = "auth_accounts"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(255), nullable=False)
+    email_verified = db.Column(db.Boolean, default=False, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    updated_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
+
+    user = db.relationship("User")
+
+
+class AuthToken(db.Model):
+    """Hashed, single-use email verification and password reset tokens."""
+    __tablename__ = "auth_tokens"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    token_hash = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    purpose = db.Column(db.String(32), nullable=False)
+    expires_at = db.Column(db.DateTime(timezone=True), nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+
+    user = db.relationship("User")
+
+
 def seed_default_credit_packages():
     packages = [
         {"code": "small_v2", "name": "Small", "description": "A simple way to get started.", "currency": "KES", "price_cents": 1000, "credit_units": 15},
@@ -246,6 +275,8 @@ __all__ = [
     "PaymentTransaction",
     "CreditLedgerEntry",
     "GenerationRequest",
+    "AuthAccount",
+    "AuthToken",
     "get_or_create_wallet",
     "ensure_user",
     "seed_default_credit_packages",

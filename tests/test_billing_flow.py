@@ -4,13 +4,18 @@ import json
 from types import SimpleNamespace
 
 from extensions import db
-from models import CreditLedgerEntry, GenerationRequest, PaymentTransaction, User, ensure_user, get_or_create_wallet
+from models import AuthAccount, CreditLedgerEntry, GenerationRequest, PaymentTransaction, User, ensure_user, get_or_create_wallet
 
 
 def test_checkout_and_payment_verification(app):
     with app.app_context():
+        user = ensure_user("kenya@example.com", full_name="Kenya User")
+        db.session.add(AuthAccount(user_id=user.id, password_hash="test-only", email_verified=True))
+        db.session.commit()
         client = app.test_client()
-        res = client.post("/api/payments/checkout", json={"email": "kenya@example.com", "full_name": "Kenya User", "package_code": "small_v2"})
+        with client.session_transaction() as session:
+            session["doccraft_user_id"] = user.id
+        res = client.post("/api/payments/checkout", json={"email": "attacker@example.com", "full_name": "Kenya User", "package_code": "small_v2"})
         assert res.status_code == 200
         body = res.get_json()
         assert body["success"] is True
@@ -54,8 +59,12 @@ def test_generate_deducts_wallet_credit_once(app, monkeypatch):
         wallet = get_or_create_wallet(user.id, currency="KES")
         wallet.add_credits(10, "top up", user=user)
         db.session.commit()
+        db.session.add(AuthAccount(user_id=user.id, password_hash="test-only", email_verified=True))
+        db.session.commit()
         client = app.test_client()
-        payload = {"doc_type": "resume", "user_input": "Alice Example", "email": "billing@example.com", "full_name": "Billing User", "idempotency_key": "gen-1"}
+        with client.session_transaction() as session:
+            session["doccraft_user_id"] = user.id
+        payload = {"doc_type": "resume", "user_input": "Alice Example", "email": "attacker@example.com", "full_name": "Billing User", "idempotency_key": "gen-1"}
         res = client.post("/api/generate", json=payload)
         assert res.status_code == 200
         wallet = get_or_create_wallet(user.id, currency="KES")

@@ -2167,11 +2167,11 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
             <div id="walletTitle" style="font-size:15px;font-weight:800;letter-spacing:.1px;color:var(--text)">Wallet</div>
             <div style="font-size:12px;color:var(--text2);margin-top:3px">Credits for your next document</div>
           </div>
-          <button type="button" class="wallet-close" aria-label="Close wallet" title="Close wallet (Esc)" onclick="closeWalletPalette()">×</button>
+          <button type="button" class="btn btn-sm btn-outline" onclick="logoutDocCraft()" style="border-color:rgba(147,197,253,.35);color:#bfdbfe">Sign out</button><button type="button" class="wallet-close" aria-label="Close wallet" title="Close wallet (Esc)" onclick="closeWalletPalette()">×</button>
         </div>
         <form id="walletLookupForm" style="position:relative;display:flex;gap:9px;align-items:stretch;flex-wrap:wrap">
           <label for="billingEmail" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Account email</label>
-          <input id="billingEmail" type="email" autocomplete="email" placeholder="Enter your account email" aria-describedby="billingStatus" required style="flex:1;min-width:190px;padding:12px 13px;border-radius:11px;border:1px solid rgba(147,197,253,.4);background:rgba(8,18,38,.72);color:#eff6ff;font:inherit;font-size:13px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)">
+          <input id="billingEmail" type="email" autocomplete="email" readonly placeholder="Signed-in account" aria-describedby="billingStatus" required style="flex:1;min-width:190px;padding:12px 13px;border-radius:11px;border:1px solid rgba(147,197,253,.4);background:rgba(8,18,38,.72);color:#eff6ff;font:inherit;font-size:13px;outline:none;box-shadow:inset 0 1px 2px rgba(0,0,0,.12)">
           <button id="checkBalanceBtn" type="submit" class="btn btn-sm btn-primary" style="border-radius:11px;padding:11px 15px;white-space:nowrap;background:linear-gradient(110deg,#2563eb,#0891b2);border:1px solid rgba(191,219,254,.3);box-shadow:0 5px 16px rgba(37,99,235,.25);font-weight:750">Check my balance <span aria-hidden="true">→</span></button>
         </form>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px"><button type="button" id="googleProfileBtn" class="btn btn-sm btn-outline" style="border-radius:9px;border-color:rgba(147,197,253,.4);color:#bfdbfe" onclick="toggleGoogleProfile()">Connect Google profile</button><span id="googleProfileStatus" role="status" style="font-size:11px;color:#a5b4fc">Use the same email as your wallet to show your Google photo.</span></div>

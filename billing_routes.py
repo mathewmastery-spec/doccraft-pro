@@ -15,11 +15,11 @@ from models import (
     PaymentTransaction,
     User,
     Wallet,
-    ensure_user,
     get_or_create_wallet,
     seed_default_credit_packages,
 )
 from payment_provider import PaymentProviderError, get_provider_adapter
+from auth_routes import authenticated_user
 
 billing_bp = Blueprint("billing_bp", __name__, url_prefix="/api")
 
@@ -106,14 +106,10 @@ def list_packages():
 @billing_bp.post("/wallet/balance")
 def wallet_balance():
     """Return the current credit balance for the supplied account email without creating accounts."""
-    body = request.get_json(silent=True) or {}
-    email = str(body.get("email") or "").strip().lower()
-    if not email or len(email) > 254 or "@" not in email or email.startswith("@") or email.endswith("@"):
-        return _json_error("Enter a valid account email to check your balance.", 400)
-
-    user = User.query.filter_by(email=email).first()
+    user = authenticated_user()
     if user is None:
-        return jsonify({"success": True, "email": email, "credits_balance": 0, "currency": "KES"})
+        return _json_error("Sign in with your verified account to view your wallet.", 401)
+    email = user.email
     wallet = Wallet.query.filter_by(user_id=user.id).first()
     return jsonify({
         "success": True,
@@ -129,10 +125,11 @@ def checkout():
         return _json_error("Paid checkout is currently disabled.", 503)
 
     body = request.get_json(silent=True) or {}
-    email = (body.get("email") or body.get("user_email") or "").strip().lower()
+    user = authenticated_user()
+    if user is None:
+        return _json_error("Sign in with your verified account before purchasing credits.", 401)
+    email = user.email
     package_code = (body.get("package_code") or "").strip()
-    if not email or len(email) > 254 or "@" not in email or email.startswith("@") or email.endswith("@"):
-        return _json_error("A valid email address is required.", 400)
     if not package_code:
         return _json_error("package_code is required.", 400)
 
@@ -172,7 +169,7 @@ def checkout():
             })
         return _json_error("A checkout with this reference is already being processed. Please retry with a new checkout reference.", 409)
 
-    user = ensure_user(email, full_name=body.get("full_name"), country_code=body.get("country_code") or "KE")
+    user = authenticated_user()
     currency = (package.currency or "KES").upper()
     amount_cents = int(package.price_cents)
     if amount_cents <= 0 or int(package.credit_units) <= 0:
@@ -293,6 +290,9 @@ def verify_payment():
     tx = _find_transaction(reference)
     if tx is None:
         return _json_error("Unknown payment reference.", 404)
+    user = authenticated_user()
+    if user is None or tx.user_id != user.id:
+        return _json_error("That payment does not belong to your signed-in account.", 403)
     if tx.status == "succeeded" and int(tx.paid_cents or 0) == int(tx.amount_cents or 0):
         try:
             wallet = _apply_credit_grant(tx)
