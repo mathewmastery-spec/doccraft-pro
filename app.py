@@ -725,9 +725,7 @@ def create_app(test_config=None):
                 completion_args = {
                     "model": model_name,
                     "messages": [
-                        {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "
-
-" + QUALITY_STANDARD},
+                        {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD},
                         {"role": "user", "content": user_input.strip() + context},
                     ],
                     "response_format": {"type": "json_object"},
