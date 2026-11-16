@@ -11,7 +11,8 @@ from urllib.parse import urlparse
 from openai import OpenAI
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from billing_routes import billing_bp\nfrom auth_routes import auth_bp, authenticated_user
+from billing_routes import billing_bp
+from auth_routes import auth_bp, authenticated_user
 from care_routes import care_bp
 from config import config
 from extensions import db, migrate
@@ -112,7 +113,8 @@ def create_app(test_config=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    app.register_blueprint(billing_bp)\n    app.register_blueprint(auth_bp)
+    app.register_blueprint(billing_bp)
+    app.register_blueprint(auth_bp)
     app.register_blueprint(care_bp)
 
     # One-time safe bootstrap for a newly provisioned database. SQLAlchemy's
@@ -228,18 +230,28 @@ def create_app(test_config=None):
     @app.route("/robots.txt")
     def robots_txt():
         return Response(
-            "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /health\n\n"
-            "Sitemap: https://doccraft-pro.onrender.com/sitemap.xml\n",
+            "User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /health
+
+"
+            "Sitemap: https://doccraft-pro.onrender.com/sitemap.xml
+",
             mimetype="text/plain",
         )
 
     @app.route("/sitemap.xml")
     def sitemap_xml():
         return Response(
-            '<?xml version="1.0" encoding="UTF-8"?>\n'
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-            "  <url><loc>https://doccraft-pro.onrender.com/</loc></url>\n"
-            "</urlset>\n",
+            '<?xml version="1.0" encoding="UTF-8"?>
+'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+'
+            "  <url><loc>https://doccraft-pro.onrender.com/</loc></url>
+"
+            "</urlset>
+",
             mimetype="application/xml",
         )
 
@@ -448,17 +460,20 @@ def create_app(test_config=None):
                 reader = PdfReader(io.BytesIO(raw))
                 if len(reader.pages) > 25:
                     return jsonify({"success": False, "error": "PDFs are limited to 25 pages."}), 413
-                extracted = "\n".join((page.extract_text() or "") for page in reader.pages)
+                extracted = "
+".join((page.extract_text() or "") for page in reader.pages)
                 if not extracted.strip():
                     return jsonify({"success": False, "error": "No selectable text was found in this PDF. Try a text-based PDF or paste the relevant information."}), 422
             elif extension == "docx":
                 from docx import Document
                 import io
                 document = Document(io.BytesIO(raw))
-                extracted = "\n".join(p.text for p in document.paragraphs if p.text.strip())
+                extracted = "
+".join(p.text for p in document.paragraphs if p.text.strip())
                 for table in document.tables:
                     for row in table.rows:
-                        extracted += "\n" + " | ".join(cell.text for cell in row.cells)
+                        extracted += "
+" + " | ".join(cell.text for cell in row.cells)
             else:
                 provider = str(app.config.get("AI_PROVIDER") or os.getenv("AI_PROVIDER") or "openai").strip().lower()
                 if provider != "gemini":
@@ -634,12 +649,19 @@ def create_app(test_config=None):
 
             context = ""
             if extra.get("currentData"):
-                context = "\n\nExisting data to merge with:\n" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
+                context = "
+
+Existing data to merge with:
+" + json.dumps(extra["currentData"], ensure_ascii=False, default=str)
             if document_tips.strip():
                 context += (
-                    "\n\nADDITIONAL USER TIPS FOR THIS DOCUMENT (user-supplied; optional):\n"
+                    "
+
+ADDITIONAL USER TIPS FOR THIS DOCUMENT (user-supplied; optional):
+"
                     + document_tips.strip()
-                    + "\nUse relevant details or instructions where they fit the selected document. "
+                    + "
+Use relevant details or instructions where they fit the selected document. "
                     "Do not treat suggestions as verified facts, do not invent missing information, "
                     "and flag material conflicts or missing facts in quality_notes."
                 )
@@ -671,7 +693,9 @@ def create_app(test_config=None):
                         model=model_name,
                         contents=user_input.strip() + context,
                         config=types.GenerateContentConfig(
-                            system_instruction=SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD,
+                            system_instruction=SYSTEM_PROMPTS[doc_type] + "
+
+" + QUALITY_STANDARD,
                             temperature=0.7,
                             max_output_tokens=2000,
                             response_mime_type="application/json",
@@ -719,7 +743,9 @@ def create_app(test_config=None):
                 completion_args = {
                     "model": model_name,
                     "messages": [
-                        {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD},
+                        {"role": "system", "content": SYSTEM_PROMPTS[doc_type] + "
+
+" + QUALITY_STANDARD},
                         {"role": "user", "content": user_input.strip() + context},
                     ],
                     "response_format": {"type": "json_object"},
@@ -736,7 +762,8 @@ def create_app(test_config=None):
                 response = client.chat.completions.create(**completion_args)
                 raw = (response.choices[0].message.content or "").strip()
             if raw.startswith("```"):
-                raw = raw.split("\n", 1)[-1]
+                raw = raw.split("
+", 1)[-1]
                 if raw.endswith("```"):
                     raw = raw[:-3]
             data = json.loads(raw.strip())
