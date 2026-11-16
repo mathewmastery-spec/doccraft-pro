@@ -4433,15 +4433,15 @@ async function logoutDocCraft(){
  function sync(){if(!studioField)return;studioField.value=$('dcFocusEditor').value;studioField.dispatchEvent(new Event('input',{bubbles:true}));}
  function paint(){
   studioField=studioFields[studioIndex];if(!studioField)return;
-  const name=(studioField.labels?.[0]?.innerText||studioField.getAttribute('aria-label')||studioField.id||'Form field').replace(/\s+/g,' ').trim();
+  const name=(studioField.labels?.[0]?.innerText||studioField.closest('.form-group')?.querySelector('label')?.innerText||studioField.getAttribute('aria-label')||studioField.id||'Form field').replace(/\s+/g,' ').trim();
   $('dcFocusTitle').textContent=name;$('dcFocusEditor').value=studioField.value||'';$('dcFocusEditor').placeholder=studioField.placeholder||'Write your answer here…';
   $('dcFocusHint').textContent=studioField.placeholder||'Take your time. Your answer is saved into the original form field.';
   $('dcFocusCount').textContent='Step '+(studioIndex+1)+' of '+studioFields.length;$('dcFocusProgress').style.width=((studioIndex+1)/studioFields.length*100)+'%';
   const nav=$('dcFocusSteps');nav.replaceChildren();
-  studioFields.forEach((el,i)=>{const b=document.createElement('button');b.type='button';b.className='dc-focus-step'+(i===studioIndex?' is-current':'')+(el.value?' is-done':'');b.textContent=(el.labels?.[0]?.innerText||el.id||'Field '+(i+1)).replace(/\s+/g,' ').trim();b.onclick=()=>{sync();studioIndex=i;paint();};nav.appendChild(b);});
+  studioFields.forEach((el,i)=>{const b=document.createElement('button');b.type='button';b.className='dc-focus-step'+(i===studioIndex?' is-current':'')+(el.value?' is-done':'');b.textContent=(el.labels?.[0]?.innerText||el.closest('.form-group')?.querySelector('label')?.innerText||el.id||'Field '+(i+1)).replace(/\s+/g,' ').trim();b.onclick=()=>{sync();studioIndex=i;paint();};nav.appendChild(b);});
   $('dcFocusBack').disabled=studioIndex===0;$('dcFocusNext').textContent=studioIndex===studioFields.length-1?'Done & close':'Done & next';$('dcFocusEditor').focus();
  }
- function open(el){ensure();studioFields=fields().filter(x=>x.tagName==='TEXTAREA'||x.tagName==='INPUT');if(!studioFields.includes(el))studioFields.push(el);studioIndex=studioFields.indexOf(el);$('dcFocusStudio').hidden=false;document.body.style.overflow='hidden';paint();}
+ function open(el){ensure();studioFields=fields().filter(x=>x.tagName==='TEXTAREA'||x.tagName==='INPUT');if(!studioFields.includes(el))studioFields.push(el);studioIndex=studioFields.indexOf(el);$('dcFocusStudio').hidden=false;document.body.style.overflow='hidden';fitStudioViewport();paint();}
  function move(d){sync();const n=studioIndex+d;if(n<0)return;if(n>=studioFields.length){close();return;}studioIndex=n;paint();}
  function close(){sync();$('dcFocusStudio').hidden=true;document.body.style.overflow='';const el=studioField;studioField=null;if(el){el.focus({preventScroll:true});visible(el);}}
  function enhance(root){
@@ -4450,7 +4450,7 @@ async function logoutDocCraft(){
  }
  function init(){const root=$('formContent');if(!root)return;enhance(root);if(observer)observer.disconnect();observer=new MutationObserver(()=>enhance(root));observer.observe(root,{childList:true,subtree:true});}
  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
- window.addEventListener('resize',()=>{if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});
+ function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;o.style.height=(v?v.height:window.innerHeight)+'px';o.style.top=(v?v.offsetTop:0)+'px';}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
 })();
 </script>
 </body>
