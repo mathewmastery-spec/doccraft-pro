@@ -11,7 +11,7 @@ from urllib.parse import urlparse
 from openai import OpenAI
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
-from billing_routes import billing_bp
+from billing_routes import billing_bp\nfrom auth_routes import auth_bp, authenticated_user
 from care_routes import care_bp
 from config import config
 from extensions import db, migrate
@@ -112,7 +112,7 @@ def create_app(test_config=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
-    app.register_blueprint(billing_bp)
+    app.register_blueprint(billing_bp)\n    app.register_blueprint(auth_bp)
     app.register_blueprint(care_bp)
 
     # One-time safe bootstrap for a newly provisioned database. SQLAlchemy's
@@ -205,6 +205,25 @@ def create_app(test_config=None):
         response.headers["Pragma"] = "no-cache"
         response.headers["Expires"] = "0"
         return response
+
+
+    @app.before_request
+    def protect_account_data():
+        path = request.path
+        protected = (
+            path.startswith("/api/wallet/")
+            or path in {"/api/payments/checkout", "/api/payments/verify", "/api/generate"}
+            or path.startswith("/api/profile")
+            or path.startswith("/auth/google")
+        )
+        if protected and authenticated_user() is None:
+            return jsonify({"success": False, "error": "Sign in with your verified account to continue."}), 401
+
+    @app.route("/auth")
+    def account_auth_page():
+        if authenticated_user() is not None:
+            return redirect(url_for("home"))
+        return render_template("auth.html")
 
     @app.route("/robots.txt")
     def robots_txt():
