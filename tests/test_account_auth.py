@@ -3,9 +3,9 @@ from extensions import db
 import auth_routes
 
 
-def test_workspace_and_wallet_require_verified_account(client):
-    assert client.get("/").status_code == 302
-    assert client.get("/api/wallet/balance").status_code == 401
+def test_workspace_and_wallet_require_verified_account(anon_client):
+    assert anon_client.get("/").status_code == 302
+    assert anon_client.get("/api/wallet/balance").status_code == 401
 
 
 def test_registration_verifies_existing_wallet_and_ignores_submitted_email(client, app, monkeypatch):
