@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import secrets
 import smtplib
 from datetime import datetime, timedelta, timezone
@@ -37,7 +38,7 @@ def _send_verification(email, token):
     sender = cfg.get("MAIL_DEFAULT_SENDER") or username
     if not username or not password or not sender:
         raise RuntimeError("Email delivery is not configured.")
-    base = str(cfg.get("APP_BASE_URL") or request.url_root).rstrip("/")
+    base = str(os.getenv("APP_BASE_URL") or request.url_root).rstrip("/")
     link = base + url_for("auth_bp.verify_email", token=token)
     message = EmailMessage()
     message["Subject"] = "Verify your DocCraft Pro account"
