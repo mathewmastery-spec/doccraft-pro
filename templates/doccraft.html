@@ -3795,7 +3795,7 @@ async function refreshGoogleProfile(){
   const button=document.getElementById('googleProfileBtn'),status=document.getElementById('googleProfileStatus'),avatar=document.getElementById('careProfile');
   if(!button||!avatar)return;
   const accountName=String(window.doccraftAccountName||'').trim();
-  const fallback=(accountName.split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('')||email.split('@')[0].replace(/[._-]+/g,' ').trim().charAt(0)||'?').toUpperCase();
+  const fallback=(accountName.split(/\s+/).filter(Boolean).slice(0,2).map(part=>part.charAt(0)).join('')||email.charAt(0)||'?').toUpperCase();
   avatar.replaceChildren(document.createTextNode(fallback));
   button.textContent='Connect Google profile';
   if(!email){if(status)status.textContent='Enter your wallet email to connect your Google profile.';return;}
