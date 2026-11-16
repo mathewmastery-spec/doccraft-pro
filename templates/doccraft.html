@@ -49,13 +49,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .nav-menu-btn span{display:block;width:22px;height:2px;background:var(--text2);border-radius:2px}
 
 
-/* Workspace selector — a native DocCraft navbar tab. */
-.nav-workspaces{position:relative;display:inline-flex;align-items:center}
-.navbar>.nav-workspaces{position:relative;display:inline-flex;align-items:center;flex:0 0 auto;margin:0;padding:0;border:0;border-radius:0;background:transparent}
-.workspace-nav-trigger{display:inline-flex;align-items:center;gap:7px}
+/* DocCraft space switcher — persistent, quiet and brand-native. */
+.nav-workspaces{position:relative;display:inline-flex;align-items:center;gap:9px;flex:0 0 auto}
+.navbar>.nav-workspaces{margin:0;padding:0;border:0;border-radius:0;background:transparent}
+.workspace-switcher{position:relative;display:inline-flex;align-items:center;gap:3px;padding:4px;border:1px solid var(--border);border-radius:13px;background:var(--surface2);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.workspace-choice{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:35px;padding:0 12px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--text2);font:650 12px 'Inter',sans-serif;white-space:nowrap;cursor:pointer;transition:background .22s ease,color .22s ease,border-color .22s ease,transform .22s ease}
+.workspace-choice:hover{color:var(--text);background:var(--surface)}
+.workspace-choice.is-active{color:var(--text);border-color:rgba(96,165,250,.34);background:linear-gradient(135deg,rgba(59,130,246,.22),rgba(99,102,241,.13));box-shadow:0 3px 14px rgba(37,99,235,.12),inset 0 1px 0 rgba(255,255,255,.08)}
+.workspace-choice-mark{font-size:14px;color:var(--accent)}
+.workspace-choice-explore:not(.is-active) .workspace-choice-mark{color:var(--accent2)}
+.workspace-live-dot{width:5px;height:5px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 3px rgba(99,102,241,.12);opacity:.8}
+.workspace-nav-trigger{display:inline-flex;align-items:center;gap:7px;padding-inline:10px}
 .workspace-nav-trigger .workspace-chevron{font-size:11px;color:var(--text3);transition:transform .16s}
 .workspace-nav-trigger[aria-expanded="true"] .workspace-chevron{transform:rotate(180deg)}
-.workspace-nav-menu{position:absolute;top:calc(100% + 9px);left:0;z-index:150;width:min(690px,calc(100vw - 32px));padding:16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;border:1px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
+.workspace-nav-menu{position:absolute;top:calc(100% + 9px);right:0;z-index:150;width:min(420px,calc(100vw - 32px));padding:14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface);box-shadow:var(--shadow)}
 .workspace-nav-menu[hidden]{display:none!important}
 .workspace-nav-group{min-width:0}
 .workspace-nav-group h3{margin:0 0 8px;padding:0 5px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase}
@@ -73,19 +80,37 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .workspace-nav-settings label{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2)}
 body.doccraft-reduced-motion *,body.doccraft-reduced-motion *::before,body.doccraft-reduced-motion *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 .nav-tools[data-mode="career"]>.nav-tool{display:none}
-@media(max-width:900px){.workspace-nav-menu{left:auto;right:0}}
+.workspace-home-enter{animation:workspaceHomeEnter .48s cubic-bezier(.2,.75,.25,1) both}
+@keyframes workspaceHomeEnter{from{opacity:.35;transform:translateY(9px) scale(.996);filter:blur(2px)}to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}}
+.workspace-discovery{position:fixed;right:24px;bottom:24px;z-index:120;display:flex;align-items:center;gap:12px;width:min(355px,calc(100vw - 32px));padding:14px 15px;border:1px solid rgba(96,165,250,.3);border-radius:17px;background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 94%,#2563eb 6%),var(--surface2));box-shadow:0 16px 48px rgba(15,23,42,.2),inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter:blur(18px);color:var(--text);transition:transform .25s ease,opacity .25s ease,border-color .25s ease}
+.workspace-discovery[hidden]{display:none!important}
+.workspace-discovery-copy{min-width:0;flex:1}
+.workspace-discovery-kicker{display:flex;align-items:center;gap:6px;margin-bottom:4px;color:var(--accent);font-size:9px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase}
+.workspace-discovery-copy strong{display:block;font-size:13px;line-height:1.35}
+.workspace-discovery-copy p{margin:3px 0 0;color:var(--text2);font-size:11px;line-height:1.45}
+.workspace-discovery-actions{display:flex;align-items:center;gap:5px}
+.workspace-discovery-go{border:0;border-radius:9px;padding:9px 11px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font:700 11px 'Inter',sans-serif;white-space:nowrap;cursor:pointer;box-shadow:0 5px 14px rgba(37,99,235,.2)}
+.workspace-discovery-dismiss{display:grid;place-items:center;width:27px;height:27px;border:0;border-radius:8px;background:transparent;color:var(--text3);font-size:17px;cursor:pointer}
+.workspace-discovery-dismiss:hover{background:var(--surface);color:var(--text)}
+.workspace-discovery-minimized{position:fixed;right:24px;bottom:24px;z-index:120;display:flex;align-items:center;gap:7px;padding:10px 13px;border:1px solid rgba(96,165,250,.32);border-radius:999px;background:var(--surface);color:var(--text2);font:650 11px 'Inter',sans-serif;box-shadow:var(--shadow);cursor:pointer}
+.workspace-discovery-minimized[hidden]{display:none!important}
+.workspace-discovery-minimized span{color:var(--accent2)}
+@media(max-width:900px){.workspace-nav-menu{right:0}}
 @media(max-width:680px){
-  .navbar>.nav-workspaces{display:flex;order:3;flex:1 0 100%;margin:0;justify-content:stretch;padding:0;border:0;background:transparent}
+  .navbar>.nav-workspaces{display:flex;order:3;flex:1 0 100%;margin:0;justify-content:space-between;gap:8px;padding:2px 0 5px;border:0;background:transparent}
+  .workspace-switcher{flex:1;justify-content:center}
+  .workspace-choice{flex:1;min-width:0;padding:0 8px;font-size:11px}
+  .workspace-nav-trigger{flex:0 0 auto}
   .nav-right{order:2}
   .nav-tools{order:4}
   .nav-menu-btn{display:flex}
-  .workspace-nav-trigger{width:100%;justify-content:space-between}
-  .workspace-nav-menu{position:static;width:100%;max-height:min(62dvh,480px);overflow:auto;grid-template-columns:1fr;margin-top:6px;padding:10px;box-shadow:none}
+  .workspace-nav-menu{position:absolute;top:calc(100% + 5px);right:0;width:min(420px,calc(100vw - 28px));max-height:min(62dvh,480px);overflow:auto;grid-template-columns:1fr;margin-top:0;padding:10px;box-shadow:var(--shadow)}
   .workspace-nav-group{padding-bottom:4px}
   .workspace-nav-menu button{min-height:46px}
-  .nav-workspaces{flex-wrap:wrap}
+  .workspace-discovery{right:12px;bottom:14px;width:calc(100vw - 24px);padding:12px}
+  .workspace-discovery-minimized{right:14px;bottom:14px}
 }
-
+@media(prefers-reduced-motion:reduce){.workspace-home-enter{animation:none}.workspace-discovery{transition:none}}
 /* HOME */
 #homeScreen{max-width:1200px;margin:0 auto;padding:40px 24px 80px}
 #appScreen{display:none;height:calc(100vh - 60px)}
@@ -1825,14 +1850,13 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     <button class="nav-tool" onclick="openTool('org_letter')">Org Letters</button>
   </div>
 
-  <div class="nav-workspaces">
-    <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">Workspace <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
-    <div class="workspace-nav-menu workspace-nav-panel" id="workspaceNavMenu" hidden aria-label="Workspace, account and assistance">
-      <section class="workspace-nav-group">
-        <h3>Workspaces</h3>
-        <button type="button" data-mode-choice="documents" class="is-active" aria-pressed="true" onclick="selectWorkspace('documents')"><span class="workspace-nav-icon">▤</span><span><b>Document Studio</b><small>Create and refine professional documents</small></span></button>
-        <button type="button" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')"><span class="workspace-nav-icon">✧</span><span><b>Smart Potential Lab</b><small>Explore potential and opportunities</small></span></button>
-      </section>
+  <div class="nav-workspaces" aria-label="DocCraft spaces">
+    <div class="workspace-switcher" role="group" aria-label="Choose your space">
+      <button type="button" class="workspace-choice is-active" data-mode-choice="documents" aria-pressed="true" onclick="selectWorkspace('documents')"><span class="workspace-choice-mark">▤</span><span>Active</span></button>
+      <button type="button" class="workspace-choice workspace-choice-explore" data-mode-choice="career" aria-pressed="false" onclick="selectWorkspace('career')"><span class="workspace-choice-mark">✧</span><span>Exploration</span><i class="workspace-live-dot" aria-hidden="true"></i></button>
+    </div>
+    <button type="button" class="nav-tool workspace-nav-trigger" id="workspaceNavTrigger" aria-haspopup="true" aria-expanded="false" aria-controls="workspaceNavMenu" onclick="toggleWorkspaceMenu()">More <span class="workspace-chevron" aria-hidden="true">⌄</span></button>
+    <div class="workspace-nav-menu workspace-nav-panel" id="workspaceNavMenu" hidden aria-label="Account and assistance">
       <section class="workspace-nav-group">
         <h3>Accounts</h3>
         <button type="button" onclick="closeWorkspaceMenu();openWalletPalette()"><span class="workspace-nav-icon">◉</span><span><b>Profile &amp; Wallet</b><small>Account email, balance and credits</small></span></button>
@@ -1856,6 +1880,20 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
     <button class="nav-menu-btn" id="mobileMenuBtn" type="button" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
+
+<!-- Optional discovery invitation: Active remains uninterrupted. -->
+<div class="workspace-discovery" id="workspaceDiscovery" role="region" aria-label="Explore another side of DocCraft">
+  <div class="workspace-discovery-copy">
+    <div class="workspace-discovery-kicker"><span aria-hidden="true">✧</span> A little more to discover</div>
+    <strong>Your next possibility may be closer than you think.</strong>
+    <p>Explore your strengths, interests and opportunities in Potential Lab.</p>
+  </div>
+  <div class="workspace-discovery-actions">
+    <button type="button" class="workspace-discovery-go" onclick="selectWorkspace('career')">Explore <span aria-hidden="true">↗</span></button>
+    <button type="button" class="workspace-discovery-dismiss" aria-label="Minimise discovery invitation" title="Keep this subtle" onclick="minimiseWorkspaceDiscovery()">×</button>
+  </div>
+</div>
+<button type="button" class="workspace-discovery-minimized" id="workspaceDiscoveryMinimized" hidden onclick="restoreWorkspaceDiscovery()"><span>✧</span> Explore</button>
 
 <!-- ── HOME SCREEN ────────────────────────────────── -->
 <div id="homeScreen">
@@ -2470,6 +2508,30 @@ function selectWorkspace(mode) {
   if (nav && window.matchMedia('(max-width: 680px)').matches) nav.style.display = 'none';
   const menuButton = document.getElementById('mobileMenuBtn');
   if (menuButton) menuButton.setAttribute('aria-expanded', 'false');
+  syncWorkspaceDiscovery();
+}
+function minimiseWorkspaceDiscovery() {
+  const card = document.getElementById('workspaceDiscovery');
+  const tab = document.getElementById('workspaceDiscoveryMinimized');
+  if (card) card.hidden = true;
+  if (tab) tab.hidden = false;
+  try { localStorage.setItem('doccraftDiscoveryMinimized', 'true'); } catch (_) {}
+}
+function restoreWorkspaceDiscovery() {
+  const card = document.getElementById('workspaceDiscovery');
+  const tab = document.getElementById('workspaceDiscoveryMinimized');
+  if (card) card.hidden = false;
+  if (tab) tab.hidden = true;
+  try { localStorage.removeItem('doccraftDiscoveryMinimized'); } catch (_) {}
+}
+function syncWorkspaceDiscovery() {
+  const card = document.getElementById('workspaceDiscovery');
+  const tab = document.getElementById('workspaceDiscoveryMinimized');
+  const active = state.workspaceMode !== 'career' && document.getElementById('homeScreen')?.style.display !== 'none';
+  let minimized = false;
+  try { minimized = localStorage.getItem('doccraftDiscoveryMinimized') === 'true'; } catch (_) {}
+  if (card) card.hidden = !active || minimized;
+  if (tab) tab.hidden = !active || !minimized;
 }
 function toggleMobileMenu() {
   const nav = document.getElementById('navTools');
@@ -2489,6 +2551,7 @@ document.addEventListener('keydown', event => {
 
 function switchProductMode(mode) {
   const nextMode = mode === 'career' ? 'career' : 'documents';
+  const changed = state.workspaceMode !== nextMode;
   state.workspaceMode = nextMode;
   if (nextMode === 'documents') {
     state.careerLaunchActive = false;
@@ -2507,11 +2570,13 @@ function switchProductMode(mode) {
   });
   const navTools = document.getElementById('navTools');
   if (navTools) navTools.dataset.mode = nextMode;
-  document.querySelectorAll('#workspaceNavMenu [data-mode-choice]').forEach(button => {
-    const active = button.dataset.modeChoice === nextMode;
-    button.classList.toggle('is-active', active);
-    button.setAttribute('aria-pressed', String(active));
-  });
+  const visibleHome = nextMode === 'career' ? potentialHome : documentHome;
+  if (changed && visibleHome && !document.body.classList.contains('doccraft-reduced-motion') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    visibleHome.classList.remove('workspace-home-enter');
+    void visibleHome.offsetWidth;
+    visibleHome.classList.add('workspace-home-enter');
+  }
+  syncWorkspaceDiscovery();
 }
 
 function showHome() {
