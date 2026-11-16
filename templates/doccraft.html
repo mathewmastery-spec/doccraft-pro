@@ -4426,7 +4426,7 @@ async function logoutDocCraft(){
 /* Writing canvas grows upward from its lower edge; long entries scroll inside the canvas, never under the controls. */
 #dcFocusStudio .dc-focus-work{display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;min-height:0}
 #dcFocusStudio .dc-focus-hint{flex:0 0 auto}
-#dcFocusStudio #dcFocusEditor{display:block;box-sizing:border-box;flex:0 1 auto;height:150px;min-height:88px;max-height:100%;margin-top:auto;resize:none;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:18px;}
+#dcFocusStudio #dcFocusEditor{display:block;box-sizing:border-box;flex:0 1 auto;height:300px;min-height:0;max-height:100%;margin-top:auto;resize:none;overflow-y:auto;overscroll-behavior:contain;scroll-padding-block:18px;}
 #dcFocusStudio.dc-keyboard-open .dc-focus-work{min-height:0}
 #dcFocusStudio.dc-keyboard-open #dcFocusEditor{max-height:100%;}
 
@@ -4450,7 +4450,7 @@ async function logoutDocCraft(){
   o.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close();}});
  }
  function sync(){if(!studioField)return;studioField.value=$('dcFocusEditor').value;studioField.dispatchEvent(new Event('input',{bubbles:true}));}
- function resizeFocusEditor(keepCaret){const e=$('dcFocusEditor'),w=e?.closest('.dc-focus-work');if(!e||!w)return;e.style.height='auto';const hint=$('dcFocusHint');const available=Math.max(88,w.clientHeight-(hint&&!hint.hidden?hint.offsetHeight+12:0));const target=Math.min(e.scrollHeight,available);e.style.height=target+'px';e.style.maxHeight=available+'px';e.style.overflowY=e.scrollHeight>available?'auto':'hidden';if(keepCaret){const pos=e.selectionEnd;const probe=document.createRange();const text=e.value.slice(0,pos);const lineCount=(text.match(/\n/g)||[]).length;e.scrollTop=Math.max(0,e.scrollHeight-e.clientHeight);if(lineCount===0&&pos===0)e.scrollTop=0;}}
+ function resizeFocusEditor(keepCaret){const e=$('dcFocusEditor'),w=e?.closest('.dc-focus-work');if(!e||!w)return;e.style.height='auto';const hint=$('dcFocusHint');const available=Math.max(88,w.clientHeight-(hint&&!hint.hidden?hint.offsetHeight+12:0));const target=Math.min(Math.max(e.scrollHeight,300),available);e.style.height=target+'px';e.style.maxHeight=available+'px';e.style.overflowY=e.scrollHeight>available?'auto':'hidden';if(keepCaret){const pos=e.selectionEnd;const probe=document.createRange();const text=e.value.slice(0,pos);const lineCount=(text.match(/\n/g)||[]).length;e.scrollTop=Math.max(0,e.scrollHeight-e.clientHeight);if(lineCount===0&&pos===0)e.scrollTop=0;}}
  function paint(){
   studioField=studioFields[studioIndex];if(!studioField)return;
   const name=(studioField.labels?.[0]?.innerText||studioField.closest('.form-group')?.querySelector('label')?.innerText||studioField.getAttribute('aria-label')||studioField.id||'Form field').replace(/\s+/g,' ').trim();
