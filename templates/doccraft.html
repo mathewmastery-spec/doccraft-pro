@@ -4383,5 +4383,75 @@ async function logoutDocCraft(){
 }
 </script>
 
+
+<style id="doccraftAdaptiveForms">
+#formContent .form-group{scroll-margin-top:22px}
+#formContent input,#formContent select,#formContent textarea{scroll-margin-bottom:150px}
+#formContent textarea.dc-auto-grow{resize:none;overflow-y:hidden;min-height:88px;line-height:1.6}
+#formContent .dc-focus-launch{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:7px 10px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--text2);font:600 11px Inter,sans-serif;cursor:pointer}
+#formContent .dc-focus-launch:hover{border-color:var(--accent);color:var(--text)}
+#dcFocusStudio[hidden]{display:none!important}
+#dcFocusStudio{position:fixed;inset:0;z-index:1200;display:flex;flex-direction:column;background:var(--bg);color:var(--text);padding:clamp(12px,3vw,28px);padding-bottom:max(12px,env(safe-area-inset-bottom))}
+#dcFocusStudio .dc-focus-shell{width:min(100%,920px);height:100%;min-height:0;margin:auto;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:20px;background:var(--surface);box-shadow:0 24px 80px rgba(15,23,42,.22);overflow:hidden}
+.dc-focus-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.dc-focus-eyebrow{font-size:10px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
+.dc-focus-title{font-size:18px;font-weight:750;margin-top:3px}
+.dc-focus-count{font-size:11px;color:var(--text2);white-space:nowrap}
+.dc-focus-progress{height:3px;background:var(--surface2)}.dc-focus-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s}
+.dc-focus-body{display:flex;flex:1;min-height:0}
+.dc-focus-steps{width:210px;flex:0 0 210px;padding:18px 12px;border-right:1px solid var(--border);overflow:auto}
+.dc-focus-step{display:block;width:100%;padding:10px 11px;margin-bottom:5px;text-align:left;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--text2);font:500 11px/1.4 Inter,sans-serif;cursor:pointer}
+.dc-focus-step.is-current{background:var(--surface2);border-color:var(--border);color:var(--text);font-weight:700}.dc-focus-step.is-done{color:var(--accent)}
+.dc-focus-work{display:flex;flex:1;min-width:0;min-height:0;flex-direction:column;padding:clamp(16px,3vw,30px)}
+.dc-focus-hint{font-size:12px;line-height:1.6;color:var(--text2);margin:8px 0 14px}
+#dcFocusEditor{display:block;flex:1;min-height:150px;width:100%;resize:none;padding:18px;border:1px solid var(--border);border-radius:14px;background:var(--surface2);color:var(--text);font:15px/1.75 Inter,sans-serif;outline:none}
+#dcFocusEditor:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 15%,transparent)}
+.dc-focus-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;border-top:1px solid var(--border)}
+.dc-focus-foot button{min-height:40px;padding:9px 15px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--text);font:650 12px Inter,sans-serif;cursor:pointer}
+.dc-focus-foot .dc-focus-done{border-color:transparent;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+@media(max-width:680px){#dcFocusStudio{padding:0}#dcFocusStudio .dc-focus-shell{width:100%;height:100%;border:0;border-radius:0}.dc-focus-head{padding:13px 15px}.dc-focus-title{font-size:16px}.dc-focus-body{flex-direction:column}.dc-focus-steps{display:flex;gap:6px;width:100%;flex:0 0 auto;max-height:76px;padding:9px 12px;border-right:0;border-bottom:1px solid var(--border);overflow-x:auto;overflow-y:hidden}.dc-focus-step{flex:0 0 auto;width:auto;max-width:150px;min-width:92px;margin:0;padding:8px 10px}.dc-focus-work{padding:14px;min-height:0}#dcFocusEditor{font-size:16px;padding:14px}.dc-focus-foot{padding:10px 14px}}
+@media(prefers-reduced-motion:reduce){.dc-focus-progress span{transition:none}}
+</style>
+
+<script id="doccraftAdaptiveFormsScript">
+(function(){
+ let studioField=null,studioFields=[],studioIndex=0,observer=null;
+ const $=id=>document.getElementById(id);
+ function fields(){const root=$('formContent');return root?[...root.querySelectorAll('input:not([type=file]):not([type=hidden]),textarea,select')].filter(e=>!e.disabled&&!e.closest('[hidden]')&&e.offsetParent!==null):[];}
+ function visible(el){if(!el)return;requestAnimationFrame(()=>setTimeout(()=>{const h=window.visualViewport?.height||innerHeight,r=el.getBoundingClientRect();if(r.bottom>h-24||r.top<12)el.scrollIntoView({block:'center',behavior:'smooth'});},180));}
+ function grow(el){el.style.height='auto';el.style.height=Math.max(88,el.scrollHeight)+'px';}
+ function quickNext(el){const a=fields(),n=a[a.indexOf(el)+1];if(n){n.focus({preventScroll:true});visible(n);}else el.blur();}
+ function ensure(){
+  if($('dcFocusStudio'))return;
+  const o=document.createElement('section');o.id='dcFocusStudio';o.hidden=true;o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');o.setAttribute('aria-labelledby','dcFocusTitle');
+  o.innerHTML='<div class="dc-focus-shell"><header class="dc-focus-head"><div><div class="dc-focus-eyebrow">DocCraft · Focus Studio</div><div class="dc-focus-title" id="dcFocusTitle">Write with room to think</div></div><div class="dc-focus-count" id="dcFocusCount">Step 1</div></header><div class="dc-focus-progress"><span id="dcFocusProgress"></span></div><div class="dc-focus-body"><nav class="dc-focus-steps" id="dcFocusSteps" aria-label="Form steps"></nav><div class="dc-focus-work"><p class="dc-focus-hint" id="dcFocusHint">Your writing stays connected to the original form.</p><textarea id="dcFocusEditor" aria-label="Expanded field editor" spellcheck="true"></textarea></div></div><footer class="dc-focus-foot"><button type="button" id="dcFocusClose">Close</button><div style="display:flex;gap:8px"><button type="button" id="dcFocusBack">Previous</button><button type="button" class="dc-focus-done" id="dcFocusNext">Done &amp; next</button></div></footer></div>';
+  document.body.appendChild(o);
+  $('dcFocusClose').onclick=close;$('dcFocusBack').onclick=()=>move(-1);$('dcFocusNext').onclick=()=>move(1);
+  $('dcFocusEditor').addEventListener('input',()=>sync());
+  o.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();close();}});
+ }
+ function sync(){if(!studioField)return;studioField.value=$('dcFocusEditor').value;studioField.dispatchEvent(new Event('input',{bubbles:true}));}
+ function paint(){
+  studioField=studioFields[studioIndex];if(!studioField)return;
+  const name=(studioField.labels?.[0]?.innerText||studioField.getAttribute('aria-label')||studioField.id||'Form field').replace(/\s+/g,' ').trim();
+  $('dcFocusTitle').textContent=name;$('dcFocusEditor').value=studioField.value||'';$('dcFocusEditor').placeholder=studioField.placeholder||'Write your answer here…';
+  $('dcFocusHint').textContent=studioField.placeholder||'Take your time. Your answer is saved into the original form field.';
+  $('dcFocusCount').textContent='Step '+(studioIndex+1)+' of '+studioFields.length;$('dcFocusProgress').style.width=((studioIndex+1)/studioFields.length*100)+'%';
+  const nav=$('dcFocusSteps');nav.replaceChildren();
+  studioFields.forEach((el,i)=>{const b=document.createElement('button');b.type='button';b.className='dc-focus-step'+(i===studioIndex?' is-current':'')+(el.value?' is-done':'');b.textContent=(el.labels?.[0]?.innerText||el.id||'Field '+(i+1)).replace(/\s+/g,' ').trim();b.onclick=()=>{sync();studioIndex=i;paint();};nav.appendChild(b);});
+  $('dcFocusBack').disabled=studioIndex===0;$('dcFocusNext').textContent=studioIndex===studioFields.length-1?'Done & close':'Done & next';$('dcFocusEditor').focus();
+ }
+ function open(el){ensure();studioFields=fields().filter(x=>x.tagName==='TEXTAREA'||x.tagName==='INPUT');if(!studioFields.includes(el))studioFields.push(el);studioIndex=studioFields.indexOf(el);$('dcFocusStudio').hidden=false;document.body.style.overflow='hidden';paint();}
+ function move(d){sync();const n=studioIndex+d;if(n<0)return;if(n>=studioFields.length){close();return;}studioIndex=n;paint();}
+ function close(){sync();$('dcFocusStudio').hidden=true;document.body.style.overflow='';const el=studioField;studioField=null;if(el){el.focus({preventScroll:true});visible(el);}}
+ function enhance(root){
+  root.querySelectorAll('textarea').forEach(el=>{if(el.dataset.dcAdaptive)return;el.dataset.dcAdaptive='1';el.classList.add('dc-auto-grow');grow(el);el.addEventListener('input',()=>grow(el));el.addEventListener('focus',()=>visible(el));const g=el.closest('.form-group');if(g&&!g.querySelector('.dc-focus-launch')){const b=document.createElement('button');b.type='button';b.className='dc-focus-launch';b.innerHTML='<span aria-hidden="true">↗</span> Open writing space';b.onclick=()=>open(el);g.appendChild(b);}});
+  root.querySelectorAll('input:not([type=file]):not([type=hidden]),select').forEach(el=>{if(el.dataset.dcAdaptive)return;el.dataset.dcAdaptive='1';el.addEventListener('focus',()=>visible(el));if(el.tagName==='INPUT'&&!['checkbox','radio','button','submit'].includes(el.type))el.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();quickNext(el);}});});
+ }
+ function init(){const root=$('formContent');if(!root)return;enhance(root);if(observer)observer.disconnect();observer=new MutationObserver(()=>enhance(root));observer.observe(root,{childList:true,subtree:true});}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ window.addEventListener('resize',()=>{if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});
+})();
+</script>
 </body>
 </html>
