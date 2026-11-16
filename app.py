@@ -677,9 +677,7 @@ def create_app(test_config=None):
                         model=model_name,
                         contents=user_input.strip() + context,
                         config=types.GenerateContentConfig(
-                            system_instruction=SYSTEM_PROMPTS[doc_type] + "
-
-" + QUALITY_STANDARD,
+                            system_instruction=SYSTEM_PROMPTS[doc_type] + "\n\n" + QUALITY_STANDARD,
                             temperature=0.7,
                             max_output_tokens=2000,
                             response_mime_type="application/json",
@@ -746,8 +744,7 @@ def create_app(test_config=None):
                 response = client.chat.completions.create(**completion_args)
                 raw = (response.choices[0].message.content or "").strip()
             if raw.startswith("```"):
-                raw = raw.split("
-", 1)[-1]
+                raw = raw.split("\n", 1)[-1]
                 if raw.endswith("```"):
                     raw = raw[:-3]
             data = json.loads(raw.strip())
