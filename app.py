@@ -201,6 +201,8 @@ def create_app(test_config=None):
 
     @app.route("/")
     def home():
+        if authenticated_user() is None:
+            return redirect(url_for("account_auth_page"))
         response = Response(render_template("doccraft.html"), mimetype="text/html")
         # Prevent browsers and intermediary caches from keeping an outdated homepage.
         response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
@@ -235,28 +237,18 @@ def create_app(test_config=None):
     @app.route("/robots.txt")
     def robots_txt():
         return Response(
-            "User-agent: *
-Allow: /
-Disallow: /api/
-Disallow: /health
-
-"
-            "Sitemap: https://doccraft-pro.onrender.com/sitemap.xml
-",
+            "User-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /health\n\n"
+            "Sitemap: https://doccraft-pro.onrender.com/sitemap.xml\n",
             mimetype="text/plain",
         )
 
     @app.route("/sitemap.xml")
     def sitemap_xml():
         return Response(
-            '<?xml version="1.0" encoding="UTF-8"?>
-'
-            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-'
-            "  <url><loc>https://doccraft-pro.onrender.com/</loc></url>
-"
-            "</urlset>
-",
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            "  <url><loc>https://doccraft-pro.onrender.com/</loc></url>\n"
+            "</urlset>\n",
             mimetype="application/xml",
         )
 
