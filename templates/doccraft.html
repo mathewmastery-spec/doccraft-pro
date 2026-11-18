@@ -4543,5 +4543,150 @@ async function logoutDocCraft(){
  function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;const h=v?v.height:window.innerHeight;o.style.height=h+'px';o.style.top=(v?v.offsetTop:0)+'px';o.classList.toggle('dc-keyboard-open',!!v&&window.innerHeight-h>100);requestAnimationFrame(()=>resizeFocusEditor(false));}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
 })();
 </script>
+
+<!-- My Tutor: isolated guided-tour layer. Does not alter document or account workflows. -->
+<style id="doccraft-my-tutor-styles">
+#dcTutorLauncher{position:fixed;right:20px;bottom:22px;z-index:12000;display:flex;align-items:center;gap:9px;padding:11px 15px;border:1px solid var(--border,#dce2d3);border-radius:999px;background:var(--surface,#fffef9);color:var(--text,#263d2e);box-shadow:0 10px 34px rgba(24,40,30,.18);font:700 13px/1.2 inherit;cursor:pointer;transition:transform .2s,box-shadow .2s}
+#dcTutorLauncher:hover{transform:translateY(-2px);box-shadow:0 14px 38px rgba(24,40,30,.23)}
+#dcTutorLauncher .dc-tutor-launch-mark{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:linear-gradient(135deg,#e9b6ce,#c7b7e8);color:#3b3048;font-size:17px}
+#dcTutorLayer{position:fixed;inset:0;z-index:12010;display:none;pointer-events:none}
+#dcTutorLayer.is-open{display:block}
+#dcTutorBackdrop{position:absolute;inset:0;background:rgba(17,24,20,.48);pointer-events:auto}
+#dcTutorCard{position:fixed;z-index:12030;width:min(390px,calc(100vw - 28px));max-height:min(390px,calc(100dvh - 28px));overflow:auto;padding:19px;border:1px solid rgba(255,255,255,.58);border-radius:20px;background:var(--surface,#fffef9);color:var(--text,#263d2e);box-shadow:0 24px 80px rgba(0,0,0,.28);pointer-events:auto;transition:top .22s ease,left .22s ease;box-sizing:border-box}
+#dcTutorCard[data-placement="center"]{top:50%!important;left:50%!important;transform:translate(-50%,-50%)}
+#dcTutorCard .dc-tutor-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+#dcTutorCard .dc-tutor-brand{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:850;letter-spacing:1.15px;text-transform:uppercase;color:var(--text2,#586b59)}
+#dcTutorCard .dc-tutor-avatar{display:grid;place-items:center;width:35px;height:35px;border-radius:12px;background:linear-gradient(135deg,#edc2d5,#cbbde9);color:#45364d;font-size:21px}
+#dcTutorCard .dc-tutor-close{border:0;background:transparent;color:var(--text2,#586b59);font-size:23px;line-height:1;cursor:pointer;padding:4px 7px}
+#dcTutorCard .dc-tutor-kicker{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#a45d86;margin-bottom:7px}
+#dcTutorCard h2{font-size:clamp(18px,4vw,22px);line-height:1.2;margin:0 0 8px;color:var(--text,#263d2e)}
+#dcTutorCard p{font-size:13px;line-height:1.65;margin:0;color:var(--text2,#586b59)}
+#dcTutorCard .dc-tutor-demo{margin-top:12px;padding:10px 12px;border:1px solid var(--border,#dce2d3);border-radius:12px;background:var(--surface2,#f0f1e7);font-size:12px;line-height:1.5;color:var(--text,#263d2e)}
+#dcTutorCard .dc-tutor-progress{height:4px;border-radius:9px;background:var(--surface2,#f0f1e7);overflow:hidden;margin:15px 0 12px}
+#dcTutorCard .dc-tutor-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#d98fb5,#9e8acb);transition:width .25s}
+#dcTutorCard .dc-tutor-foot{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#dcTutorCard .dc-tutor-count{font-size:10px;color:var(--text2,#586b59);white-space:nowrap}
+#dcTutorCard .dc-tutor-actions{display:flex;gap:7px;align-items:center}
+#dcTutorCard button.dc-tutor-btn{border:1px solid var(--border,#dce2d3);border-radius:10px;padding:9px 12px;background:var(--surface,#fffef9);color:var(--text,#263d2e);font:700 12px inherit;cursor:pointer}
+#dcTutorCard button.dc-tutor-primary{border-color:transparent;background:linear-gradient(110deg,#d99abc,#b9a8dc);color:#30243a}
+#dcTutorCard button:focus-visible,#dcTutorLauncher:focus-visible{outline:3px solid #a98acb;outline-offset:3px}
+.dc-tutor-highlight{position:relative!important;z-index:12020!important;outline:3px solid #d99abc!important;outline-offset:5px!important;box-shadow:0 0 0 9999px rgba(17,24,20,.48),0 0 0 9px rgba(217,154,188,.22)!important;border-radius:10px!important;scroll-margin:110px!important}
+#dcTutorHand{position:fixed;z-index:12025;display:none;font-size:34px;line-height:1;filter:drop-shadow(0 4px 5px rgba(0,0,0,.25));pointer-events:none;animation:dcTutorPoint 1.05s ease-in-out infinite}
+#dcTutorHand.is-visible{display:block}
+@keyframes dcTutorPoint{0%,100%{transform:translateY(0) rotate(-10deg)}50%{transform:translateY(8px) rotate(3deg)}}
+@media(max-width:600px){#dcTutorLauncher{right:12px;bottom:calc(14px + env(safe-area-inset-bottom));padding:9px 12px}#dcTutorCard{max-height:calc(100dvh - 24px);padding:16px;border-radius:17px}#dcTutorCard .dc-tutor-foot{align-items:flex-end}#dcTutorCard .dc-tutor-actions{gap:5px}#dcTutorCard button.dc-tutor-btn{padding:9px 10px}}
+@media(prefers-reduced-motion:reduce){#dcTutorLauncher,#dcTutorCard,#dcTutorCard .dc-tutor-progress span{transition:none!important}#dcTutorHand{animation:none!important}}
+</style>
+<div id="doccraftMyTutor" aria-live="polite">
+  <button type="button" id="dcTutorLauncher" aria-haspopup="dialog" aria-controls="dcTutorLayer"><span class="dc-tutor-launch-mark" aria-hidden="true">✧</span><span>My Tutor</span></button>
+  <section id="dcTutorLayer" role="dialog" aria-modal="true" aria-labelledby="dcTutorTitle">
+    <div id="dcTutorBackdrop"></div>
+    <div id="dcTutorHand" aria-hidden="true">☝️</div>
+    <article id="dcTutorCard" data-placement="center">
+      <div class="dc-tutor-top"><div class="dc-tutor-brand"><span class="dc-tutor-avatar" aria-hidden="true">✧</span><span>DocCraft · My Tutor</span></div><button type="button" class="dc-tutor-close" id="dcTutorClose" aria-label="Close tour">×</button></div>
+      <div class="dc-tutor-kicker" id="dcTutorKicker">A guided journey</div>
+      <h2 id="dcTutorTitle">Welcome to DocCraft Pro</h2>
+      <p id="dcTutorText">I'll show you around.</p>
+      <div class="dc-tutor-demo" id="dcTutorDemo" hidden></div>
+      <div class="dc-tutor-progress"><span id="dcTutorProgress"></span></div>
+      <div class="dc-tutor-foot"><span class="dc-tutor-count" id="dcTutorCount">Welcome</span><div class="dc-tutor-actions"><button type="button" class="dc-tutor-btn" id="dcTutorBack">Back</button><button type="button" class="dc-tutor-btn dc-tutor-primary" id="dcTutorNext">Let's begin</button></div></div>
+    </article>
+  </section>
+</div>
+<script id="doccraft-my-tutor-script">
+(function(){
+ 'use strict';
+ const $=id=>document.getElementById(id);
+ const layer=$('dcTutorLayer'),card=$('dcTutorCard'),hand=$('dcTutorHand'),launcher=$('dcTutorLauncher');
+ if(!layer||!card||!launcher||window.__docCraftMyTutorReady)return;
+ window.__docCraftMyTutorReady=true;
+ const memoryKey='doccraft_my_tutor_seen_v1';
+ let index=-1,active=false,highlight=null,menuOpenedByTutor=false,previousFocus=null;
+ const steps=[
+  {title:'Welcome to DocCraft Pro',text:"I'm My Tutor, your guide around DocCraft. I'll show you where things are, what they do, and how the pieces fit together. You stay in control throughout.",demo:'This is a guided tour. It will not create, edit, approve, generate or purchase anything for you.',target:null},
+  {title:'Your DocCraft home',text:'This is your starting point. From here, you can discover the document tools and choose the kind of professional document you want to create.',target:'#homeScreen .hero'},
+  {title:'Start where you are',text:'When you are ready to create, this takes you into the document workspace. You can also choose a tool from the cards below.',target:'#homeScreen .hero-btns'},
+  {title:'Explore the document tools',text:'These are the main creation tools: Resume & CV, Cover Letter, Portfolio and Organisation Letters. Each opens its own existing workflow.',target:'#tools .tools-grid'},
+  {title:'Choose your workspace',text:'Active is your Document Studio. Exploration opens the separate Smart Potential Lab. You can move between these spaces whenever you need.',target:'.workspace-switcher'},
+  {title:'More of DocCraft',text:'Open More to find your account, wallet, settings, DocCraft Care and Help & Support.',target:'#workspaceNavTrigger'},
+  {title:'Your profile and wallet',text:'Your account and wallet live here. You can review your account details and available credits. My Tutor never makes payments or changes your balance.',target:'#workspaceNavMenu .workspace-nav-group:first-child button:first-of-type',menu:true},
+  {title:'Your settings',text:'Display and accessibility preferences are available here, including reduced motion.',target:'#workspaceNavMenu .workspace-nav-group:first-child button:nth-of-type(2)',menu:true},
+  {title:'DocCraft Care',text:'When you need writing guidance or help with something in your document, DocCraft Care is available inside the workspace.',target:'#workspaceNavMenu .workspace-nav-group:nth-child(2) button:first-of-type',menu:true},
+  {title:'Help & Support',text:'For help using the platform, this is the place to find assistance. If a task needs human support, follow the available support route.',target:'#workspaceNavMenu .workspace-nav-group:nth-child(2) button:nth-of-type(2)',menu:true},
+  {title:'Enter Document Studio',text:'Let's look inside a real workspace. This opens the existing Resume builder as a demonstration. It does not fill in or generate a document.',target:'#homeScreen .hero-btns .btn-primary',action:true,demo:'Choose “Show me the workspace” to open the existing Resume / CV workspace. You can return Home at any time.'},
+  {title:'Choose the document format',text:'Inside the workspace, choose the appropriate document type. Resume, CV and Academic CV are separate options; other tools have their own choices.',target:'#docTypePills'},
+  {title:'Your writing workspace',text:'This is where you enter your information. Follow the field labels, take your time, and use the expanded writing space when you need more room.',target:'#formContent'},
+  {title:'AI writing assistance',text:'The AI assistant is available to help you work with your document. You remain in control of what you accept and what you submit.',target:'#pane-chat'},
+  {title:'Review your document',text:'Your document preview appears here. Review the content carefully before using the existing approval or generation actions.',target:'#docSheet'},
+  {title:'Export your work',text:'When your document is ready, the existing export controls let you copy or download it. My Tutor does not trigger either action.',target:'#downloadDocumentBtn'},
+  {title:'Your guide is always nearby',text:'That completes the main tour. You can reopen My Tutor whenever you need a refresher, or use DocCraft Care and Help & Support for further assistance.',target:'#careOpen',final:true}
+ ];
+ function safeStore(value){try{localStorage.setItem(memoryKey,value)}catch(e){}}
+ function getStore(){try{return localStorage.getItem(memoryKey)}catch(e){return null}}
+ function clearHighlight(){if(highlight){highlight.classList.remove('dc-tutor-highlight');highlight=null}hand.classList.remove('is-visible')}
+ function menuState(open){const m=$('workspaceNavMenu'),b=$('workspaceNavTrigger');if(!m||!b)return;if(open&&m.hidden){b.click();menuOpenedByTutor=true}else if(!open&&menuOpenedByTutor&&!m.hidden){b.click();menuOpenedByTutor=false}}
+ function placeCard(target){
+  card.dataset.placement='floating';
+  const r=target.getBoundingClientRect(),w=card.offsetWidth,h=card.offsetHeight,g=14;
+  let left=Math.max(12,Math.min(innerWidth-w-12,r.left+(r.width-w)/2));
+  let top=r.bottom+g;
+  if(top+h>innerHeight-12)top=r.top-h-g;
+  if(top<12)top=Math.max(12,Math.min(innerHeight-h-12,(innerHeight-h)/2));
+  card.style.left=left+'px';card.style.top=top+'px';
+  const hx=Math.max(8,Math.min(innerWidth-48,r.left+r.width/2-17));
+  const hy=Math.max(8,Math.min(innerHeight-48,r.top-38));
+  hand.style.left=hx+'px';hand.style.top=hy+'px';hand.classList.add('is-visible');
+ }
+ function render(){
+  clearHighlight();
+  const s=steps[index];if(!s)return;
+  if(s.menu)menuState(true);else menuState(false);
+  $('dcTutorKicker').textContent=s.final?'Your next steps':'Step '+(index+1)+' · My Tutor';
+  $('dcTutorTitle').textContent=s.title;$('dcTutorText').textContent=s.text;
+  $('dcTutorDemo').hidden=!s.demo;$('dcTutorDemo').textContent=s.demo||'';
+  $('dcTutorCount').textContent=s.final?'Tour complete':(index+1)+' of '+steps.length;
+  $('dcTutorProgress').style.width=((index+1)/steps.length*100)+'%';
+  $('dcTutorBack').disabled=index===0;
+  $('dcTutorNext').textContent=s.final?'Finish':(s.action?'Show me the workspace':'Next');
+  const target=s.target?document.querySelector(s.target):null;
+  if(target&&!target.hidden&&target.getClientRects().length){
+   target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center',inline:'nearest'});
+   window.setTimeout(()=>{if(!active||index<0)return;highlight=target;target.classList.add('dc-tutor-highlight');placeCard(target)},180);
+  }else{
+   card.dataset.placement='center';card.style.left='50%';card.style.top='50%';hand.classList.remove('is-visible');
+  }
+ }
+ function start(fromWelcome){
+  if(active)return;active=true;index=fromWelcome?0:0;previousFocus=document.activeElement;
+  layer.classList.add('is-open');document.body.dataset.dcTutorOpen='1';
+  render();$('dcTutorNext').focus({preventScroll:true});
+ }
+ function close(completed){
+  if(!active)return;active=false;clearHighlight();menuState(false);layer.classList.remove('is-open');delete document.body.dataset.dcTutorOpen;
+  if(completed)safeStore('completed');else safeStore('dismissed');
+  if(previousFocus&&previousFocus.focus)previousFocus.focus({preventScroll:true});else launcher.focus({preventScroll:true});
+ }
+ function next(){
+  const s=steps[index];if(!s)return;
+  if(s.action){
+   if(typeof window.openTool==='function')window.openTool('resume');
+   else {const b=document.querySelector('#navTools button');if(b)b.click();}
+   window.setTimeout(()=>{index++;render()},260);return;
+  }
+  if(index>=steps.length-1){close(true);return}
+  index++;render();
+ }
+ launcher.addEventListener('click',()=>{index=0;start(false)});
+ $('dcTutorNext').addEventListener('click',next);
+ $('dcTutorBack').addEventListener('click',()=>{if(index>0){index--;render()}});
+ $('dcTutorClose').addEventListener('click',()=>close(false));
+ $('dcTutorBackdrop').addEventListener('click',()=>close(false));
+ document.addEventListener('keydown',e=>{if(!active)return;if(e.key==='Escape'){e.preventDefault();close(false)}else if(e.key==='ArrowRight'&&!e.target.matches('button,input,textarea,select')){next()}else if(e.key==='ArrowLeft'&&!e.target.matches('button,input,textarea,select')&&index>0){index--;render()}});
+ window.addEventListener('resize',()=>{if(active)render()},{passive:true});
+ window.addEventListener('scroll',()=>{if(active&&highlight&&highlight.isConnected)placeCard(highlight)},{passive:true,capture:true});
+ if(!getStore()){window.setTimeout(()=>{if(!active&&!getStore())start(true)},1100)}
+})();
+</script>
+
 </body>
 </html>
