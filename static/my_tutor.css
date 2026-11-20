@@ -1,74 +1,70 @@
-/* My Tutor — polished header experience shared by account access and workspace */
-#dcTutorLauncher{
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:38px;padding:0 15px;border:1px solid rgba(139,92,246,.38);
-  border-radius:12px;background:linear-gradient(135deg,#6650a0 0%,#8062b6 100%);
-  color:#fff;font:700 12px Inter,'DM Sans',Arial,sans-serif;letter-spacing:.015em;
-  white-space:nowrap;cursor:pointer;box-shadow:0 3px 10px rgba(82,62,130,.14);
-  transition:background .18s ease,border-color .18s ease,box-shadow .18s ease,transform .18s ease
+/* My Tutor V2 — BlueSpario-inspired, clean blue/violet interface */
+.dc-tutor-launcher{
+ display:inline-flex!important;align-items:center;justify-content:center;gap:8px;
+ min-height:38px;padding:0 14px;border:1px solid rgba(111,139,255,.38)!important;border-radius:12px!important;
+ background:linear-gradient(125deg,#385fc4 0%,#625bd0 58%,#7962d7 100%)!important;
+ color:#fff!important;font:750 12px Inter,'DM Sans',Arial,sans-serif!important;letter-spacing:.01em;
+ white-space:nowrap;cursor:pointer;box-shadow:0 5px 16px rgba(68,91,190,.2),inset 0 1px 0 rgba(255,255,255,.2);
+ transition:transform .18s,box-shadow .18s,filter .18s
 }
-#dcTutorLauncher::before{content:"✦";font-size:14px;line-height:1;color:#eee7ff}
-#dcTutorLauncher:hover{background:linear-gradient(135deg,#59438f,#7355aa);border-color:#9b83c9;box-shadow:0 5px 16px rgba(82,62,130,.2);transform:translateY(-1px)}
-#dcTutorLauncher:focus-visible,#dcTutorPanel button:focus-visible{outline:3px solid #a78bfa;outline-offset:3px}
+.dc-tutor-launcher:hover{transform:translateY(-1px);filter:brightness(1.06);box-shadow:0 8px 20px rgba(68,91,190,.27)}
+.dc-tutor-launcher:focus-visible,#dcTutorPanel button:focus-visible{outline:3px solid #9db4ff;outline-offset:3px}
+.dc-tutor-launch-icon{font-size:15px;color:#e5eaff}
+.dc-tutor-live{width:6px;height:6px;border-radius:50%;background:#b8f2dc;box-shadow:0 0 0 3px rgba(184,242,220,.15)}
 .topbar #dcTutorLauncher{margin-left:auto}
 .nav-right #dcTutorLauncher{margin:0 10px 0 auto}
 #dcTutorPanel{
-  position:fixed;right:22px;top:72px;bottom:auto;width:min(390px,calc(100vw - 28px));
-  z-index:1500;overflow:hidden;background:#191c27;color:#e8eaf2;
-  border:1px solid rgba(167,139,250,.28);border-radius:18px;
-  box-shadow:0 22px 65px rgba(0,0,0,.34),0 2px 8px rgba(0,0,0,.12);
-  padding:21px;font-family:Inter,'DM Sans',Arial,sans-serif
+ position:fixed;z-index:1800;right:20px;top:72px;width:min(390px,calc(100vw - 28px));
+ padding:22px;border:1px solid rgba(125,151,255,.25);border-radius:20px;
+ color:#edf2ff;background:linear-gradient(155deg,#18233e 0%,#1b2440 55%,#252448 100%);
+ box-shadow:0 24px 70px rgba(10,20,50,.32),0 2px 10px rgba(12,25,55,.16);
+ font-family:Inter,'DM Sans',Arial,sans-serif;overflow:hidden
 }
-#dcTutorPanel[hidden]{display:none}
-#dcTutorPanel::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#7771e8,#a78bfa,#d0a4d8)}
-#dcTutorPanel .dc-tutor-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:1px 0 19px}
-#dcTutorPanel .dc-tutor-brand{display:inline-flex;align-items:center;gap:7px;color:#bcb2f6;font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-#dcTutorPanel .dc-tutor-close{width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(148,163,184,.16);border-radius:9px;background:rgba(255,255,255,.035);color:#b8bfd0;font-size:19px;line-height:1;cursor:pointer}
-#dcTutorPanel .dc-tutor-close:hover{background:rgba(255,255,255,.09);color:#fff}
-#dcTutorPanel h2{font-size:20px;line-height:1.3;font-weight:750;letter-spacing:-.035em;margin:0 0 9px;color:#fff}
-#dcTutorPanel p{font-size:13px;line-height:1.7;color:#b8c0d2;margin:0 0 19px}
-#dcTutorPanel .dc-tutor-progress{height:4px;background:#303447;border-radius:99px;overflow:hidden;margin:0 0 17px}
-#dcTutorPanel .dc-tutor-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#7771e8,#b49af4);border-radius:99px;transition:width .28s ease}
-#dcTutorPanel .dc-tutor-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-#dcTutorPanel .dc-tutor-actions button{min-height:36px;border-radius:10px;padding:0 12px;font:700 11px Inter,'DM Sans',Arial,sans-serif;cursor:pointer;transition:background .15s,border-color .15s}
-#dcTutorPanel .dc-tutor-secondary{background:#24293a;border:1px solid #3b4258;color:#cbd2e2}
-#dcTutorPanel .dc-tutor-secondary:hover{background:#2d3348;border-color:#59617a}
-#dcTutorPanel .dc-tutor-primary{margin-left:auto;background:linear-gradient(120deg,#6964dc,#8b6bd0);border:1px solid #9587ee;color:#fff;padding-inline:17px!important}
-#dcTutorPanel .dc-tutor-primary:hover{filter:brightness(1.08)}
-#dcTutorPanel .dc-tutor-stepcount{font-size:10px;color:#8e98af;margin-right:auto;letter-spacing:.02em}
-#dcTutorPanel.dc-tutor-auth{background:#fffefa;color:#293b32;border-color:#e3dceb;box-shadow:0 22px 60px rgba(47,48,55,.16),0 2px 8px rgba(47,48,55,.05)}
-#dcTutorPanel.dc-tutor-auth::before{background:linear-gradient(90deg,#65509a,#a16f9e,#d4a6b9)}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-brand{color:#745a99}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-close{background:#f7f4f8;border-color:#e8e0eb;color:#756c7b}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-close:hover{background:#eee8f2;color:#3e3150}
-#dcTutorPanel.dc-tutor-auth h2{color:#263d32}
-#dcTutorPanel.dc-tutor-auth p{color:#5c6a5e}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-progress{background:#ece8ef}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-progress span{background:linear-gradient(90deg,#65509a,#a16f9e)}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-secondary{background:#f8f6f1;border-color:#e4e1d8;color:#586457}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-secondary:hover{background:#f0edf4;border-color:#d6cce2}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-primary{background:linear-gradient(120deg,#65509a,#9470ad);border-color:#8d71a9;color:#fff}
-#dcTutorPanel.dc-tutor-auth .dc-tutor-stepcount{color:#82877e}
-.dc-tutor-target{outline:3px solid #a78bfa!important;outline-offset:5px!important;border-radius:10px!important;scroll-margin:100px;position:relative}
-#dcTutorPointer{position:fixed;z-index:1501;display:none;font-size:29px;line-height:1;filter:drop-shadow(0 3px 5px rgba(0,0,0,.35));pointer-events:none;animation:dcTutorBob 1.15s ease-in-out infinite}
-#dcTutorPointer.dc-visible{display:block}
-@keyframes dcTutorBob{0%,100%{transform:translateY(0) rotate(-12deg)}50%{transform:translateY(-5px) rotate(-12deg)}}
+#dcTutorPanel[hidden]{display:none!important}
+#dcTutorPanel:before{content:"";position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#5a91f4,#7774e9,#a58af0)}
+.dc-tutor-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px}
+.dc-tutor-brand{font-size:9px;font-weight:850;letter-spacing:.15em;color:#aebfff}
+.dc-tutor-close{width:31px;height:31px;border:1px solid rgba(196,208,255,.18);border-radius:10px;background:rgba(255,255,255,.06);color:#e3eaff;font-size:20px;cursor:pointer}
+.dc-tutor-eyebrow{margin:0 0 8px;color:#92b7ff;font-size:9px;font-weight:850;letter-spacing:.13em}
+#dcTutorPanel h2{margin:0 0 9px;color:#fff;font-size:20px;line-height:1.3;letter-spacing:-.035em;font-weight:780}
+#dcTutorPanel p{margin:0 0 14px;color:#c5d0e9;font-size:12.5px;line-height:1.72}
+.dc-tutor-hint{padding:11px 12px;border:1px solid rgba(151,176,255,.14);border-radius:11px;background:rgba(113,143,220,.09);color:#b9c9eb;font-size:10.5px;line-height:1.55}
+.dc-tutor-progress-track{height:4px;margin:17px 0 9px;border-radius:99px;background:rgba(207,220,255,.14);overflow:hidden}
+#dcTutorProgress{display:block;width:0;height:100%;border-radius:99px;background:linear-gradient(90deg,#65a0ff,#9c8aff);transition:width .3s ease}
+.dc-tutor-status{margin:0 0 15px;color:#8094c2;font-size:8px;font-weight:850;letter-spacing:.14em}
+.dc-tutor-actions{display:flex;justify-content:flex-end;gap:8px}
+.dc-tutor-actions button{min-height:36px;padding:0 13px;border-radius:10px;font:750 10px Inter,'DM Sans',Arial,sans-serif;cursor:pointer}
+.dc-tutor-secondary{border:1px solid rgba(188,202,245,.2);background:rgba(255,255,255,.055);color:#c9d5f1}
+.dc-tutor-primary{border:1px solid #8393f4;background:linear-gradient(120deg,#4d79df,#7569d8);color:white;box-shadow:0 4px 12px rgba(64,91,195,.22)}
+.dc-tutor-actions [hidden]{display:none!important}
+#dcTutorPanel.dc-tutor-auth{color:#23334e;background:linear-gradient(150deg,#fff 0%,#f7f9ff 68%,#f2f1ff 100%);border-color:#dce5ff;box-shadow:0 22px 65px rgba(43,67,125,.17)}
+.dc-tutor-auth .dc-tutor-brand{color:#506ab5}
+.dc-tutor-auth .dc-tutor-close{background:#f2f5ff;border-color:#dce4fa;color:#52638f}
+.dc-tutor-auth .dc-tutor-eyebrow{color:#5478cf}
+#dcTutorPanel.dc-tutor-auth h2{color:#203354}
+#dcTutorPanel.dc-tutor-auth p{color:#536582}
+.dc-tutor-auth .dc-tutor-hint{background:#f0f5ff;border-color:#dce8ff;color:#526a96}
+.dc-tutor-auth .dc-tutor-progress-track{background:#e7edfa}
+.dc-tutor-auth #dcTutorProgress{background:linear-gradient(90deg,#4b86e8,#7d70dc)}
+.dc-tutor-auth .dc-tutor-status{color:#8293b4}
+.dc-tutor-auth .dc-tutor-secondary{background:#f3f6fc;border-color:#dce5f5;color:#52627e}
+.dc-tutor-auth .dc-tutor-primary{background:linear-gradient(120deg,#416fd0,#7466ce);border-color:#8b9deb}
+#dcTutorPointer{position:fixed;z-index:1801;display:none;width:55px;height:66px;pointer-events:none;filter:drop-shadow(0 5px 7px rgba(23,38,83,.28));animation:dcTutorHandFloat 1.35s ease-in-out infinite}
+#dcTutorPointer.is-visible{display:block}
+#dcTutorPointer svg{width:55px;height:62px;overflow:visible}
+.dc-tutor-pointer-spark{position:absolute;top:-5px;right:-3px;color:#8ca9ff;font-size:16px;text-shadow:0 2px 8px #263f87}
+@keyframes dcTutorHandFloat{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-5px) rotate(-7deg)}}
+.dc-tutor-focus{outline:2px solid #78a5ff!important;outline-offset:4px!important;box-shadow:0 0 0 6px rgba(91,139,244,.13)!important;border-radius:10px!important;scroll-margin:105px;position:relative}
 @media(max-width:700px){
-  .topbar #dcTutorLauncher{min-height:35px;padding:0 11px;font-size:11px}
-  .nav-right #dcTutorLauncher{margin-right:6px;padding:0 10px;font-size:11px}
-  #dcTutorPanel{right:10px;top:66px;width:calc(100vw - 20px);padding:18px}
-  #dcTutorPanel h2{font-size:18px}
-}
-@media(max-width:390px){
-  .topbar{gap:8px}
-  .brand{gap:8px;font-size:13px}
-  .brand-mark{width:31px;height:31px}
-  .topbar #dcTutorLauncher{padding:0 9px;font-size:10px}
-  .nav-right #dcTutorLauncher{margin-right:4px}
+ .topbar #dcTutorLauncher{min-height:35px;padding:0 10px;font-size:10px}
+ .nav-right #dcTutorLauncher{margin-right:5px;padding:0 9px;font-size:10px}
+ #dcTutorPanel{top:65px;right:10px;width:calc(100vw - 20px);padding:18px}
+ #dcTutorPanel h2{font-size:18px}
+ #dcTutorPointer{width:47px;height:57px}
+ #dcTutorPointer svg{width:47px;height:54px}
 }
 @media(prefers-reduced-motion:reduce){
-  #dcTutorPointer{animation:none}
-  #dcTutorLauncher{transition:none}
-  #dcTutorPanel .dc-tutor-progress span{transition:none}
-  #dcTutorLauncher:hover{transform:none}
+ #dcTutorPointer{animation:none}
+ .dc-tutor-launcher,#dcTutorProgress{transition:none}
+ .dc-tutor-launcher:hover{transform:none}
 }
