@@ -67,12 +67,13 @@
     @media(max-width:560px){.page{width:min(100% - 28px,520px)}.topbar{height:66px}.top-note{font-size:10px}.layout{padding:28px 0 32px;gap:22px}.eyebrow{font-size:9px}h1{font-size:39px;margin:17px 0 10px}.story-copy{font-size:13px}.feature-list{grid-template-columns:1fr;gap:11px;margin-top:22px}.feature{display:flex}.feature-icon{margin:0}.auth-card{padding:23px 19px;border-radius:19px}.card-heading{font-size:23px}.foot{flex-direction:column}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
   </style>
+<link rel="stylesheet" href="/static/my_tutor.css">
 </head>
 <body>
   <div class="page">
     <header class="topbar">
       <a class="brand" href="/" aria-label="DocCraft Pro home"><span class="brand-mark">✦</span><span>DOCCRAFT<span class="brand-pro"> PRO</span></span></a>
-      <span class="top-note">Your documents. Your work. Protected.</span>
+      
     </header>
     <main class="layout">
       <section class="story" aria-labelledby="storyTitle">
@@ -167,5 +168,6 @@
   fetch('/api/auth/session',{credentials:'same-origin',headers:{'Accept':'application/json'}}).then(r=>r.json()).then(data=>{if(data.authenticated)location.replace('/');}).catch(()=>{});
 })();
 </script>
+<script src="/static/my_tutor.js" defer></script>
 </body>
 </html>
