@@ -1,243 +1,145 @@
-/* My Tutor — event-led, contextual product guide. Never triggers paid actions. */
-(function () {
-  'use strict';
-  if (window.__docCraftTutorV2) return;
-  window.__docCraftTutorV2 = true;
-
-  const $ = (s, root=document) => root.querySelector(s);
-  const isAuth = !!$('#authForm');
-  const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let panel, launcher, pointer, target=null, stage='welcome', paused=false, started=false, observer=null;
-  const journeyKey='dcTutorJourneyV2';
-
-  function el(tag, attrs={}, parent) {
-    const node=document.createElement(tag);
-    Object.entries(attrs).forEach(([k,v]) => {
-      if(k==='text') node.textContent=v;
-      else if(k==='html') node.innerHTML=v;
-      else node.setAttribute(k,v);
-    });
-    if(parent) parent.appendChild(node);
-    return node;
+/* My Tutor — compact, action-led tour. It never submits forms or spends credits. */
+(function(){
+'use strict';
+if(window.__docCraftTutorCompact)return;window.__docCraftTutorCompact=true;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const auth=!!$('#authForm'), key='dcTutorTourV3', activeKey='dcTutorTourActiveV3';
+let bubble,hand,target=null,accepted=false,paused=false,stage='invite',observer=null,hideTimer=null;
+const reduced=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function make(tag,attrs,parent){const n=document.createElement(tag);Object.entries(attrs||{}).forEach(([k,v])=>k==='text'?n.textContent=v:n.setAttribute(k,v));if(parent)parent.appendChild(n);return n;}
+function clearPoint(){if(target)target.classList.remove('dc-tutor-focus');target=null;if(hand)hand.classList.remove('visible');}
+function place(){
+ if(!target||!hand||!bubble||paused)return;
+ const r=target.getBoundingClientRect();if(!r.width||!r.height)return;
+ const x=Math.max(8,Math.min(innerWidth-58,r.left+Math.min(r.width*.55,90)));
+ const y=Math.max(8,Math.min(innerHeight-70,r.top-52));
+ hand.style.left=x+'px';hand.style.top=y+'px';hand.classList.add('visible');
+ const br=bubble.getBoundingClientRect();let bx=Math.max(10,Math.min(innerWidth-br.width-10,x- Math.min(150,br.width*.35)));
+ let by=y+64;if(by+br.height>innerHeight-10)by=Math.max(8,y-br.height-12);
+ bubble.style.left=bx+'px';bubble.style.top=by+'px';
+}
+function point(selector,scroll=true){
+ clearPoint();const n=typeof selector==='string'?$(selector):selector;
+ if(!n||!n.getClientRects().length)return false;
+ target=n;n.classList.add('dc-tutor-focus');
+ if(scroll)n.scrollIntoView({behavior:reduced()?'auto':'smooth',block:'center',inline:'nearest'});
+ requestAnimationFrame(()=>requestAnimationFrame(place));return true;
+}
+function show(title,message,selector,actions){
+ clearTimeout(hideTimer);bubble.hidden=false;
+ $('#dcTutorTitle').textContent=title;$('#dcTutorText').textContent=message;
+ const row=$('#dcTutorActions');row.replaceChildren();
+ (actions||[]).forEach(a=>{const b=make('button',{type:'button',class:a.primary?'dc-tutor-yes':'dc-tutor-later',text:a.label},row);b.addEventListener('click',a.run);});
+ if(selector)point(selector);else clearPoint();
+}
+function collapse(){if(bubble)bubble.hidden=true;clearPoint();}
+function invitation(){
+ stage='invite';show('Welcome to DocCraft','New here? May I show you around and explain how everything works?',null,[
+ {label:'Show me around',primary:true,run:()=>{accepted=true;sessionStorage.setItem(activeKey,'1');if(auth)authStart();else workspaceStart();}},
+ {label:'Maybe later',run:()=>{sessionStorage.setItem(key,'later');collapse();}}
+ ]);
+}
+function authStart(){
+ accepted=true;stage='auth-choice';
+ show('Let’s get you started','Choose Sign in if you already have an account, or Create account if this is your first visit.','#loginTab',[]);
+}
+function workspaceStart(){
+ accepted=true;stage='workspace-home';
+ show('Welcome to your Document Studio','This is your home base. Start building a document or browse the available tools. I’ll guide you one action at a time.',$('#homeScreen .hero-btns button')||'#tools',[]);
+}
+function authEvents(){
+ document.addEventListener('click',e=>{
+  if(!accepted)return;
+  if(e.target.closest('#loginTab,#registerTab')){
+   const reg=$('#registerTab')?.classList.contains('active');
+   setTimeout(()=>show(reg?'Create your account':'Sign in securely',
+    reg?'Enter your name, email and password. DocCraft will ask you to verify your email. I will wait while you complete this step.':'Enter your verified account email and password. Your password remains private.',
+    reg?'#fullName':'#email',[]),80);
   }
-  function clearTarget(){
-    if(target) target.classList.remove('dc-tutor-focus');
-    target=null;
-    if(pointer) pointer.classList.remove('is-visible');
+  if(e.target.closest('#resend'))show('Email verification','Use the verification link sent to your inbox. When verification is complete, return here and sign in.','#status',[]);
+ });
+ const form=$('#authForm');
+ form?.addEventListener('submit',()=>{if(accepted){stage='auth-wait';show('Please complete account access','DocCraft is processing your request. I’ll wait here and continue when the account step succeeds.','#status',[]);sessionStorage.setItem(activeKey,'1');}});
+ const status=$('#status');
+ if(status)new MutationObserver(()=>{
+  if(!accepted)return;const t=status.textContent.toLowerCase();
+  if(/check your inbox|verification link|account created|verify your email/.test(t))
+   show('Verify your email','Open the verification message from DocCraft and follow its link. Then return and sign in.','#status',[]);
+  if(t.includes('signed in'))sessionStorage.setItem(activeKey,'1');
+ }).observe(status,{childList:true,subtree:true,characterData:true});
+}
+function observePreview(){
+ const sheet=$('#docSheet');if(!sheet)return;
+ observer=new MutationObserver(()=>{
+  if(!accepted||!sheet.textContent.trim()||stage==='preview')return;
+  stage='preview';
+  const wm=sheet.classList.contains('preview-watermarked');
+  show(wm?'Your watermarked preview':'Your document preview',
+   wm?'Review your document here. The watermark indicates that clean export is not unlocked. Use the available actions to see the wallet requirements; I will not bypass them.':'Review the generated document carefully before using the available copy or download actions.',
+   '#docSheet',[{label:'Show document actions',primary:true,run:()=>show('Copy and download','These controls use DocCraft’s normal access checks. If clean export is locked, the app will explain the wallet options.','#downloadDocumentBtn',[])}]);
+ });
+ observer.observe(sheet,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+}
+function workspaceEvents(){
+ document.addEventListener('click',e=>{
+  if(!accepted)return;
+  if(e.target.closest('#tools .tool-card,.hero-btns button')){
+   setTimeout(()=>show('Choose your document type','Select the document category that matches what you need. Resume, CV and Academic CV are different document types.','#docTypePills',[]),100);
   }
-  function placePointer(node){
-    if(!node || !pointer || panel.hidden || paused) return;
-    const r=node.getBoundingClientRect();
-    if(!r.width || !r.height) return;
-    const top=Math.max(8,Math.min(innerHeight-62,r.top-43));
-    const left=Math.max(8,Math.min(innerWidth-58,r.left+Math.min(r.width*.55,110)));
-    pointer.style.top=top+'px'; pointer.style.left=left+'px';
-    pointer.classList.add('is-visible');
+  if(e.target.closest('#docTypePills button,#clTypePills button,#orgTypeGrid button')){
+   setTimeout(()=>show('Choose how to create your document','You can work with the AI assistant or complete a structured form. Choose the method that suits your information.','#mainTabs',[]),80);
   }
-  function point(selector, scroll=true){
-    clearTarget();
-    const node=typeof selector==='string' ? $(selector) : selector;
-    if(!node || !node.getClientRects().length) return false;
-    target=node; node.classList.add('dc-tutor-focus');
-    if(scroll) node.scrollIntoView({behavior:reduceMotion()?'auto':'smooth',block:'center',inline:'nearest'});
-    setTimeout(()=>{if(target===node)placePointer(node);},reduceMotion()?0:260);
-    return true;
+  if(e.target.closest('#mainTabs button')){
+   setTimeout(()=>{
+    const form=$('#pane-form')?.classList.contains('active');
+    show(form?'Complete the form':'Tell the AI what you need',
+     form?'Enter accurate information in the fields. You can move through the form at your own pace.':'Describe the document you want. The assistant can ask questions and refine the details. Review the result before approving generation.',
+     form?'#formContent':'#userInput',[]);
+   },80);
   }
-  function say(title, message, selector, opts={}){
-    clearTarget();
-    $('#dcTutorTitle').textContent=title;
-    $('#dcTutorBody').textContent=message;
-    $('#dcTutorHint').textContent=opts.hint||'I’ll follow your actions and continue when you’re ready.';
-    $('#dcTutorProgress').style.width=(opts.progress||0)+'%';
-    if(selector) point(selector);
-    $('#dcTutorStatus').textContent=opts.status||'GUIDED EXPERIENCE';
+  if(e.target.closest('#sendBtn'))show('Review the AI conversation','The assistant may ask for missing details. Read its response and use the approval control only when the brief is correct.','#chatApproval',[]);
+  if(e.target.closest('#approveGenerateBtn')){
+   stage='generating';show('Your document is being prepared','You approved the brief. DocCraft is now generating the document. I’ll explain the preview when it appears.','#docSheet',[]);
   }
-  function openPanel(){
-    panel.hidden=false; launcher.setAttribute('aria-expanded','true');
-    if(isAuth){
-      say('Welcome to DocCraft Pro','I’m your personal product guide. I’ll show you how to enter, create a document, understand your watermarked preview, unlock a clean copy and find help. You stay in control.',null,{progress:3,hint:'Choose “Start my tour” and I’ll guide you as you use the real app.'});
-      $('#dcTutorPrimary').hidden=false; $('#dcTutorPrimary').textContent='Start my tour';
-    } else {
-      say('Welcome to your Document Studio','Let’s explore the real workspace together. I’ll respond to what you open and demonstrate the important routes without spending credits or making purchases.', '#homeScreen .hero-title', {progress:12,hint:'You can work normally. I’ll explain each part as you reach it.'});
-      $('#dcTutorPrimary').hidden=true;
-      started=true;
-      observeWorkspace();
-    }
+  if(e.target.closest('#downloadDocumentBtn,#copyDocumentBtn')){
+   show('Document actions','Copy and PDF download are protected by DocCraft’s access checks. If your preview is watermarked, the app will explain what is needed for a clean version.','#downloadDocumentBtn',[]);
   }
-  function closePanel(){
-    clearTarget(); panel.hidden=true; launcher.setAttribute('aria-expanded','false');
-    paused=true;
+  if(e.target.closest('#walletLauncher,#walletNudge')){
+   setTimeout(()=>show('Your DocCraft Wallet','Check the account email and available credits here. If you choose to add credits, follow the official checkout. I will never make a payment for you.','#billingPanel',[]),100);
   }
-  function pausePanel(){
-    paused=true; clearTarget();
-    $('#dcTutorTitle').textContent='Tour paused';
-    $('#dcTutorBody').textContent='Take your time. Your document and account remain in your control. Select Resume whenever you want to continue.';
-    $('#dcTutorHint').textContent='No progress is lost during this page session.';
-    $('#dcTutorPrimary').hidden=false; $('#dcTutorPrimary').textContent='Resume tour';
+  if(e.target.closest('#workspaceNavTrigger')){
+   setTimeout(()=>{
+    const care=$$('[onclick*="openWorkspaceCare"]').find(n=>n.offsetParent!==null);
+    show('Help and account tools','This menu contains account settings and assistance. DocCraft Care can help while you work.','#workspaceNavMenu',[]);
+   },80);
   }
-  function build(){
-    const host=isAuth?$('.topbar'):$('.nav-right');
-    if(!host) return;
-    launcher=$('#dcTutorLauncher');
-    if(!launcher){
-      launcher=el('button',{id:'dcTutorLauncher',type:'button','aria-controls':'dcTutorPanel','aria-expanded':'false'},host);
-    }
-    launcher.className='dc-tutor-launcher';
-    launcher.innerHTML='<span class="dc-tutor-launch-icon" aria-hidden="true">✦</span><span>My Tutor</span><span class="dc-tutor-live" aria-hidden="true"></span>';
-    panel=el('section',{id:'dcTutorPanel',role:'dialog','aria-modal':'false','aria-label':'My Tutor'},document.body);
-    panel.hidden=true;
-    if(isAuth) panel.classList.add('dc-tutor-auth');
-    el('div',{class:'dc-tutor-topline'},panel);
-    const top=$('.dc-tutor-topline',panel);
-    el('span',{class:'dc-tutor-brand',text:'DOCCRAFT PRO  /  MY TUTOR'},top);
-    el('button',{class:'dc-tutor-close',type:'button','aria-label':'Close My Tutor',text:'×'},top).addEventListener('click',closePanel);
-    el('div',{class:'dc-tutor-eyebrow',text:'YOUR INTERACTIVE GUIDE'},panel);
-    el('h2',{id:'dcTutorTitle',text:'Welcome'},panel);
-    el('p',{id:'dcTutorBody'},panel);
-    el('div',{class:'dc-tutor-hint',id:'dcTutorHint'},panel);
-    el('div',{class:'dc-tutor-progress-track'},panel);
-    el('span',{id:'dcTutorProgress'},$('.dc-tutor-progress-track',panel));
-    el('div',{class:'dc-tutor-status',id:'dcTutorStatus',text:'GUIDED EXPERIENCE'},panel);
-    const actions=el('div',{class:'dc-tutor-actions'},panel);
-    el('button',{id:'dcTutorPause',class:'dc-tutor-secondary',type:'button',text:'Pause'},actions).addEventListener('click',pausePanel);
-    el('button',{id:'dcTutorPrimary',class:'dc-tutor-primary',type:'button',text:'Start my tour'},actions).addEventListener('click',()=>{
-      if(paused){paused=false; if(isAuth) authWelcome(); else workspaceWelcome(); return;}
-      if(isAuth) startAuth(); else {started=true;observeWorkspace();workspaceWelcome();}
-    });
-    pointer=el('div',{id:'dcTutorPointer','aria-hidden':'true'},document.body);
-    pointer.innerHTML='<svg viewBox="0 0 64 72" role="presentation"><path d="M27 5c4 0 7 3 7 7v19l5-5c3-3 8-2 10 1 2 3 1 6-1 9l-9 15c-3 5-8 8-14 8h-4c-7 0-12-5-12-12V37c0-4 3-7 7-7 2 0 4 1 5 3V12c0-4 3-7 6-7Z" fill="#f6f8ff" stroke="#3856b8" stroke-width="3" stroke-linejoin="round"/><path d="M29 14v17" stroke="#8ea8ff" stroke-width="3" stroke-linecap="round"/></svg><span class="dc-tutor-pointer-spark">✦</span>';
-    launcher.addEventListener('click',()=>{paused=false;openPanel();});
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)closePanel();});
-    window.addEventListener('resize',()=>placePointer(target));
-    window.addEventListener('scroll',()=>placePointer(target),{passive:true});
-    if(isAuth) { authEvents(); openPanel(); started=true; authWelcome(); $('#dcTutorPrimary').hidden=true; }
-    else {
-      const resumeJourney=sessionStorage.getItem(journeyKey)==='workspace';
-      if(resumeJourney){sessionStorage.removeItem(journeyKey);openPanel();started=true;observeWorkspace();workspaceWelcome();}
-    }
-  }
-  function authWelcome(){
-    say('First, choose how to enter','Already have an account? Select Sign in. New here? Select Create account. I’ll follow the option you choose and wait while you complete each step.', '#loginTab',{progress:8,hint:'Touch either tab. The guide will move with you.'});
-    $('#dcTutorPrimary').hidden=true;
-  }
-  function startAuth(){
-    started=true;paused=false;sessionStorage.setItem(journeyKey,'auth');
-    authWelcome();
-  }
-  function authEvents(){
-    document.addEventListener('click',e=>{
-      if(!started||panel.hidden)return;
-      if(e.target.closest('#loginTab,#registerTab')){
-        setTimeout(()=>{
-          const registering=$('#registerTab').classList.contains('active');
-          say(registering?'Create your DocCraft account':'Sign in to your account',
-            registering?'Enter your name, email and a secure password. After registration, check your inbox for the verification link. I’ll wait while you do that.':'Enter the email and password associated with your verified account. Your password stays private; I never read or store it.',
-            registering?'#fullName':'#email',{progress:registering?16:16,hint:'I’ll wait while you enter your details.'});
-        },40);
-      }
-      if(e.target.closest('#reveal')) {
-        say('Password visibility','The Show control lets you check your typing. Hide it again before leaving your device.','#password',{progress:23});
-      }
-      if(e.target.closest('#resend')) {
-        say('Email verification','DocCraft can resend the verification email. Open your inbox and follow the secure link, then return here to sign in.','#status',{progress:28,hint:'I’ll wait for you to finish verification and sign in.'});
-      }
-    });
-    $('#authForm')?.addEventListener('submit',()=>{
-      if(!started)return;
-      const registering=$('#registerTab').classList.contains('active');
-      say(registering?'Check your email to verify':'Signing you in','Your account details are being processed by DocCraft. I won’t interrupt this step. If registration succeeds, verify your email before signing in.','#status',{progress:registering?32:36,hint:'Please complete the account step. I’ll continue when the workspace opens.'});
-      sessionStorage.setItem(journeyKey,'auth');
-    });
-    const status=$('#status');
-    if(status)new MutationObserver(()=>{
-      if(!started||panel.hidden)return;
-      const t=status.textContent.toLowerCase();
-      if(t.includes('check your inbox')||t.includes('verification link')||t.includes('account created')){
-        say('Verification is the next step','Open the verification email sent by DocCraft and use its link. Once your email is verified, return and sign in. I’ll stay available here.','#resend',{progress:34,hint:'This is a waiting point. No need to click through the tutor.'});
-      } else if(t.includes('signed in')){
-        sessionStorage.setItem(journeyKey,'workspace');
-        say('You’re in — opening your studio','Your sign-in succeeded. I’ll continue inside your Document Studio.','#status',{progress:40});
-      }
-    }).observe(status,{childList:true,subtree:true,characterData:true});
-  }
-  function workspaceWelcome(){
-    say('Your Document Studio','This is your home base. Start with a document tool, or explore the workspace and account menu. I’ll explain each feature when you open it.', '#homeScreen .hero-title',{progress:43,hint:'Choose Start Building or Explore Tools to begin.'});
-  }
-  function observeWorkspace(){
-    if(observer)observer.disconnect();
-    const sheet=$('#docSheet');
-    if(sheet) observer=new MutationObserver(()=>{
-      if(!started||panel.hidden||!sheet.textContent.trim())return;
-      const watermarked=sheet.classList.contains('preview-watermarked');
-      say(watermarked?'Your watermarked preview is ready':'Your document preview is ready',
-        watermarked?'This is your real generated preview. The watermark shows that clean export is not currently unlocked. You can review it and use your browser’s Print command (Ctrl+P) for a watermarked paper/PDF copy where your browser allows it. The watermark remains; clean copying and PDF export require wallet access.':'Your document has been generated. Review the content and use the available document actions. Clean export is available when your account has the required access.',
-        '#docSheet',{progress:75,hint:'Review the preview. I’ll explain download and wallet access next.'});
-      $('#dcTutorPrimary').hidden=false;$('#dcTutorPrimary').textContent='Show download options';
-    });
-    if(sheet)observer.observe(sheet,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
-  }
-  function showDownload(){
-    say('Preview, print and download','When access is unavailable, DocCraft shows a watermarked preview. You can use your browser Print command (Ctrl+P) to print/save a watermarked copy where supported. The watermark remains. Clean PDF download and copy are protected; I will never remove it or spend credits for you.','#downloadDocumentBtn',{progress:82,hint:'Try the available preview/print option. If export is locked, open Wallet to see how to unlock it.'});
-    $('#dcTutorPrimary').hidden=false;$('#dcTutorPrimary').textContent='Take me to Wallet';
-  }
-  function showWallet(){
-    const opened=typeof window.openWalletPalette==='function';
-    if(opened)window.openWalletPalette();
-    say('Your DocCraft Wallet','Your wallet shows the account email and credit balance. Add credits through the official checkout if you choose. Once the required access is confirmed, generate or export a clean document.','#billingPanel',{progress:90,hint:'I will never purchase credits or submit a payment on your behalf.'});
-    $('#dcTutorPrimary').hidden=false;$('#dcTutorPrimary').textContent='Show help & support';
-  }
-  function showHelp(){
-    const trigger=$('#workspaceNavTrigger')||$('.workspace-nav-trigger');
-    if(trigger)trigger.click();
-    const help=[...document.querySelectorAll('button')].find(b=>/help & support/i.test(b.innerText));
-    say('Help when you need it','Use Help & Support for guidance beyond this tour. DocCraft Care is also available from inside your document workspace for questions while you work.',help||'#careOpen',{progress:96,hint:'You can return to My Tutor at any time from the header.'});
-    $('#dcTutorPrimary').hidden=true;
-  }
-  document.addEventListener('click',e=>{
-    if(!started||panel.hidden||isAuth)return;
-    if(e.target.closest('#dcTutorPrimary')){
-      if($('#dcTutorPrimary').textContent.includes('download'))showDownload();
-      else if($('#dcTutorPrimary').textContent.includes('Wallet'))showWallet();
-      else if($('#dcTutorPrimary').textContent.includes('help'))showHelp();
-    }
-    if(e.target.closest('#walletLauncher,#careProfile')){
-      say('Wallet and account','This opens your wallet and account area. Check your balance here and review the available credit options.', '#billingPanel',{progress:90});
-    }
-    if(e.target.closest('#careOpen')){
-      say('DocCraft Care','Ask for help while you work. You can describe the document challenge and get guidance without leaving your workspace.','#carePopup',{progress:98});
-    }
-    if(e.target.closest('#workspaceNavTrigger,.workspace-nav-trigger')){
-      setTimeout(()=>showHelp(),100);
-    }
-    if(e.target.closest('#tools button,.tools-grid button,.tool-card button')){
-      const button=e.target.closest('button');
-      say('Choose your document type','You have opened a document tool. Select the document type that matches your purpose, then choose how you want to provide the information.','#docTypePills',{progress:53,hint:'Choose a document type. I’ll follow your selection.'});
-    }
-    if(e.target.closest('#docTypePills button')){
-      say('Choose how to create it','You can describe your goal in the AI conversation or complete the structured form. The form gives you direct control over each detail.','#mainTabs',{progress:59});
-    }
-    if(e.target.closest('#mainTabs button')){
-      const pane=$('#pane-form')?.classList.contains('active')?'#formContent':'#pane-chat';
-      say(pane==='#pane-form'?'Complete the form':'Work with the AI assistant',
-        pane==='#pane-form'?'Fill in the fields with accurate information. You can add extra tips to guide the result. I’ll wait while you type.':'Describe what you want to create. The assistant can ask questions and refine the brief. Review it, then explicitly approve before generation.',
-        pane,{progress:64,hint:'Type at your own pace. I won’t submit or generate anything automatically.'});
-    }
-    if(e.target.closest('#approveGenerateBtn')){
-      say('Your approved document is being prepared','You approved the brief and started generation. I’ll wait for the real result, then explain the preview and available export options.','#docSheet',{progress:70});
-    }
-    if(e.target.closest('#downloadDocumentBtn,#copyDocumentBtn'))showDownload();
-    if(e.target.closest('#walletLauncher'))showWallet();
-  });
-  document.addEventListener('focusin',e=>{
-    if(!started||panel.hidden||isAuth)return;
-    if(e.target.closest('#formContent')){
-      const field=e.target;
-      const label=field.labels?.[0]?.textContent||field.closest('.form-group')?.querySelector('label')?.textContent||field.getAttribute('aria-label')||'this field';
-      say('Add your information','You are editing '+label.trim()+'. Use your own accurate details. The form saves your answers in the document workflow; I won’t type private information for you.','#formContent',{progress:66,hint:'I’ll stay out of your way while you write.'});
-    }
-    if(e.target.closest('#userInput')){
-      say('Describe your document','Tell the assistant what you need, who the document is for and any important context. Enter creates a new line; use the send control when you are ready.','#userInput',{progress:66});
-    }
-  });
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
+  if(e.target.closest('#careOpen'))show('DocCraft Care','This opens in-workspace AI assistance. Describe the question or document issue you need help with.','#carePopup',[]);
+ });
+ observePreview();
+}
+function build(){
+ const launcher=$('#dcTutorLauncher');if(!launcher)return;
+ launcher.setAttribute('role','button');launcher.setAttribute('tabindex','0');launcher.setAttribute('aria-label','My Tutor — open guided tour');
+ bubble=make('aside',{id:'dcTutorBubble','aria-live':'polite','aria-label':'My Tutor guide'},document.body);bubble.hidden=true;
+ make('div',{class:'dc-tutor-bubble-kicker',text:'DOCCRAFT GUIDE'},bubble);
+ make('button',{class:'dc-tutor-bubble-close',type:'button','aria-label':'Close guide',text:'×'},bubble).addEventListener('click',collapse);
+ make('h3',{id:'dcTutorTitle',text:'Welcome'},bubble);make('p',{id:'dcTutorText'},bubble);make('div',{id:'dcTutorActions',class:'dc-tutor-actions'},bubble);
+ hand=make('div',{id:'dcTutorMovingHand','aria-hidden':'true',text:'☝️'},document.body);
+ const open=()=>{if(!accepted){invitation();return;}paused=false;if(auth)authStart();else workspaceStart();};
+ launcher.addEventListener('click',open);
+ launcher.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')collapse();});
+ window.addEventListener('resize',place);window.addEventListener('scroll',place,{passive:true});
+ if(auth){
+  authEvents();
+  if(sessionStorage.getItem(activeKey)==='1'){accepted=true;authStart();}
+  else if(sessionStorage.getItem(key)!=='later')invitation();
+ }else{
+  const resume=sessionStorage.getItem(activeKey)==='1';
+  if(resume){accepted=true;workspaceEvents();workspaceStart();}
+  else if(sessionStorage.getItem(key)!=='later')invitation();
+  else workspaceEvents();
+ }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',build,{once:true});else build();
 })();
