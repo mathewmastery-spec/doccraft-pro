@@ -1882,6 +1882,7 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 }
 </style>
 
+<link rel="stylesheet" href="/static/my_tutor.css">
 </head>
 <body>
 
@@ -4543,5 +4544,6 @@ async function logoutDocCraft(){
  function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;const h=v?v.height:window.innerHeight;o.style.height=h+'px';o.style.top=(v?v.offsetTop:0)+'px';o.classList.toggle('dc-keyboard-open',!!v&&window.innerHeight-h>100);requestAnimationFrame(()=>resizeFocusEditor(false));}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
 })();
 </script>
+<script src="/static/my_tutor.js" defer></script>
 </body>
 </html>
