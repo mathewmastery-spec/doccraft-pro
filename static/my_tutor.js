@@ -26,10 +26,11 @@
     const host=isAuth?document.querySelector('.topbar'):document.querySelector('.nav-right');
     if(!host)return;
     let launcher=document.getElementById('dcTutorLauncher');
-    if(!launcher)launcher=make('button',{id:'dcTutorLauncher',type:'button','aria-controls':'dcTutorPanel','aria-expanded':'false',text:'☝ My Tutor'},host);
+    if(!launcher)launcher=make('button',{id:'dcTutorLauncher',type:'button','aria-controls':'dcTutorPanel','aria-expanded':'false',text:'✦ My Tutor'},host);
     launcher.setAttribute('aria-controls','dcTutorPanel');
     launcher.setAttribute('aria-expanded','false');
     const panel=make('section',{id:'dcTutorPanel',role:'dialog','aria-modal':'false','aria-label':'My Tutor guided tour',hidden:''},document.body);
+    if(isAuth)panel.classList.add('dc-tutor-auth');
     const top=make('div',{class:'dc-tutor-top'},panel);
     make('span',{class:'dc-tutor-brand',text:isAuth?'YOUR FIRST STEPS  •  MY TUTOR':'DOCCRAFT PRO  •  MY TUTOR'},top);
     const close=make('button',{class:'dc-tutor-close',type:'button','aria-label':'Close tutor',text:'×'},top);
