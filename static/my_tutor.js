@@ -38,7 +38,7 @@
     function closeTour(){clearTarget();panel.hidden=true;launcher.setAttribute('aria-expanded','false');index=-1;}
     function showStep(){
       clearTarget();
-      const step=steps[index],target=document.querySelector(step.selector);
+      const step=steps[index],candidate=document.querySelector(step.selector),target=candidate&&candidate.getClientRects().length?candidate:null;
       title.textContent=step.title;body.textContent=step.body;
       progress.firstChild.style.width=((index+1)/steps.length*100)+'%';
       count.textContent='Step '+(index+1)+' of '+steps.length;
