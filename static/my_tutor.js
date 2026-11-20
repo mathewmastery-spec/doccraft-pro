@@ -33,11 +33,18 @@ function show(title,message,selector,actions){
  if(selector)point(selector);else clearPoint();
 }
 function collapse(){if(bubble)bubble.hidden=true;clearPoint();}
+function anchorInvitation(){
+ const logo=$('#dcTutorLauncher');if(!logo||!bubble)return;
+ const r=logo.getBoundingClientRect();const w=bubble.getBoundingClientRect().width||290;
+ bubble.style.left=Math.max(10,Math.min(innerWidth-w-10,r.left))+'px';
+ bubble.style.top=Math.min(innerHeight-145,Math.max(10,r.bottom+10))+'px';
+}
 function invitation(){
  stage='invite';show('Welcome to DocCraft','New here? May I show you around and explain how everything works?',null,[
  {label:'Show me around',primary:true,run:()=>{accepted=true;sessionStorage.setItem(activeKey,'1');if(auth)authStart();else workspaceStart();}},
  {label:'Maybe later',run:()=>{sessionStorage.setItem(key,'later');collapse();}}
  ]);
+ anchorInvitation();
 }
 function authStart(){
  accepted=true;stage='auth-choice';
