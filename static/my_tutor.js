@@ -23,10 +23,12 @@
   let index=-1,active=null;
   const make=(tag,attrs,parent)=>{const el=document.createElement(tag);Object.keys(attrs||{}).forEach(k=>{if(k==='text')el.textContent=attrs[k];else el.setAttribute(k,attrs[k]);});if(parent)parent.appendChild(el);return el;};
   function build(){
-    if(document.getElementById('dcTutorLauncher'))return;
     const host=isAuth?document.querySelector('.topbar'):document.querySelector('.nav-right');
     if(!host)return;
-    const launcher=make('button',{id:'dcTutorLauncher',type:'button','aria-controls':'dcTutorPanel','aria-expanded':'false',text:'☝ My Tutor'},host);
+    let launcher=document.getElementById('dcTutorLauncher');
+    if(!launcher)launcher=make('button',{id:'dcTutorLauncher',type:'button','aria-controls':'dcTutorPanel','aria-expanded':'false',text:'☝ My Tutor'},host);
+    launcher.setAttribute('aria-controls','dcTutorPanel');
+    launcher.setAttribute('aria-expanded','false');
     const panel=make('section',{id:'dcTutorPanel',role:'dialog','aria-modal':'false','aria-label':'My Tutor guided tour',hidden:''},document.body);
     const top=make('div',{class:'dc-tutor-top'},panel);
     make('span',{class:'dc-tutor-brand',text:isAuth?'YOUR FIRST STEPS  •  MY TUTOR':'DOCCRAFT PRO  •  MY TUTOR'},top);
