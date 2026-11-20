@@ -110,7 +110,7 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!panel.hidden)closePanel();});
     window.addEventListener('resize',()=>placePointer(target));
     window.addEventListener('scroll',()=>placePointer(target),{passive:true});
-    if(isAuth) authEvents();
+    if(isAuth) { authEvents(); openPanel(); started=true; authWelcome(); $('#dcTutorPrimary').hidden=true; }
     else {
       const resumeJourney=sessionStorage.getItem(journeyKey)==='workspace';
       if(resumeJourney){sessionStorage.removeItem(journeyKey);openPanel();started=true;observeWorkspace();workspaceWelcome();}
@@ -155,6 +155,7 @@
       if(t.includes('check your inbox')||t.includes('verification link')||t.includes('account created')){
         say('Verification is the next step','Open the verification email sent by DocCraft and use its link. Once your email is verified, return and sign in. I’ll stay available here.','#resend',{progress:34,hint:'This is a waiting point. No need to click through the tutor.'});
       } else if(t.includes('signed in')){
+        sessionStorage.setItem(journeyKey,'workspace');
         say('You’re in — opening your studio','Your sign-in succeeded. I’ll continue inside your Document Studio.','#status',{progress:40});
       }
     }).observe(status,{childList:true,subtree:true,characterData:true});
@@ -169,14 +170,14 @@
       if(!started||panel.hidden||!sheet.textContent.trim())return;
       const watermarked=sheet.classList.contains('preview-watermarked');
       say(watermarked?'Your watermarked preview is ready':'Your document preview is ready',
-        watermarked?'This is your real generated preview. The watermark shows that clean export is not currently unlocked. You can review the document and use the available print/preview route; clean copying and PDF export require wallet access.':'Your document has been generated. Review the content and use the available document actions. Clean export is available when your account has the required access.',
+        watermarked?'This is your real generated preview. The watermark shows that clean export is not currently unlocked. You can review it and use your browser’s Print command (Ctrl+P) for a watermarked paper/PDF copy where your browser allows it. The watermark remains; clean copying and PDF export require wallet access.':'Your document has been generated. Review the content and use the available document actions. Clean export is available when your account has the required access.',
         '#docSheet',{progress:75,hint:'Review the preview. I’ll explain download and wallet access next.'});
       $('#dcTutorPrimary').hidden=false;$('#dcTutorPrimary').textContent='Show download options';
     });
     if(sheet)observer.observe(sheet,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
   }
   function showDownload(){
-    say('Preview, download and print','DocCraft keeps the watermarked preview visible when the account has no eligible email or credits. Clean PDF download and copy actions are protected. The tutor will not remove the watermark or spend credits for you.','#downloadDocumentBtn',{progress:82,hint:'Try the available preview/print option. If export is locked, open Wallet to see how to unlock it.'});
+    say('Preview, print and download','When access is unavailable, DocCraft shows a watermarked preview. You can use your browser Print command (Ctrl+P) to print/save a watermarked copy where supported. The watermark remains. Clean PDF download and copy are protected; I will never remove it or spend credits for you.','#downloadDocumentBtn',{progress:82,hint:'Try the available preview/print option. If export is locked, open Wallet to see how to unlock it.'});
     $('#dcTutorPrimary').hidden=false;$('#dcTutorPrimary').textContent='Take me to Wallet';
   }
   function showWallet(){
