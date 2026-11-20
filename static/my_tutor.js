@@ -120,7 +120,22 @@ function workspaceEvents(){
     show('Help and account tools','This menu contains account settings and assistance. DocCraft Care can help while you work.','#workspaceNavMenu',[]);
    },80);
   }
+  if(e.target.closest('#workspaceNavMenu button[onclick*="toggleWorkspaceSettings"]')){
+   show('Workspace settings','Settings let you adjust the workspace display and accessibility preferences. Change only the options you want; your document content is separate.','#workspaceNavMenu',[]);
+  }
+  if(e.target.closest('#workspaceNavMenu button[onclick*="openWorkspaceCare"]')){
+   setTimeout(()=>show('DocCraft Care and support','Use this area when you need help while working. Describe the question clearly and review the guidance before applying it.','#carePopup',[]),100);
+  }
   if(e.target.closest('#careOpen'))show('DocCraft Care','This opens in-workspace AI assistance. Describe the question or document issue you need help with.','#carePopup',[]);
+ });
+ document.addEventListener('focusin',e=>{
+  if(!accepted)return;
+  if(e.target.closest('#formContent')){
+   const field=e.target;
+   const label=field.labels?.[0]?.textContent||field.closest('.form-group')?.querySelector('label')?.textContent||field.getAttribute('aria-label')||'this field';
+   show('Add your information','You are editing '+label.trim()+'. Use accurate details. I’ll stay out of the way while you write.','#formContent',[]);
+  }
+  if(e.target.closest('#userInput'))show('Describe your document','Explain what you need and include the important context. Review the assistant’s response before approving generation.','#userInput',[]);
  });
  observePreview();
 }
