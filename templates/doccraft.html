@@ -1882,14 +1882,14 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
 }
 </style>
 
-<link rel="stylesheet" href="/static/my_tutor.css?v=20261121">
+<link rel="stylesheet" href="/static/my_tutor.css?v=20261122">
 </head>
 <body>
 
 <!-- ── NAVBAR ─────────────────────────────────────── -->
 <nav class="navbar">
   <a href="#" class="nav-logo" onclick="showHome()">
-    <span class="logo-hex">⬡</span>
+    <span class="logo-hex dc-tutor-logo" id="dcTutorLauncher" role="button" tabindex="0" aria-label="Open My Tutor" title="My Tutor">☝</span>
     <span>DocCraft <span class="logo-pro">Pro</span></span>
   </a>
 
@@ -1925,7 +1925,6 @@ body:has(#careerLaunchHome:not([hidden])) .career-steps li{border-color:var(--bo
   </div>
 
   <div class="nav-right">
-    <button id="dcTutorLauncher" class="dc-tutor-header-placeholder" type="button" aria-controls="dcTutorPanel" aria-expanded="false">☝ My Tutor</button>
     <button type="button" id="careProfile" class="care-profile" aria-label="Open account wallet" title="Account profile" onclick="openWalletPalette()"><span id="careProfileInitial">?</span></button>
     <button class="btn btn-ghost" id="installAppBtn" type="button" hidden style="padding:7px 12px;font-size:12px;margin-right:8px" onclick="installDocCraftApp()">Install App</button>
     <button class="nav-menu-btn" id="mobileMenuBtn" type="button" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
@@ -4545,6 +4544,6 @@ async function logoutDocCraft(){
  function fitStudioViewport(){const o=$('dcFocusStudio');if(!o||o.hidden)return;const v=window.visualViewport;const h=v?v.height:window.innerHeight;o.style.height=h+'px';o.style.top=(v?v.offsetTop:0)+'px';o.classList.toggle('dc-keyboard-open',!!v&&window.innerHeight-h>100);requestAnimationFrame(()=>resizeFocusEditor(false));}window.addEventListener('resize',()=>{fitStudioViewport();if($('dcFocusStudio')&&!$('dcFocusStudio').hidden)visible($('dcFocusEditor'));});if(window.visualViewport){window.visualViewport.addEventListener('resize',fitStudioViewport);window.visualViewport.addEventListener('scroll',fitStudioViewport);}
 })();
 </script>
-<script src="/static/my_tutor.js?v=20261121" defer></script>
+<script src="/static/my_tutor.js?v=20261122" defer></script>
 </body>
 </html>
