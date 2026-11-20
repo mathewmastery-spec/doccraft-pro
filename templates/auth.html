@@ -148,6 +148,7 @@
         $('resend').classList.remove('hidden');
       }else{
         status('Signed in. Opening your workspace…','success');
+        try{sessionStorage.setItem('dcTutorJourneyV2','workspace');}catch(_){}
         window.location.assign('/');
       }
     }catch(error){status('A connection problem prevented the request. Check your internet connection and try again.','error');}
