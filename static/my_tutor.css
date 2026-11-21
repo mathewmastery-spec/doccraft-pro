@@ -1,31 +1,21 @@
-/* My Tutor — compact guided-tour UI */
-.dc-tutor-logo{cursor:pointer!important;user-select:none;position:relative;transition:transform .2s ease,filter .2s ease}
-.dc-tutor-logo:hover{transform:translateY(-1px) scale(1.04);filter:drop-shadow(0 3px 8px rgba(83,104,220,.35))}
+/* Compact guided tutor with blue/purple vibrating hand */
+.dc-tutor-logo{cursor:pointer!important;user-select:none;transition:transform .2s ease,filter .2s ease}
+.dc-tutor-logo:hover{transform:scale(1.05);filter:drop-shadow(0 3px 8px rgba(83,104,220,.35))}
 .dc-tutor-logo:focus-visible{outline:3px solid #91a9ff;outline-offset:4px}
-#dcTutorBubble{position:fixed;z-index:1900;width:min(290px,calc(100vw - 24px));padding:13px 15px 12px;border:1px solid rgba(112,139,235,.27);border-radius:15px;background:linear-gradient(145deg,#fff 0%,#f6f8ff 70%,#f2f0ff 100%);color:#263653;box-shadow:0 12px 34px rgba(38,56,112,.19),0 2px 8px rgba(38,56,112,.08);font-family:Inter,'DM Sans',Arial,sans-serif;animation:dcTutorBubbleIn .2s ease-out}
+#dcTutorBubble{position:fixed;z-index:1900;width:min(290px,calc(100vw - 24px));padding:13px 15px 12px;border:1px solid rgba(112,139,235,.3);border-radius:15px;background:linear-gradient(145deg,#fff,#f6f8ff 70%,#f2f0ff);color:#263653;box-shadow:0 12px 34px rgba(38,56,112,.19);font-family:Inter,'DM Sans',Arial,sans-serif}
 #dcTutorBubble[hidden]{display:none!important}
 #dcTutorBubble:before{content:"";position:absolute;top:0;left:16px;right:16px;height:3px;border-radius:0 0 4px 4px;background:linear-gradient(90deg,#4e8ce8,#716bd8,#a28be9)}
 .dc-tutor-bubble-kicker{font-size:8px;font-weight:850;letter-spacing:.14em;color:#647bc0;margin:0 30px 5px 0}
-#dcTutorBubble h3{font-size:14px;line-height:1.3;margin:0 24px 5px 0;color:#263653;font-weight:800;letter-spacing:-.02em}
+#dcTutorBubble h3{font-size:14px;line-height:1.3;margin:0 24px 5px 0;color:#263653;font-weight:800}
 #dcTutorBubble p{font-size:11px;line-height:1.55;margin:0 0 10px;color:#53627d}
-.dc-tutor-bubble-close{position:absolute;right:8px;top:8px;width:25px;height:25px;border:0;border-radius:8px;background:#eaf0ff;color:#6073a8;font-size:17px;line-height:1;cursor:pointer}
+.dc-tutor-bubble-close{position:absolute;right:8px;top:8px;width:25px;height:25px;border:0;border-radius:8px;background:#eaf0ff;color:#6073a8;font-size:17px;cursor:pointer}
 .dc-tutor-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
 .dc-tutor-actions button{min-height:30px;padding:0 11px;border-radius:9px;font:750 10px Inter,'DM Sans',Arial,sans-serif;cursor:pointer}
-.dc-tutor-yes{border:1px solid #7189e1;background:linear-gradient(120deg,#477fe0,#7669d7);color:white;box-shadow:0 3px 9px rgba(74,103,201,.2)}
+.dc-tutor-yes{border:1px solid #7189e1;background:linear-gradient(120deg,#477fe0,#7669d7);color:white}
 .dc-tutor-later{border:1px solid #dce3f2;background:#fff;color:#65738d}
-#dcTutorMovingHand{position:fixed;z-index:1901;left:0;top:0;display:none;pointer-events:none;font-size:37px;line-height:1;filter:drop-shadow(0 4px 6px rgba(32,50,103,.23));transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1);animation:dcTutorHandFloat 1.2s ease-in-out infinite}
+#dcTutorMovingHand{position:fixed;z-index:1901;display:none;pointer-events:none;font-size:38px;line-height:1;color:#477fe0;-webkit-text-stroke:1px #477fe0;text-shadow:0 0 9px rgba(71,127,224,.45),0 3px 6px rgba(32,50,103,.24);transition:left .55s cubic-bezier(.2,.8,.2,1),top .55s cubic-bezier(.2,.8,.2,1);animation:dcTutorVibrate .14s linear infinite alternate}
 #dcTutorMovingHand.visible{display:block}
 .dc-tutor-focus{outline:2px solid #7798f2!important;outline-offset:4px!important;box-shadow:0 0 0 5px rgba(91,139,244,.12)!important;border-radius:9px!important;scroll-margin:100px}
-@keyframes dcTutorBubbleIn{from{opacity:0;transform:translateY(5px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes dcTutorHandFloat{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-5px) rotate(-8deg)}}
-@media(max-width:700px){
- #dcTutorBubble{width:min(270px,calc(100vw - 20px));padding:11px 12px 10px;border-radius:13px}
- #dcTutorBubble h3{font-size:13px}
- #dcTutorBubble p{font-size:10.5px;line-height:1.48}
- #dcTutorMovingHand{font-size:32px}
-}
-@media(prefers-reduced-motion:reduce){
- #dcTutorMovingHand{animation:none;transition:none}
- #dcTutorBubble{animation:none}
- .dc-tutor-logo{transition:none}
-}
+@keyframes dcTutorVibrate{0%{transform:translate(-1px,0) rotate(-7deg);color:#477fe0}100%{transform:translate(1px,-1px) rotate(-11deg);color:#7669d7}}
+@media(max-width:700px){#dcTutorBubble{width:min(270px,calc(100vw - 20px));padding:11px 12px 10px}#dcTutorBubble h3{font-size:13px}#dcTutorBubble p{font-size:10.5px}#dcTutorMovingHand{font-size:32px}}
+@media(prefers-reduced-motion:reduce){#dcTutorMovingHand{animation:none;transition:none}.dc-tutor-logo{transition:none}}
