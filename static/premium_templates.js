@@ -36,10 +36,12 @@
   }
   function applyPhoto(){
     const sheet=document.getElementById('docSheet');if(!sheet)return;
-    sheet.querySelectorAll('.premium-profile-photo').forEach(img=>img.remove());
-    if(!photoData)return;
+    const existing=sheet.querySelector('.premium-profile-photo');
+    if(!photoData){if(existing)existing.remove();return;}
     const target=sheet.querySelector('.tpl-classic .classic-head,.tpl-modern .modern-left');
     if(!target)return;
+    if(existing && existing.parentElement===target && existing.src===photoData)return;
+    if(existing)existing.remove();
     const img=document.createElement('img');img.className='premium-profile-photo';img.alt='Profile photo';img.src=photoData;target.insertBefore(img,target.firstChild);
   }
   function observe(){
