@@ -17,6 +17,7 @@
 <title>DocCraft Pro | Free Online Document &amp; CV Builder</title>
 <meta name="description" content="Create professional CVs, resumes, portfolios, and letters with DocCraft Pro. Design documents, preview templates, copy content, and print or save as PDF.">
 <meta name="theme-color" content="#f7f7f0">
+<link rel="stylesheet" href="/static/premium_templates.css?v=1">
 <link rel="manifest" href="/static/manifest.json">
 <link rel="apple-touch-icon" href="/static/doccraft-icon.svg">
 <meta property="og:title" content="DocCraft Pro — Student Document Studio">
@@ -2840,7 +2841,8 @@ function setOrgType(type, btn) {
 }
 const DOCUMENT_STYLE_IDS = new Set([
   'classic','modern','minimal','academic','slate','editorial','technical','sidebar',
-  'correspondence','institutional','creative','monochrome','emerald','burgundy','bluebook'
+  'correspondence','institutional','creative','monochrome','emerald','burgundy','bluebook',
+  'premium-executive','premium-aurora','premium-creative','premium-ats'
 ]);
 function applyDocumentStyle() {
   const sheet = document.getElementById('docSheet');
@@ -3609,8 +3611,9 @@ function escapeHtml(s) { return esc(s); }
 function renderResume(d) {
   if (!d || !d.name) return;
   applyDocumentStyle();
-  const layout = state.subType !== 'resume' ? 'classic'
-    : state.template === 'modern' || state.template === 'sidebar' ? 'modern'
+  const premiumModern = state.template === 'premium-aurora' || state.template === 'premium-creative';
+  const layout = state.subType !== 'resume' ? (premiumModern ? 'modern' : 'classic')
+    : premiumModern || state.template === 'modern' || state.template === 'sidebar' ? 'modern'
     : state.template === 'minimal' || state.template === 'monochrome' ? 'minimal'
     : 'classic';
   if (layout === 'classic') renderClassic(d);
@@ -4545,5 +4548,6 @@ async function logoutDocCraft(){
 })();
 </script>
 <script src="/static/my_tutor.js?v=20261121v5" defer></script>
+<script src="/static/premium_templates.js?v=1" defer></script>
 </body>
 </html>

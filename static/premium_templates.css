@@ -1,0 +1,29 @@
+/* DocCraft Pro — additive premium CV designs. Scoped to new IDs only. */
+#docSheet[data-doc-style^="premium-"] .tpl-classic,
+#docSheet[data-doc-style^="premium-"] .tpl-modern{font-family:Inter,Arial,sans-serif;color:#172033}
+#docSheet[data-doc-style="premium-executive"] .tpl-classic{border-top:10px solid #183b56;padding-top:28px}
+#docSheet[data-doc-style="premium-executive"] .classic-head{border-bottom:2px solid #b88b48;padding-bottom:18px}
+#docSheet[data-doc-style="premium-executive"] .classic-head h1{font-family:Georgia,serif;letter-spacing:.2px;color:#183b56}
+#docSheet[data-doc-style="premium-executive"] .classic-section h2{color:#183b56;border-bottom:1px solid #d8e0e8;padding-bottom:5px;letter-spacing:1px;text-transform:uppercase;font-size:12px}
+#docSheet[data-doc-style="premium-aurora"] .tpl-modern{border-radius:0;overflow:hidden}
+#docSheet[data-doc-style="premium-aurora"] .modern-left{background:linear-gradient(160deg,#153d52,#176b72);color:#f4fbff}
+#docSheet[data-doc-style="premium-aurora"] .modern-left h1{color:#fff;font-size:27px;line-height:1.12}
+#docSheet[data-doc-style="premium-aurora"] .modern-left h3{color:#a8e2dc;border-bottom:1px solid rgba(255,255,255,.25);padding-bottom:5px}
+#docSheet[data-doc-style="premium-aurora"] .modern-right h2{color:#176b72;border-bottom:2px solid #b7ded8;padding-bottom:6px}
+#docSheet[data-doc-style="premium-creative"] .tpl-modern{border-top:12px solid #7543a6}
+#docSheet[data-doc-style="premium-creative"] .modern-left{background:#f1eafa;color:#312044;border-right:4px solid #7543a6}
+#docSheet[data-doc-style="premium-creative"] .modern-left h1{color:#4d2774}
+#docSheet[data-doc-style="premium-creative"] .modern-right h2{color:#7543a6;border-bottom:1px solid #d9c8e9;padding-bottom:5px}
+#docSheet[data-doc-style="premium-ats"] .tpl-classic{font-family:Arial,Helvetica,sans-serif;padding:28px 34px}
+#docSheet[data-doc-style="premium-ats"] .classic-head{text-align:left;border-bottom:2px solid #243b53;padding-bottom:12px}
+#docSheet[data-doc-style="premium-ats"] .classic-head h1{font-size:25px;color:#172b42;letter-spacing:.4px}
+#docSheet[data-doc-style="premium-ats"] .classic-section h2{font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:#243b53;border-bottom:1px solid #cbd5e1;padding-bottom:4px}
+#docSheet .premium-profile-photo{width:104px;height:104px;object-fit:cover;border-radius:50%;border:3px solid #fff;box-shadow:0 1px 8px rgba(15,23,42,.18);float:right;margin:0 0 12px 18px}
+#docSheet[data-doc-style="premium-aurora"] .premium-profile-photo,
+#docSheet[data-doc-style="premium-creative"] .premium-profile-photo{float:none;display:block;margin:0 auto 16px;border-radius:18px;border-color:rgba(255,255,255,.8)}
+@media print{
+  #docSheet[data-doc-style^="premium-"]{background:#fff!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #docSheet[data-doc-style^="premium-"] .tpl-classic,
+  #docSheet[data-doc-style^="premium-"] .tpl-modern{box-shadow:none!important}
+  #docSheet .premium-profile-photo{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+}
